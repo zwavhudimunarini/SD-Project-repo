@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="login.js"></script>
+</head>
+
+<style>
+
+    #Login{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        border: 1px solid black;
+        width: 500px;
+        height: 400px;
+        background: url('building.webp');
+        color: white;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+
+    form{
+        display: block;
+        box-sizing: border-box;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: brightness(40%);
+        flex-direction: column;
+        display: flex;
+        gap: 5px;
+    }
+
+    h1{
+        font-weight: normal;
+        font-size: 24px;
+        text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+        margin-bottom: 30px;
+
+    }
+
+    input{
+        background: rgba(255,255,255,0.3);
+        
+        line-height: 40px;
+        border-radius: 20px;
+        padding: 0px 20px;
+        border: none;
+        margin-bottom: 20px;
+        color: white;
+    }
+    #submitButton{
+        background: rgba(45,126,231);
+        height: 40px;
+        line-height: 40px;
+        border-radius: 40px;
+        border: none;
+        margin: 10px 0px;
+        box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+        color: white;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    #paragraph{
+        margin-left: 80px;
+    }
+     
+
+</style>
+
+
+
+<body>
+    
+    <div id="Login">
+
+        <form >
+        
+            <h1>Login</h1>
+            <br>
+            <input type="email" name="" placeholder="enter email" id="email">
+            <br>
+            <input type="password" name="" placeholder="enter password" id="password">
+            <input type="submit" value="Login" name="" id="submitButton">
+            <p id="paragraph">Don't have an account? <a href="index.html">Sign In</a></p>
+                
+    
+        </form>
+
+    </div>
+</body>
+</html>

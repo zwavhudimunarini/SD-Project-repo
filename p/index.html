@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="signup.js"></script>
+</head>
+
+<style>
+    
+
+    #signUp{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        border: 1px solid black;
+        width: 500px;
+        height: 700px;
+        background: url('building.webp');
+        color: white;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+
+    form{
+        display: block;
+        box-sizing: border-box;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: brightness(40%);
+        flex-direction: column;
+        display: flex;
+        gap: 5px;
+    }
+
+    h1{
+        font-weight: normal;
+        font-size: 24px;
+        text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+        margin-bottom: 30px;
+
+    }
+
+    input{
+        background: rgba(255,255,255,0.3);
+        
+        line-height: 40px;
+        border-radius: 20px;
+        padding: 0px 20px;
+        border: none;
+        margin-bottom: 20px;
+        color: white;
+    }
+    #submitButton{
+        background: rgba(45,126,231);
+        height: 40px;
+        line-height: 40px;
+        border-radius: 40px;
+        border: none;
+        margin: 10px 0px;
+        box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+        color: white;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    #Section{
+        margin-left: 80px;
+        
+        
+    }
+    #paragraph{
+        margin-left: 80px;
+    }
+     
+
+</style>
+<body>
+
+
+    
+    <div id="signUp">
+
+        <form >
+        
+            <h1>Sign Up</h1>
+            <br>
+            <input type="text" name="" placeholder="enter name" id="">
+            <br>
+            <input type="email" name="" placeholder="enter email" id="">
+            <br>
+            <input type="password" name="" placeholder="enter password" id="">
+            <br>
+            <input type="password" name="" placeholder="confirm password" id="">
+            <br>
+            <input type="tel" name="" placeholder="enter number" id="">
+            <br>
+            <p>select role:</p>
+            <section id="Section">
+                <label for="Owner">
+                    <input type="radio" id="Owner" name="tick" >Owner
+                </label>
+    
+                <label for="Admin">
+                    <input type="radio" id="Admin" name="tick">Admin
+                </label>
+    
+                <label for="Tenant">
+                    <input type="radio" id="Tenant" name="tick">Tenant
+                </label>
+                
+            </section>
+            <input type="submit" value="Sign Up" name="" id="submitButton">
+            <p id="paragraph">already have an account? <a href="login.html">Login</a></p>
+                
+    
+        </form>
+
+    </div>
+
+
+
+    
+</body>
+</html>
