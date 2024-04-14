@@ -132,20 +132,45 @@
     top: 0;
     border-radius: 40px;
     }
-    
+
+    .camera{
+        background: white;
+        width: 25px;
+        height: 25px;
+        margin-top: 15px;
+        margin-bottom: 0%;
+        margin-left: 10px;
+    }
+
+    .camera:hover:before{
+        opacity: 1;
+    }
 
     #Section{
         margin-left: 80px;
-        
-        
+        margin-bottom: 0px;
+        margin-top: 0px;
     }
     #paragraph{
-        margin-left: 80px;0
+        margin-left: 80px;
+    }
+    #final{
+        display: flex;
+        align-content: space-between;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
     #signuptag{
         color: rgb(0, 0, 0);
     }
-     
+
+    .sign{
+        margin-bottom: 0px;
+    }
+
+    .select{
+        margin-bottom: 0px;
+    }
 
 </style>
 <body>
@@ -156,7 +181,7 @@
 
         <form >
         
-            <h1>Sign Up</h1>
+            <h1 class="sign">Sign Up</h1>
             <br>
             <input type="text" name="" placeholder="enter name" id="">
             <br>
@@ -168,21 +193,30 @@
             <br>
             <input type="tel" name="" placeholder="enter number" id="">
             <br>
-            <p>select role:</p>
+            <p class="select">select role:</p>
             <section id="Section">
-                <label for="Owner">
-                    <input type="radio" id="Owner" name="tick" >Owner
-                </label>
-    
                 <label for="Admin">
                     <input type="radio" id="Admin" name="tick">Admin
                 </label>
+
+                <label for="Staff">
+                    <input type="radio" id="Staff" name="tick" >Staff
+                </label>
+    
     
                 <label for="Tenant">
                     <input type="radio" id="Tenant" name="tick">Tenant
                 </label>
-                
+                 
             </section>
+
+            <section id="final">
+                <p>Take a picture:</p>
+                <a href="camera.html">
+                    <img src="images/camera.png" class="camera"/>
+                </a>
+            </section>
+            
             <button class="submitButton">SIGN UP</button>
             <p id="paragraph">already have an account? <a id="signuptag" href="login.html">Login</a></p>
                 
