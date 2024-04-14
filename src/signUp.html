@@ -179,33 +179,33 @@
     
     <div id="signUp">
 
-        <form >
+        <form is="submitForm" action="http://localhost:3002/submit" method="post" >
         
             <h1 class="sign">Sign Up</h1>
             <br>
-            <input type="text" name="name" placeholder="enter name" id="name">
+            <input type="text" name="name" placeholder="enter name" id="names" autocomplete="off" required>
             <br>
-            <input type="email" name="email" placeholder="enter email" id="email">
+            <input type="email" name="email" placeholder="enter email" id="email" autocomplete="off" required>
             <br>
-            <input type="password" name="password" placeholder="enter password" id="password">
+            <input type="password" name="password" placeholder="enter password" id="password" autocomplete="off" required>
             <br>
-            <input type="password" name="confirmPassword" placeholder="confirm password" id="confirm">
+            <input type="password" name="confirmPassword" placeholder="confirm password" id="confirmPassword" autocomplete="off" required>
             <br>
-            <input type="tel" name="phoneNumber" placeholder="enter number" id="number">
+            <input type="tel" name="phoneNumber" placeholder="enter number" id="number" autocomplete="off" required>
             <br>
             <p class="select">select role:</p>
             <section id="Section">
                 <label for="Admin">
-                    <input type="radio" id="Admin" name="tick">Admin
+                    <input type="radio" id="Admin" name="role" value="Admin">Admin
                 </label>
 
                 <label for="Staff">
-                    <input type="radio" id="Staff" name="tick" >Staff
+                    <input type="radio" id="Staff" name="role" value="Staff" >Staff
                 </label>
     
     
                 <label for="Tenant">
-                    <input type="radio" id="Tenant" name="tick">Tenant
+                    <input type="radio" id="Tenant" name="role" value="Tenant">Tenant
                 </label>
                  
             </section>
@@ -217,7 +217,7 @@
                 </a>
             </section>
             
-            <button class="submitButton">SIGN UP</button>
+            <button onclick="submitForm()" class="submitButton">SIGN UP</button>
             <p id="paragraph">already have an account? <a id="signuptag" href="login.html">Login</a></p>
                 
     
