@@ -154,7 +154,7 @@
     
     <div id="Login">
 
-        <form >
+        <form action="http://localhost:3004/login" method="post">
         
             <h1>Login</h1>
             <br>
@@ -162,7 +162,7 @@
             <br>
             <input type="password" name="" placeholder="enter password" id="password">
           
-            <button class="submitButton">LOGIN</button>
+            <button  class="submitButton" onclick="getUserInfo()">LOGIN</button>
            
             <p id="paragraph">Don't have an account? <a id="signuptag" href="signUp.html">Sign In</a></p>
                 
