@@ -23,7 +23,7 @@ function getUserInfo(){
     })
     .then(data => {
         if (data.success) {
-            // Redirect to dashboard or another page
+            // Redirect to another page
             window.location.href = 'user.html';
         } else {
             alert('Invalid email or password');

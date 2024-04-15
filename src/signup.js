@@ -79,7 +79,7 @@ function submitForm() {
         role: role
     };
 
-    // Make a POST request using Fetch API
+    // Make a POST request using the Fetch API
     
     fetch('http://localhost:3004/submit', {
         method: 'POST',
