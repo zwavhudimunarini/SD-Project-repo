@@ -96,11 +96,15 @@ app.post('/login', async (request, response) => {
 
         if (rows.length > 0) {
             // User with the given email and password exists in the database
-            response.status(200).json({ success: true, message: 'Login successful' });
-        } else {
+            response.status(200).json({ success: true, role: rows[0].role, message: 'Login successful' });
+        }
+        
+        else {
             // User with the given email and password does not exist in the database
             response.status(401).json({ success: false, message: 'Invalid email or password' });
         }
+
+        
     } catch (error) {
         console.error('Error querying database: ', error);
         response.status(500).json({ error: 'Internal server error' });

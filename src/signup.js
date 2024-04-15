@@ -81,7 +81,7 @@ function submitForm() {
 
     // Make a POST request using the Fetch API
     
-    fetch('/submit', {
+    fetch('http://localhost:3004/submit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

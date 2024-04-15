@@ -8,7 +8,7 @@ function getUserInfo(){
         password: password
     };
 
-    fetch('/login', {
+    fetch('http://localhost:3004/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -23,12 +23,26 @@ function getUserInfo(){
     })
     .then(data => {
         if (data.success) {
-            // Redirect to another page
-            window.location.href = 'user.html';
+            // Redirect based on role
+            switch(data.role) {
+                case 'Admin':
+                    window.location.href = 'admin.html';
+                    break;
+                case 'Staff':
+                    window.location.href = 'staff.html';
+                    break;
+                case 'Tenant':
+                    //dont forget to change to tenant.html after it has been designed
+                    window.location.href = 'user.html';
+                    break;
+                default:
+                    alert('Unknown role');
+            }
         } else {
             alert('Invalid email or password');
         }
     })
+    
     .catch(error => {
         console.error('Error:', error);
         alert('Error occurred while logging in');
