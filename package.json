@@ -1,8 +1,8 @@
 {
 
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts":{
-    "start": "src/node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
