@@ -132,20 +132,46 @@
     top: 0;
     border-radius: 40px;
     }
-    
+
+    .camera{
+        background: white;
+        width: 25px;
+        height: 25px;
+        margin-top: 15px;
+        margin-bottom: 0%;
+        margin-left: 10px;
+    }
+
+    .camera:hover:before{
+        opacity: 1;
+    }
 
     #Section{
         margin-left: 80px;
-        
-        
+        margin-bottom: 0px;
+        margin-top: 0px;
     }
     #paragraph{
         margin-left: 80px;
+    
+    }
+    #final{
+        display: flex;
+        align-content: space-between;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
     #signuptag{
         color: rgb(0, 0, 0);
     }
-     
+
+    .sign{
+        margin-bottom: 0px;
+    }
+
+    .select{
+        margin-bottom: 0px;
+    }
 
 </style>
 <body>
@@ -154,37 +180,45 @@
     
     <div id="signUp">
 
-        <form id="submitForm" action="http://localhost:3004/submit" method="post">
-            
+        <form is="submitForm" action="http://localhost:3004/submit" method="post" >
         
-            <h1>Sign Up</h1>
+            <h1 class="sign">Sign Up</h1>
             <br>
-            <input type="text" name="" placeholder="enter full names" id="names" autocomplete="off" required>
+            <input type="text" name="name" placeholder="enter name" id="names" autocomplete="off" required>
             <br>
-            <input type="email" name="" placeholder="enter email" id="email" autocomplete="off" required>
+            <input type="email" name="email" placeholder="enter email" id="email" autocomplete="off" required>
             <br>
-            <input type="password" name="" placeholder="enter password" id="password" autocomplete="off" required>
+            <input type="password" name="password" placeholder="enter password" id="password" autocomplete="off" required>
             <br>
-            <input type="password" name="" placeholder="confirm password" id="confirmPassword" autocomplete="off" required>
+            <input type="password" name="confirmPassword" placeholder="confirm password" id="confirmPassword" autocomplete="off" required>
             <br>
-            <input type="tel" name="" placeholder="enter number" id="number" autocomplete="off" required>
+            <input type="tel" name="phoneNumber" placeholder="enter number" id="number" autocomplete="off" required>
             <br>
-            <p>select role:</p>
-            <section id="Section" >
+            <p class="select">select role:</p>
+            <section id="Section">
                 <label for="Admin">
-                    <input type="radio" id="Admin" name="role" value="Admin" >Admin
+                    <input type="radio" id="Admin" name="role" value="Admin">Admin
+                </label>
+
+                <label for="Staff">
+                    <input type="radio" id="Staff" name="role" value="Staff" >Staff
                 </label>
     
-                <label for="Staff">
-                    <input type="radio" id="Staff" name="role" value="Staff">Staff
-                </label>
     
                 <label for="Tenant">
                     <input type="radio" id="Tenant" name="role" value="Tenant">Tenant
                 </label>
-                
+                 
             </section>
-            <button  onclick="submitForm()" class="submitButton">SIGN UP</button>
+
+            <section id="final">
+                <p>Take a picture:</p>
+                <a href="camera.html">
+                    <img src="images/camera.png" class="camera"/>
+                </a>
+            </section>
+            
+            <button onclick="submitForm()" class="submitButton">SIGN UP</button>
             <p id="paragraph">already have an account? <a id="signuptag" href="login.html">Login</a></p>
                 
     
