@@ -1,6 +1,6 @@
 {
 
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts":{
     "start": "node server.js"
   },
