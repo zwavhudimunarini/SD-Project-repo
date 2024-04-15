@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+body{
+    background-image: url('images/staff2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1{
+    text-align: right;
+    color: aliceblue;
+    margin-bottom: 50px;
+    margin-right: 50px;
+}
+
+.widget{
+    flex: 1 0 100px;
+    background-color: rgba(255,255,255,0.3);
+    margin: 10px;
+    text-decoration: none;
+    color: aliceblue;
+    border-radius: 8px;
+}
+.widget-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    margin-right: 80px;
+}
+.widget h3{
+    margin-top: 0%;
+    margin-left: 10px;
+}
+.widget p{
+    font-size: 20px;
+    margin-bottom: 0%;
+    margin-left: 10px;
+}
+.widget:hover{
+    background-color: rgba(0, 150, 255, 0.6);
+}
+
+
+.icon{
+    background-color: rgba(255,255,255,0.0);
+    width: 50px;
+    height: 50px;
+    margin-left: 30px;
+}
+
+.logout{
+    width: 70px;
+    height: 50px;
+    background: rgba(255,255,255,0.0);
+    margin-left: 20px;
+}
+
+h4{
+    color: aliceblue;
+    background-color: rgba(255,255,255,0.0);
+    margin-left: 20px;
+}
+
+</style>
+
+<body>
+    <h1>Welcome, Staff member Staff member name</h1>
+    <section class="widget-container">
+        <a href="#" class="widget" onclick="handleWidgetClick('total-issues')">
+            <h3>Total Issues</h3>
+            <img class="icon" src="images/issues.png">
+            <p>25</p>
+        </a>
+        <a href="#" class="widget" onclick="handleWidgetClick('pending-tasks')">
+            <h3>Pending Tasks</h3>
+            <img class="icon" src="images/tasks.webp">
+            <p>13</p>
+        </a>
+        <a href="#" class="widget" onclick="handleWidgetClick('notifications')">
+            <h3>Notifications</h3>
+            <img class="icon" src="images/notification.jpeg">
+            <p>17</p>
+        </a>
+    </section>
+
+    <section>
+        <h4>Log Out</h4>
+        <a href="login.html">
+            <img src="images/logout.png" class="logout">
+        </a>
+    </section>
+    
+</body>
+</html>
