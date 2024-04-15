@@ -1,0 +1,64 @@
+.containerParent{
+
+    display: flex;
+    height:100% ;
+    
+    
+}
+
+.leftPane{
+    flex: 1;
+    background-color: #FF8A1D;
+    color: white;
+    
+    
+}
+
+.mainPage{
+    flex:3;
+    text-align: center;
+    padding: 70px 0;
+}
+
+ul{
+    list-style: none;
+    justify-content: space-evenly;
+    font-size: large;
+    align-content: center;
+    
+}
+li {
+    margin: 80px 0;
+    
+  }
+
+
+html, body{
+    height: 100%;
+}
+.role{
+    margin-left: 10px;
+}
+.logout{
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+footer{
+    background-color: rgb(176, 156, 143);
+    text-align: center;
+    padding: 2%;
+    height: 10%;
+    color: white;
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+
+a:hover{
+    color: blue;
+    transition: margin-right 2s ease-in-out;
+    transition-delay: 1s;
+    
+}
