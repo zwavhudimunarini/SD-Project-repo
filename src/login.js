@@ -33,7 +33,7 @@ function getUserInfo(){
                     break;
                 case 'Tenant':
                     //dont forget to change to tenant.html after it has been designed
-                    window.location.href = 'user.html';
+                    window.location.href = 'ResidentHomepage.html';
                     break;
                 default:
                     alert('Unknown role');
