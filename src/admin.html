@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    body{
+    margin: 0;
+    padding: 0;
+    background-image: url('images/admins.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1{
+    text-align: right;
+    color:aliceblue;
+    margin-bottom: 50px;
+    margin-right: 50px;
+}
+
+.widget{
+    flex: 1 0 100px;
+    background-color: rgba(255,255,255,0.3);
+    margin: 10px;
+    text-decoration: none;
+    color: black;
+    border-radius: 8px;
+}
+.widget-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    margin-right: 80px;
+}
+.widget h3{
+    margin-top: 0%;
+    margin-left: 10px;
+}
+.widget p{
+    font-size: 20px;
+    margin-bottom: 0%;
+    margin-left: 10px;
+}
+.widget:hover{
+    background-color: rgba(200, 200, 0, 0.6);
+}
+
+.icon{
+    background-color: rgba(255,255,255,0.0);
+    width: 50px;
+    height: 50px;
+    margin-left: 30px;
+}
+
+.logout{
+    width: 70px;
+    height: 50px;
+    background: rgba(255,255,255,0.0);
+    margin-left: 20px;
+}
+
+h4{
+    color: aliceblue;
+    background-color: rgba(255,255,255,0.0);
+    margin-left: 20px;
+}
+
+</style>
+
+<body>
+    <h1>Welcome, Admin, Admin name</h1>
+    <section class="widget-container">
+        <a href="#" class="widget" onclick="handleWidgetClick('residents')">
+            <h3>Residents</h3>
+            <img class="icon" src="images/residents.png">
+            <p>500</p>
+        </a>
+        <a href="#" class="widget" onclick="handleWidgetClick('staff')">
+            <h3>Staff</h3>
+            <img class="icon" src="images/staff.png">
+            <p>57</p>
+        </a>
+        <a href="#" class="widget" onclick="handleWidgetClick('visitors')">
+            <h3>Visitors</h3>
+            <img class="icon" src="images/visitors.png">
+            <p>123</p>
+        </a>
+        <a href="#" class="widget" onclick="handleWidgetClick('ongoing-issues')">
+            <h3>Ongoing Issues</h3>
+            <img class="icon" src="images/issues.png">
+            <p>65</p>
+        </a>
+        <a href="#" class="widget" onclick="handleWidgetClick('fines-issued')">
+            <h3>Fines Issued</h3>
+            <img class="icon" src="images/fines.webp">
+            <p>8</p>
+        </a>
+        <a href="#" class="widget" onclick="handleWidgetClick('notifications')">
+            <h3>Notifications</h3>
+            <img class="icon" src="images/notification.jpeg">
+            <p>3</p>
+        </a>
+    </section>
+
+    <section>
+        <h4>Log Out</h4>
+        <a href="login.html">
+            <img src="images/logout.png" class="logout">
+        </a>
+    </section>
+
+</body>
+</html>
