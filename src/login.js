@@ -8,7 +8,7 @@ function getUserInfo(){
         password: password
     };
 
-    fetch('http://localhost:3004/login', {
+    fetch('/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
