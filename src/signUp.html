@@ -172,6 +172,13 @@
         margin-bottom: 0px;
     }
 
+    #cameraStream {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
 </style>
 <body>
 
@@ -212,9 +219,43 @@
 
             <section id="final">
                 <p>Take a picture:</p>
-                <a href="camera.html">
+                <!--
+                    <a href="camera.html">
                     <img src="images/camera.png" class="camera"/>
                 </a>
+            -->
+            <button id="openCameraBtn" style="margin: 10px;">Open Camera</button>
+            <video id="cameraStream" autoplay style="display: none;"></video>
+    <script>
+        const openCameraBtn = document.getElementById('openCameraBtn');
+        const cameraStream = document.getElementById('cameraStream');
+    
+        openCameraBtn.addEventListener('click', async () => {
+            event.preventDefault();
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            cameraStream.srcObject = stream;
+            cameraStream.style.display = 'block';
+          } catch (error) {
+            console.error('Error accessing the camera:', error);
+          }
+        });
+
+          // Close camera when clicking anywhere on the screen
+          document.addEventListener('click', (event) => {
+                    if (!cameraStream.contains(event.target)) {
+                        // Clicked outside the camera element or its child elements
+                        closeCamera();
+                    }
+                });
+
+                function closeCamera() {
+                    const tracks = cameraStream.srcObject.getTracks();
+                    tracks.forEach(track => track.stop());
+                    cameraStream.srcObject = null;
+                    cameraStream.style.display = 'none';
+                }
+      </script>
             </section>
             
             <button onclick="submitForm()" class="submitButton">SIGN UP</button>
