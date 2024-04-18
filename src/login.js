@@ -8,7 +8,7 @@ function getUserInfo(){
         password: password
     };
 
-    fetch('/login', {
+    fetch('http://localhost:3004/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -16,13 +16,24 @@ function getUserInfo(){
         body: JSON.stringify(userData)
     })
     .then(response => {
-        if (!response.ok) {
+        if (response.ok) {
+            return response.json();
+        }
+        else if(password=='' || email==''){
+            alert("fields cant be empty")
+        }
+        else if (response.status === 401) {
+            // Invalid email or password, show alert to the user
+            alert('Invalid email or password');
+            // Optionally, clear the password field or take other actions
+        }
+        else {
             throw new Error('Network response was not ok');
         }
-        return response.json();
-    })
-    .then(data => {
+    }).then(data => {
         if (data.success) {
+            //check if password matches
+            
             // Redirect based on role
             switch(data.role) {
                 case 'Admin':
@@ -39,13 +50,13 @@ function getUserInfo(){
                     alert('Unknown role');
             }
         } else {
-            alert('Invalid email or password');
+            //alert('Invalid email or password');
         }
     })
     
     .catch(error => {
         console.error('Error:', error);
-        alert('Error occurred while logging in');
+        //alert('Error occurred while logging in');
     });
 
 }

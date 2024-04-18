@@ -77,6 +77,7 @@ app.post('/submit', async (request, response) => {
 //check if user is in the database
 
 app.post('/login', async (request, response) => {
+    console.log('request body: ',request.body);
     const { email, password } = request.body;
 
     console.log('Received email:', email);
@@ -107,7 +108,7 @@ app.post('/login', async (request, response) => {
         
     } catch (error) {
         console.error('Error querying database: ', error);
-        response.status(500).json({ error: 'Internal server error' });
+       // response.status(500).json({ error: 'Internal server error' });
     }
 });
 
