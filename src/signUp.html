@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="signup.js"></script>
+
+
+
+
+    <script src="https://apis.google.com/js/platform.js" defer></script>
+    <meta
+      name="google-signin-client_id"
+      content="822343641891-3k9m4iobolv0vs2774dn8uh03rd3p3f5.apps.googleusercontent.com"
+    />
+
 </head>
 
 <style>
@@ -19,7 +29,7 @@
         left: 35%;
         border: 1px solid black;
         width: 500px;
-        height: 700px;
+        height: 704px;
         background: url('images/building.webp');
         color: white;
         border-radius: 20px;
@@ -45,7 +55,7 @@
         font-weight: normal;
         font-size: 24px;
         text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
-        margin-bottom: 30px;
+        margin-top: 3px;
 
     }
 
@@ -182,16 +192,18 @@
 </style>
 <body>
 
+    
+
 
     
     <div id="signUp">
 
-        <form is="submitForm" action="http://localhost:3004/submit" method="post" >
+        <form is="submitForm" action="http://localhost:3000/submit" method="post" >
         
             <a href="index.html" style="position: absolute; top: 10px; left: 10px;">
                 <img src="images/home-vector-icon.jpg" alt="Home" width="20" height="20">
             </a>
-            
+
             <h1 class="sign">Sign Up</h1>
             <br>
             <input type="text" name="name" placeholder="enter name" id="names" autocomplete="off" required>
@@ -230,7 +242,7 @@
             -->
             <button id="openCameraBtn" style="margin: 10px;">Open Camera</button>
             <video id="cameraStream" autoplay style="display: none;"></video>
-    <script>
+    <!-- <script>
         const openCameraBtn = document.getElementById('openCameraBtn');
         const cameraStream = document.getElementById('cameraStream');
     
@@ -259,11 +271,13 @@
                     cameraStream.srcObject = null;
                     cameraStream.style.display = 'none';
                 }
-      </script>
+      </script> -->
             </section>
+            <button  class="submitButton" id="submitBtn">SIGN UP</button>
             
-            <button onclick="submitForm()" class="submitButton">SIGN UP</button>
+           <!-- <button onclick="submitForm()" class="submitButton" id="submitBtn">SIGN UP</button> -->
             <p id="paragraph">already have an account? <a id="signuptag" href="login.html">Login</a></p>
+            <section class="g-signin2" onclick="onSignIn" data-onsuccess="onSignIn" style="display: flex; justify-content: center;"></section>
                 
     
         </form>
@@ -271,7 +285,8 @@
     </div>
 
 
-
     
 </body>
+
+
 </html>

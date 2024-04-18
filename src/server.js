@@ -1,19 +1,14 @@
-//require("dotenv").config();
+
 
 const express = require("express");
 const mysql = require("mysql2/promise");
 const cors = require("cors");
-//const bodyParser=require("body-parser");
 
 const app = express();
-const port = 3004;
+const port = process.env.PORT || 3000;
 
-app.use(cors())
+app.use(cors());
 app.use(express.json());
-//app.use(bodyParser.urlencoded({extended:false}))
-//app.use(bodyParser.json())
-
-//const db = require('./login');
 
 const createConnectionPool = async () => {
     try {
@@ -27,28 +22,16 @@ const createConnectionPool = async () => {
         return pool;
     } catch (error) {
         console.error('Error creating MySQL connection pool: ', error);
-        throw error; // Rethrow the error to handle it at a higher level
+        throw error;
     }
 };
 
-
-
 app.post('/submit', async (request, response) => {
+    const { name, email, password, confirmPassword, number, role } = request.body;
 
-    
-    let { name, email, password, confirmPassword, number, role } = request.body;
-   // console.log(request.body);
-    console.log(name);
-    console.log( email);
-    console.log(password);
-    console.log(number);
-    console.log(role);
-    
-    
-    
-    // Check if the name field is empty
-    if (!name || !password) {
-        return response.status(400).json({ error: 'both Name and password fields are required' });
+    // Check if required fields are empty
+    if (!name || !password || !confirmPassword || !number || !role) {
+        return response.status(400).json({ error: 'All fields are required' });
     }
 
     if (password !== confirmPassword) {
@@ -59,22 +42,20 @@ app.post('/submit', async (request, response) => {
         const pool = await createConnectionPool();
         const connection = await pool.getConnection();
         
-        // Execute the SQL query with form values
         await connection.execute(
             'INSERT INTO user (name, email, password, number, role) VALUES (?, ?, ?, ?, ?)',
             [name, email, password, number, role]
         );
 
         connection.release();
-        console.log('User created successfully');
+        
         response.status(201).json({ message: 'User created successfully' });
+        
     } catch (error) {
         console.error('Error inserting data: ', error);
         response.status(500).json({ error: 'Internal server error' });
     }
 });
-
-//check if user is in the database
 
 app.post('/login', async (request, response) => {
     console.log('request body: ',request.body);
@@ -114,6 +95,7 @@ app.post('/login', async (request, response) => {
 });
 
 
-app.listen(process.env.PORT || port, () => {
+app.listen(port, () => {
     console.log(`Server started at http://localhost:${port}`);
 });
+
