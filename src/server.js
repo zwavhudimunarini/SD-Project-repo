@@ -47,8 +47,8 @@ app.post('/submit', async (request, response) => {
     
     
     // Check if the name field is empty
-    if (!name) {
-        return response.status(400).json({ error: 'Name field is required' });
+    if (!name || !password) {
+        return response.status(400).json({ error: 'both Name and password fields are required' });
     }
 
     if (password !== confirmPassword) {
@@ -87,8 +87,8 @@ app.post('/login', async (request, response) => {
         const pool = await createConnectionPool();
         const connection = await pool.getConnection();
 
-        // Execute the SQL query to check if the user exists with the given email and password
-        //`SELECT * FROM user WHERE BINARY email = '${email}' AND BINARY password = '${password}'`
+        // Execute the SQL query to check if the user exists with the given email and password(make it case sensitive)
+        
         const [rows, fields] = await connection.execute(
             'SELECT * FROM user WHERE BINARY email = ? AND BINARY password = ?',
             [email, password]
