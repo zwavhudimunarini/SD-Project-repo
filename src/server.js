@@ -88,8 +88,9 @@ app.post('/login', async (request, response) => {
         const connection = await pool.getConnection();
 
         // Execute the SQL query to check if the user exists with the given email and password
+        //`SELECT * FROM user WHERE BINARY email = '${email}' AND BINARY password = '${password}'`
         const [rows, fields] = await connection.execute(
-            'SELECT * FROM user WHERE email = ? AND password = ?',
+            'SELECT * FROM user WHERE BINARY email = ? AND BINARY password = ?',
             [email, password]
         );
 
