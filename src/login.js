@@ -19,9 +19,10 @@ function getUserInfo(){
         if (response.ok) {
             return response.json();
         }
-        else if(password=='' || email==''){
-            alert("fields cant be empty")
+        else if(email=='' || password==''){
+            alert('all fields are required');
         }
+        
         else if (response.status === 401) {
             // Invalid email or password, show alert to the user
             alert('Invalid email or password');
@@ -50,13 +51,14 @@ function getUserInfo(){
                     alert('Unknown role');
             }
         } else {
-            //alert('Invalid email or password');
+            alert('Invalid email or password');
         }
     })
     
     .catch(error => {
         console.error('Error:', error);
-        //alert('Error occurred while logging in');
+        
+        
     });
 
 }

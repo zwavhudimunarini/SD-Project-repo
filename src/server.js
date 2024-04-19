@@ -1,8 +1,8 @@
-
-
 const express = require("express");
 const mysql = require("mysql2/promise");
 const cors = require("cors");
+const bcrypt = require('bcrypt');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +26,8 @@ const createConnectionPool = async () => {
     }
 };
 
+//submit form data in the database
+
 app.post('/submit', async (request, response) => {
     const { name, email, password, confirmPassword, number, role } = request.body;
 
@@ -34,17 +36,23 @@ app.post('/submit', async (request, response) => {
         return response.status(400).json({ error: 'All fields are required' });
     }
 
+    //check if passwords match
     if (password !== confirmPassword) {
         return response.status(400).json({ error: 'Passwords do not match' });
+    }
+    if(password.length<8){
+        return response.status(400).json({ error: 'Password too short' });
     }
 
     try {
         const pool = await createConnectionPool();
         const connection = await pool.getConnection();
+
+        const hashedPassword = await bcrypt.hash(password, 10);
         
         await connection.execute(
             'INSERT INTO user (name, email, password, number, role) VALUES (?, ?, ?, ?, ?)',
-            [name, email, password, number, role]
+            [name, email, hashedPassword, number, role]
         );
 
         connection.release();
@@ -57,12 +65,14 @@ app.post('/submit', async (request, response) => {
     }
 });
 
+//chek if user is in the database when trying to login
+
 app.post('/login', async (request, response) => {
-    console.log('request body: ',request.body);
+    //console.log('request body: ',request.body);
     const { email, password } = request.body;
 
-    console.log('Received email:', email);
-    console.log('Received password:', password);
+    //console.log('Received email:', email);
+    //console.log('Received password:', password);
 
     try {
         const pool = await createConnectionPool();
@@ -71,26 +81,39 @@ app.post('/login', async (request, response) => {
         // Execute the SQL query to check if the user exists with the given email and password(make it case sensitive)
         
         const [rows, fields] = await connection.execute(
-            'SELECT * FROM user WHERE BINARY email = ? AND BINARY password = ?',
-            [email, password]
+            'SELECT * FROM user WHERE BINARY email = ?',
+            [email]
         );
 
         connection.release();
 
         if (rows.length > 0) {
+
+            const isPasswordMatch = await bcrypt.compare(password, rows[0].password);
+
+            if (isPasswordMatch) {
+                // Passwords match, login successful
+                response.status(200).json({ success: true, role: rows[0].role, message: 'Login successful' });
+            }
             // User with the given email and password exists in the database
-            response.status(200).json({ success: true, role: rows[0].role, message: 'Login successful' });
+            //.status(200).json({ success: true, role: rows[0].role, message: 'Login successful' });
+            else{
+              //  alert('Invalid email or password');
+                response.status(401).json({ success: false, message: 'Invalid email or password' });
+
+            }
         }
         
         else {
             // User with the given email and password does not exist in the database
+           // alert('Invalid email or password')
             response.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
         
     } catch (error) {
         console.error('Error querying database: ', error);
-       // response.status(500).json({ error: 'Internal server error' });
+        response.status(500).json({ error: 'Internal server error' });
     }
 });
 

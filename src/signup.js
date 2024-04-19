@@ -72,7 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert("Error occurred while creating user");
+            if(password.length<8){
+
+                alert("Password too short");
+            }
+            
             // Re-enable the submit button after request completes
             submitButton.disabled = false;
         });
