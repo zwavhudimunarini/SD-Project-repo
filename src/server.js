@@ -68,7 +68,7 @@ app.post('/submit', async (request, response) => {
 //chek if user is in the database when trying to login
 
 app.post('/login', async (request, response) => {
-    //console.log('request body: ',request.body);
+    console.log('request body: ',request.body);
     const { email, password } = request.body;
 
     //console.log('Received email:', email);
@@ -92,28 +92,26 @@ app.post('/login', async (request, response) => {
             const isPasswordMatch = await bcrypt.compare(password, rows[0].password);
 
             if (isPasswordMatch) {
-                // Passwords match, login successful
+                
                 response.status(200).json({ success: true, role: rows[0].role, message: 'Login successful' });
             }
-            // User with the given email and password exists in the database
-            //.status(200).json({ success: true, role: rows[0].role, message: 'Login successful' });
+           
             else{
-              //  alert('Invalid email or password');
+              
                 response.status(401).json({ success: false, message: 'Invalid email or password' });
 
             }
         }
         
         else {
-            // User with the given email and password does not exist in the database
-           // alert('Invalid email or password')
+            
             response.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
         
-    } catch (error) {
+    }catch (error) {
         console.error('Error querying database: ', error);
-        response.status(500).json({ error: 'Internal server error' });
+        // response.status(500).json({ error: 'Internal server error' });
     }
 });
 
