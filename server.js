@@ -1,126 +1,113 @@
 const express = require("express");
-const mysql = require("mysql2/promise");
 const cors = require("cors");
 const bcrypt = require('bcryptjs');
-
+const sql = require('mssql');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const azureDatabseUrl = 'sddatabaseserver.database.windows.net'
 
 app.use(cors());
 app.use(express.json());
-
 app.use(express.static('src'))
 
-const createConnectionPool = async () => {
-    try {
-        const pool = await mysql.createPool({
-            host: azureDatabseUrl,
-            user: 'zwavhudi',
-            password: 'Vhanarini064',
-            database: 'sdproject'
-        });
-        console.log('MySQL connection pool created successfully');
-        return pool;
-    } catch (error) {
-        console.error('Error creating MySQL connection pool: ', error);
-        throw error;
-    }
+const config = {
+  user: 'zwavhudi',
+  password: 'Vhanarini064',
+  server: 'sddatabaseserver.database.windows.net',
+  database: 'sdproject',
+  options: {
+    encrypt: true, 
+    trustServerCertificate: false 
+  }
 };
 
-//submit form data in the database
-
+// SUBMIT FORM DATA (MSSQL)
 app.post('/submit', async (request, response) => {
-    const { name, email, password, confirmPassword, number, role } = request.body;
+  const { name, email, password, confirmPassword, number, role } = request.body;
 
-    // Check if required fields are empty
-    if (!name || !password || !confirmPassword || !number || !role) {
-        return response.status(400).json({ error: 'All fields are required' });
-    }
+  // Check if required fields are empty
+  if (!name || !password || !confirmPassword || !number || !role) {
+    return response.status(400).json({ error: 'All fields are required' });
+  }
 
-    //check if passwords match
-    if (password !== confirmPassword) {
-        return response.status(400).json({ error: 'Passwords do not match' });
-    }
-    if(password.length<8){
-        return response.status(400).json({ error: 'Password too short' });
-    }
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    return response.status(400).json({ error: 'Passwords do not match' });
+  }
 
-    try {
-        const pool = await createConnectionPool();
-        const connection = await pool.getConnection();
+  if (password.length < 8) {
+    return response.status(400).json({ error: 'Password too short' });
+  }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        await connection.execute(
-            'INSERT INTO user (name, email, password, number, role) VALUES (?, ?, ?, ?, ?)',
-            [name, email, hashedPassword, number, role]
-        );
+  try {
+    const pool = new sql.ConnectionPool(config); 
+    await pool.connect();
 
-        connection.release();
-        
-        response.status(201).json({ message: 'User created successfully' });
-        
-    } catch (error) {
-        console.error('Error inserting data: ', error);
-        response.status(500).json({ error: 'Internal server error' });
-    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const request = await pool.request(); 
+    request.input('name', sql.NVarChar, name);
+    request.input('email', sql.NVarChar, email);
+    request.input('password', sql.NVarChar, hashedPassword);
+    request.input('number', sql.NVarChar, number);
+    request.input('role', sql.NVarChar, role);
+
+    const result = await request.query(
+        'INSERT INTO users (name, email, password, number, role) VALUES (@name, @email, @password, @number, @role)'
+
+    )
+
+    await pool.close();
+
+    response.status(201).json({ message: 'User created successfully' });
+
+  } catch (error) {
+    console.error('Error inserting data (MSSQL): ', error);
+    response.status(500).json({ error: 'Internal server error' });
+  }
 });
 
-//chek if user is in the database when trying to login
-
+// LOGIN (MSSQL)
 app.post('/login', async (request, response) => {
-    console.log('request body: ',request.body);
-    const { email, password } = request.body;
+  const { email, password } = request.body;
 
-    //console.log('Received email:', email);
-    //console.log('Received password:', password);
+  try {
+    const pool = new sql.ConnectionPool(config);
+    await pool.connect();
 
-    try {
-        const pool = await createConnectionPool();
-        const connection = await pool.getConnection();
+    const request = await pool.request();
+    request.input('email', sql.NVarChar, email);  
 
-        // Execute the SQL query to check if the user exists with the given email and password(make it case sensitive)
-        
-        const [rows, fields] = await connection.execute(
-            'SELECT * FROM user WHERE BINARY email = ?',
-            [email]
-        );
+    const result = await request.query(
+      //'SELECT * FROM users WHERE BINARY email = @email'  
+      'SELECT * FROM users WHERE email = @email'
 
-        connection.release();
+    );
 
-        if (rows.length > 0) {
+    await pool.close();
 
-            const isPasswordMatch = await bcrypt.compare(password, rows[0].password);
+    const user = result.recordset[0]; 
 
-            if (isPasswordMatch) {
-                
-                response.status(200).json({ success: true, role: rows[0].role, message: 'Login successful' });
-            }
-           
-            else{
-              
-                response.status(401).json({ success: false, message: 'Invalid email or password' });
+    if (user) {
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-            }
-        }
-        
-        else {
-            
-            response.status(401).json({ success: false, message: 'Invalid email or password' });
-        }
-
-        
-    }catch (error) {
-        console.error('Error querying database: ', error);
-        // response.status(500).json({ error: 'Internal server error' });
+      if (isPasswordMatch) {
+        response.status(200).json({ success: true, role: user.role, message: 'Login successful' });
+      } else {
+        response.status(401).json({ success: false, message: 'Invalid email or password' });
+      }
+    } else {
+      response.status(401).json({ success: false, message: 'Invalid email or password' });
     }
+
+  } catch (error) {
+    console.error('Error querying database (MSSQL): ', error);
+    response.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 
 app.listen(port, () => {
-    console.log(`Server started at http://localhost:${port}`);
+  console.log(`Server started at http://localhost:${port}`);
 });
-
