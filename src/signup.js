@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Make a POST request using the Fetch API
-        fetch('http://localhost:3000/submit', {
+        fetch('/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
