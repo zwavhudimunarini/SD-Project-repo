@@ -26,15 +26,20 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+
+      - name: Zip archive for deployment
+        run: Compress-Archive -Path ./* -DestinationPath release.zip
+
+      
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: .
+          path: release.zip
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
@@ -47,6 +52,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node-app
+      
+      - name: unzip
+        run: Expand-Archive -Path release.zip -DestinationPath .
       
       - name: Login to Azure
         uses: azure/login@v1
