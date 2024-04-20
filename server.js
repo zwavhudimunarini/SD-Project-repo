@@ -11,9 +11,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('src'))
 
+//chenge server to local host when you want to test locally
+
 const config = {
+  //host:'localhost',
   user: 'zwavhudi',
   password: 'Vhanarini064',
+  
   server: 'sddatabaseserver.database.windows.net',
   database: 'sdproject',
   options: {
@@ -68,11 +72,14 @@ app.post('/submit', async (request, response) => {
   }
 });
 
+
+
 // LOGIN (MSSQL)
 app.post('/login', async (request, response) => {
   const { email, password } = request.body;
 
   try {
+
     const pool = new sql.ConnectionPool(config);
     await pool.connect();
 
@@ -93,15 +100,21 @@ app.post('/login', async (request, response) => {
       const isPasswordMatch = await bcrypt.compare(password, user.password);
 
       if (isPasswordMatch) {
+
         response.status(200).json({ success: true, role: user.role, message: 'Login successful' });
-      } else {
+      }
+      else {
         response.status(401).json({ success: false, message: 'Invalid email or password' });
       }
-    } else {
+    }
+    else {
+
       response.status(401).json({ success: false, message: 'Invalid email or password' });
     }
 
-  } catch (error) {
+  }
+  catch (error) {
+
     console.error('Error querying database (MSSQL): ', error);
     response.status(500).json({ error: 'Internal server error' });
   }
