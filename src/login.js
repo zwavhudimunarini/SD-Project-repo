@@ -19,11 +19,11 @@ function getUserInfo(){
         if (response.ok) {
             return response.json();
         }
-        if(email=='' || password==''){
+        else if(email=='' || password==''){
             alert('all fieldssssss are required');
         }
         
-        if (response.status === 401) {
+        else if (response.status === 401) {
             // Invalid email or password, show alert to the user
             
             alert('Invalid email or password');
