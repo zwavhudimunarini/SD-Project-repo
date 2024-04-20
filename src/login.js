@@ -23,7 +23,7 @@ function getUserInfo(){
             alert('all fieldssssss are required');
         }
         
-        else if (response.status === 401) {
+        else if (response.status == 401) {
             // Invalid email or password, show alert to the user
             
             alert('Invalid email or password');
@@ -31,6 +31,9 @@ function getUserInfo(){
             document.getElementById('password').value='';
             
             // Optionally, clear the password field or take other actions
+        }
+        else if(response.status==404){
+            alert("invalid user")
         }
         else {
             throw new Error('Network response was not ok');

@@ -104,12 +104,12 @@ app.post('/login', async (request, response) => {
         response.status(200).json({ success: true, role: user.role, message: 'Login successful' });
       }
       else {
-        response.status(401).json({ success: false, message: 'Invalid email or password' });
+        response.status(404).json({ success: false, message: 'Invalid email or password' });
       }
     }
     else {
 
-      response.status(401).json({ success: false, message: 'Invalid email or password' });
+      response.status(400).json({ success: false, message: 'Invalid user' });
     }
 
   }
