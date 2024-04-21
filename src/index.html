@@ -14,6 +14,18 @@
 
   <title>Property management</title>
 
+  
+
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <script src="js/custom.js"></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+  <!-- End Google Map -->
+
+
   <!-- slider stylesheet -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <!-- bootstrap core css -->
@@ -29,7 +41,7 @@
 </head>
 
 <body>
-  <div class="hero_area">
+  <div id="navigationButton" class="hero_area">
     <!-- header section strats -->
     <header class="header_section">
       <div class="header_top">
@@ -51,7 +63,7 @@
         </div>
       </div>
       <div class="header_bottom">
-        <div class="container-fluid">
+        <div id="nav" class="container-fluid">
           <nav class="navbar navbar-expand-lg custom_nav-container ">
             <a class="navbar-brand" href="index.html">
               <span>
@@ -59,8 +71,15 @@
               </span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class=""> </span>
+            <button  onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="">
+                
+              </span>
+              
+              
+             
+    
+            
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -98,7 +117,7 @@
               <p>
                 We specialize in keeping your spaces pristine and functioning smoothly.With a dedicated team of skilled professionals, we are commited to delivering top-notch maintainace solutions tailored to your needs. From routine upkeep to emergency repairs,trust us to keep your environment pristine and your operations running seamlessly.
               </p>
-              <a href="contact.html">
+              <a href="#Contact-us">
                 Contact Us
               </a>
             </div>
@@ -177,7 +196,7 @@
             <p>
               Founded on the principle of reliability, excellence and customer satisfaction, our company has been a trusted name in the management industry for many years. Our journey began with a vision to provide unparalled services, and today, we stand proud as a leader in the field.
             </p>
-            <a href="about.html">
+            <a href="#About-us">
               Read More
             </a>
           </div>
@@ -212,7 +231,7 @@
             <p>
               randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All randomised words which don't look even slightly
             </p>
-            <a href="">
+            <a href="#Services">
               Read More
             </a>
           </div>
@@ -278,7 +297,7 @@
         </div>
       </div>
       <div class="btn-box">
-        <a href="">
+        <a href="#Services">
           View More
         </a>
       </div>
@@ -286,136 +305,6 @@
   </section>
 
   <!-- end service section -->
-
-  <!-- client section -->
-
-  <section class="client_section ">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          <!--What Our Clients Say-->
-        </h2>
-        
-      </div>
-      <div class="carousel-wrap layout_padding2-top ">
-        <div class="owl-carousel">
-          <div class="item">
-            <div class="box">
-              <div class="client_id">
-                <div class="img-box">
-                  <img src="images/client-1.jpg" alt="">
-                </div>
-                <div class="client_detail">
-                  <div class="client_info">
-                    <h6>
-                      Zwavhudi Munarini
-                    </h6>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-              </div>
-              <div class="client_text">
-                <p>
-                  They provide the best service ever
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="box">
-              <div class="client_id">
-                <div class="img-box">
-                  <img src="images/client-2.jpg" alt="">
-                </div>
-                <div class="client_detail">
-                  <div class="client_info">
-                    <h6>
-                      Mpho Mufamadi
-                    </h6>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-              </div>
-              <div class="client_text">
-                <p>
-                  This application is user friendly. I love it. And the service is super great.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="box">
-              <div class="client_id">
-                <div class="img-box">
-                  <img src="images/client-1.jpg" alt="">
-                </div>
-                <div class="client_detail">
-                  <div class="client_info">
-                    <h6>
-                      Tau Tebogo
-                    </h6>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-              </div>
-              <div class="client_text">
-                <p>
-                  You really can rely on this website, it makes staying here easier. Any queries i have can simply be sent here and they attend to them very fast.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="box">
-              <div class="client_id">
-                <div class="img-box">
-                  <img src="images/client-2.jpg" alt="">
-                </div>
-                <div class="client_detail">
-                  <div class="client_info">
-                    <h6>
-                      Zwivhuya Mudau
-                    </h6>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-              </div>
-              <div class="client_text">
-                <p>
-                  I highly recommend this property. They never take us for granted and always make sure that we are happy as residents. Beautiful
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end client section -->
-
-
-  
 
   <!-- info section -->
   <section id="Contact-us" class="info_section ">
@@ -504,14 +393,24 @@
   </footer>
   <!-- footer section -->
 
-  <script src="js/jquery-3.4.1.min.js"></script>
-  <script src="js/bootstrap.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-  </script>
-  <script src="js/custom.js"></script>
-  <!-- Google Map -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
-  <!-- End Google Map -->
+  
+
+  <script>
+    function openNav() {
+      document.getElementById("navigationButton").style.width = "-100px";
+      document.getElementById("adjust").style.marginLeft = "-100px";
+    }
+    
+    function closeNav() {
+      document.getElementById("navigationButton").style.width = "0";
+      document.getElementById("adjust").style.marginLeft= "0";
+    }
+
+    // function submit(){
+    //   document.querySelector(".search").style.width="50px"
+    // }
+</script>
+
 
 
 </body>

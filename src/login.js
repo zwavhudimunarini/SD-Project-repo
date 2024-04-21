@@ -20,10 +20,11 @@ function getUserInfo(){
             return response.json();
         }
         else if(email=='' || password==''){
-            alert('all fieldssssss are required');
+            alert('all fields are required');
         }
         
         else if (response.status == 401) {
+            window.location.href="login.html"
             // Invalid email or password, show alert to the user
             
             alert('Invalid email or password');
@@ -33,13 +34,14 @@ function getUserInfo(){
             // Optionally, clear the password field or take other actions
         }
         else if(response.status==404){
+            window.location.href="login.html"
             alert("invalid user")
         }
         else {
             throw new Error('Network response was not ok');
         }
     }).then(data => {
-        if (data &&data.success) {
+        if (data.success) {
             //check if password matches
             
             // Redirect based on role
@@ -58,14 +60,16 @@ function getUserInfo(){
                     alert('Unknown role');
             }
         }
-        // } else {
-        //     alert('Invalid email or password');
-        // }
+         else {
+             alert('Invalid email or password');
+         }
     })
     
     .catch(error => {
         console.error('Error:', error);
+        window.location.href="login.html"
         alert("An error occured. Please try again");
+        
      
     });
 
