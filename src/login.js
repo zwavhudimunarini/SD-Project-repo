@@ -35,7 +35,7 @@ function getUserInfo(){
         }
         else if(response.status==404){
             window.location.href="login.html"
-            alert("invalid user")
+            alert("Invalid email or password")
         }
         else {
             throw new Error('Network response was not ok');
@@ -68,7 +68,7 @@ function getUserInfo(){
     .catch(error => {
         console.error('Error:', error);
         window.location.href="login.html"
-        alert("An error occured. Please try again");
+        //alert("An error occured. Please try again");
         
      
     });
