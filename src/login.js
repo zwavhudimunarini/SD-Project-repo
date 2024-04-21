@@ -28,10 +28,11 @@ function getUserInfo(){
             // Invalid email or password, show alert to the user
             
             alert('Invalid email or password');
+            //clear the form
             document.getElementById('email').value='',
             document.getElementById('password').value='';
             
-            // Optionally, clear the password field or take other actions
+            
         }
         else if(response.status==404){
             window.location.href="login.html"
