@@ -41,14 +41,64 @@
 </head>
 
 <body>
+  <style>
+    /* CSS for dropdown menu */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      display: none;
+      float: left;
+      min-width: 10rem;
+      padding: 0.5rem 0;
+      margin: 0.125rem 0 0;
+      font-size: 1rem;
+      color: #212529;
+      text-align: left;
+      list-style: none;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 0.25rem;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 0.5rem 1rem;
+      clear: both;
+      font-weight: 400;
+      color: #212529;
+      text-align: inherit;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0;
+    }
+    .dropdown-menu a:hover {
+      color: #007bff;
+      text-decoration: none;
+      background-color: #f8f9fa;
+    }
+    .show {
+      display: block;
+    }
+  </style>
+  <script>
+    // JavaScript for toggling dropdown menu
+    function toggleDropdown() {
+      var dropdownMenu = document.getElementById("navbarSupportedContent");
+      dropdownMenu.classList.toggle("show");
+    }
+  </script>
+</head>
+<body>
   <div id="navigationButton" class="hero_area">
-    <!-- header section strats -->
+    <!-- header section starts -->
     <header class="header_section">
       <div class="header_top">
         <div class="container-fluid">
           <div class="contact_nav">
             <a href="">
-              <i class= aria-hidden="true"></i>
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
               <span>
                 Sectional Property Management
               </span>
@@ -71,15 +121,10 @@
               </span>
             </a>
 
-            <button  onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button onclick="toggleDropdown()"  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="">
                 
               </span>
-              
-              
-             
-    
-            
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -87,11 +132,15 @@
                 <li class="nav-item active">
                   <a class="nav-link" href="#About-us">About Us <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#Services"> Services</a>
+
+                <li class="nav-item dropdown">
+                  <a class="nav-link" href="#Services">Services <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#Contact-us">Contact us</a>
+
+                <li class="nav-item dropdown">
+                  <li class="nav-item dropdown">
+                  <a class="nav-link" href="#Contact-us">Contact us <span class="sr-only">(current)</span></a>
+                
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="login.html"> Login</a>
@@ -392,26 +441,6 @@
     </div>
   </footer>
   <!-- footer section -->
-
-  
-
-  <script>
-    function openNav() {
-      document.getElementById("navigationButton").style.width = "-100px";
-      document.getElementById("adjust").style.marginLeft = "-100px";
-    }
-    
-    function closeNav() {
-      document.getElementById("navigationButton").style.width = "0";
-      document.getElementById("adjust").style.marginLeft= "0";
-    }
-
-    // function submit(){
-    //   document.querySelector(".search").style.width="50px"
-    // }
-</script>
-
-
 
 </body>
 

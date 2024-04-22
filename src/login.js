@@ -61,7 +61,9 @@ function getUserInfo(){
             }
         }
          else {
-             alert('Invalid email or password');
+
+            window.location.href="login.html"
+            alert('Invalid email or password');
          }
     })
     
