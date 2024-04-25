@@ -8,9 +8,9 @@
 
 .leftPane{
     flex: 1;
-    background-color: #FF8A1D;
+    background-color: #172F6A;
     color: white;
-    
+    border-radius: 20px;
     
 }
 
@@ -45,11 +45,12 @@ html, body{
 }
 
 footer{
-    background-color: rgb(176, 156, 143);
+    background-color: #172F6A;
     text-align: center;
     padding: 2%;
     height: 10%;
     color: white;
+    border-radius: 10px;
 }
 a{
     color: white;
