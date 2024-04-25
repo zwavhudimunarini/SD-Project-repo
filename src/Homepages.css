@@ -86,7 +86,7 @@ a:hover{
 .card{
     
     background-color: #8999c2;
-    margin: 70px;
+    margin: 40px;
     border-radius: 20px;
     height: 70vh;
 }
@@ -140,4 +140,13 @@ a:hover{
     background-color: #172F6A;
     border-radius: 20px;
     font-size: medium;
+    border: none;
+    color: white;
+    width: 160px;
+    height: 5vh;
+}
+
+.buttons:hover{
+    transform: scale(1.1); 
+    transition: transform 1s ease-in-out; 
 }

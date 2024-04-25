@@ -46,7 +46,7 @@
 
             <div id="Issues" class="hidden">
                 <div class="card">
-                <h2>Issues will be displayed here</h2>
+                <h2>Issues</h2>
                 <p>
                     <button onclick="openModal()" class="buttons">Report a new issue</button>
                 </p>
@@ -68,18 +68,18 @@
                 <h2>Visitors will be displayed here</h2>
         
                 <p>
-                    <button onclick="openModal()">Visitor Info</button>
+                    <button onclick="openVisitorModal()" class="buttons">Add visitor Info</button>
                 </p>
                 <div id="visitorModal" class="modal">
                     <div class="modal-content">
-                        <span class="close" onclick="closeModal()">&times;</span>
+                        <span class="close" onclick="closeVisitorModal()">&times;</span>
                         <h2>Visitor information</h2>
-                        <label for="issue">Issue:</label>
-                        <input type="text" class="enlarged-text-field" id="issue" placeholder="Enter your visitor information...">
-                        <button onclick="saveIssue()">Save</button>
+                        <label for="visitor">Visitor:</label>
+                        <input type="text" class="enlarged-text-field" id="visitor" placeholder="Enter your visitor information...">
+                        <button onclick="saveVisitor()">Save</button>
                     </div>
                 </div>
-                <div id="displayIssue"></div>
+                <div id="displayVisitor"></div>
                 </div>
             </div>
         </div>
@@ -118,6 +118,30 @@
             var issueText = document.getElementById('issue').value;
             displayArea.innerHTML = '<h3>Saved Issue:</h3><p>' + issueText + '</p>';
             closeModal(); // Close the modal after saving
+        }
+
+
+        // Visitor Modal
+
+        // Get the visitor modal
+        var visitorModal = document.getElementById('visitorModal');
+        var visitorDisplayArea = document.getElementById('displayVisitor');
+
+        // Function to open the visitor modal
+        function openVisitorModal() {
+            visitorModal.style.display = 'block';
+        }
+
+        // Function to close the visitor modal
+        function closeVisitorModal() {
+            visitorModal.style.display = 'none';
+        }
+
+        // Function to save the visitor info
+        function saveVisitor() {
+            var visitorText = document.getElementById('visitor').value;
+            visitorDisplayArea.innerHTML = '<h3>Saved Visitor:</h3><p>' + visitorText + '</p>';
+            closeVisitorModal(); // Close the modal after saving
         }
         
     </script>
