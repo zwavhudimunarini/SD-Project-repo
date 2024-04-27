@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="staff.js"></script>
     <title>Staff home page</title>
 </head>
 
@@ -71,12 +72,32 @@ h4{
 </style>
 
 <body>
-    <h1>Welcome, Staff Member </h1>
+    
+    <h1 id="welcome-message">Welcome, </h1>
+    <!-- Your other HTML content -->
+
+    <script>
+        // Function to extract URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+    
+        // Extracting the user's name from the URL
+        const name = getUrlParameter('name');
+    
+        // Updating the welcome message with the user's name
+        const welcomeMessage = document.getElementById('welcome-message');
+        welcomeMessage.innerText =welcomeMessage.innerText+" "+ name;
+    </script>
+
     <section class="widget-container">
-        <a href="#" class="widget" onclick="handleWidgetClick('total-issues')">
+        <a href="issues.html" class="widget" onclick="handleWidgetClick('total-issues')">
             <h3>Total Issues</h3>
             <img class="icon" src="images/issues.png">
-            <p>25</p>
+            <p id="total-issues-count" onclick="fetchTotalIssuesCount()">Loading...</p> <!-- Placeholder for the total count -->
         </a>
         <a href="#" class="widget" onclick="handleWidgetClick('pending-tasks')">
             <h3>Pending Tasks</h3>
@@ -88,6 +109,8 @@ h4{
             <img class="icon" src="images/notification.jpeg">
             <p>17</p>
         </a>
+
+        
     </section>
 
     <section>

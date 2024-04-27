@@ -51,7 +51,7 @@ function getUserInfo(){
                     window.location.href = 'admin.html';
                     break;
                 case 'Staff':
-                    window.location.href = 'staff.html';
+                    window.location.href = 'staff.html?name=' + data.name;
                     break;
                 case 'Tenant':
                     //dont forget to change to tenant.html after it has been designed

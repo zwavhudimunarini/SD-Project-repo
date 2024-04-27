@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1713779440329" clover="3.2.0">
-  <project timestamp="1713779440330" name="All files">
+<coverage generated="1713785688257" clover="3.2.0">
+  <project timestamp="1713785688257" name="All files">
     <metrics statements="40" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="7" coveredmethods="0" elements="57" coveredelements="1" complexity="0" loc="40" ncloc="40" packages="1" files="1" classes="1"/>
     <file name="signup.js" path="C:\Users\Khodani\OneDrive\Documents\SD-Project-repo\src\signup.js">
       <metrics statements="40" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="7" coveredmethods="0"/>

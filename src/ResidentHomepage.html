@@ -6,6 +6,7 @@
     <link href="Homepages.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <script src="residents.js"></script>
     </head>
     
     <body>
@@ -14,22 +15,158 @@
         <div class="leftPane">
             <p class="role"><i class="fa-solid fa-user"></i><span style="padding-left: 10px;">Resident name</span></p>
             <ul>
-                <li><i class="fa-solid fa-bell"></i><span style="padding-left: 10px;"><a href="#">Notifications</a></span></li>
-                <li><i class="fa-solid fa-gavel"></i><span style="padding-left: 10px;"><a href="#">Fines</a></span></li>
-                <li><i class="fa-solid fa-triangle-exclamation"></i><span style="padding-left: 10px;"><a href="#">Report issues</a></span></li>
-                <li><i class="fa-solid fa-people-arrows"></i><span style="padding-left: 10px;"><a href="#">Visitors</a></span></li>
+                <li><i class="fa-solid fa-bell"></i><span style="padding-left: 10px;"><button onclick="showPage('Notifications')" class="leftPaneSelections">Notifications</button></span></li>
+                <li><i class="fa-solid fa-gavel"></i><span style="padding-left: 10px;"><button  onclick="showPage('Fines')" class="leftPaneSelections">Fines</button></span></li>
+                <li><i class="fa-solid fa-triangle-exclamation"></i><span style="padding-left: 10px;"><button  onclick="showPage('Issues')"class="leftPaneSelections">Report issues</button></span></li>
+                <li><i class="fa-solid fa-people-arrows"></i><span style="padding-left: 10px;"><button onclick="showPage('Visitors')" class="leftPaneSelections">Visitors</button></span></li>
                 <li><i class="fa-solid fa-right-from-bracket"></i><span style="padding-left: 10px;"><a href="login.html">Log out</a></span></p></li>
 
             </ul>
         </div>
 
         <div class="mainPage">
-            <h3>Welcome, Resident</h3>
-            <p>Resident information will be displayed here</p>
+            <h3 id="welcome-message">Welcome, </h3>
+    <!-- Your other HTML content -->
+
+    <script>
+        // Function to extract URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+    
+        // Extracting the user's name from the URL
+        const name = getUrlParameter('name');
+    
+        // Updating the welcome message with the user's name
+        const welcomeMessage = document.getElementById('welcome-message');
+        welcomeMessage.innerText =welcomeMessage.innerText+" "+ name;
+    </script>
+
+            <div id="Notifications" class="hidden">
+                <div class="card">
+                <h2>Notifications</h2>
+                <br/>
+                <p>Notifications will be displayed here</p>
+                </div>
+            </div>
+
+            <div id="Fines" class="hidden">
+                <div class="card">
+                <h2>Fines</h2>
+                <br/>
+                <p>
+                    Fines details will be here
+                </p>
+                </div>
+            </div>
+
+            <div id="Issues" class="hidden">
+                <div class="card">
+                <h2>Issues</h2>
+                <p>
+                    <button onclick="openModal()" class="buttons">Report a new issue</button>
+                </p>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h2>Report Issue</h2>
+                        <label for="issue">Issue:</label>
+                        <input type="text" class="enlarged-text-field" id="issue" placeholder="Describe the issue...">
+                        <button onclick="saveIssue()">Save</button>
+                    </div>
+                </div>
+                <div id="displayIssue"></div>
+                </div>
+            </div>
+
+            <div id="Visitors" class="hidden">
+                <div class="card">
+                <h2>Visitors will be displayed here</h2>
+        
+                <p>
+                    <button onclick="openVisitorModal()" class="buttons">Add visitor Info</button>
+                </p>
+                <div id="visitorModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeVisitorModal()">&times;</span>
+                        <h2>Visitor information</h2>
+                        <label for="visitor">Visitor:</label>
+                        <input type="text" class="enlarged-text-field" id="visitor" placeholder="Enter your visitor information...">
+                        <button onclick="saveVisitor()">Save</button>
+                    </div>
+                </div>
+                <div id="displayVisitor"></div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Function to show/hide pages based on button clicks
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.mainPage > div').forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // Show the selected page
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // Get the issues modal
+        var modal = document.getElementById('myModal');
+
+        // Get the display area for the saved issue
+        var displayArea = document.getElementById('displayIssue');
+
+        // Function to open the modal
+        function openModal() {
+            modal.style.display = 'block';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Function to save the issue
+        // function saveIssue() {
+        //     var issueText = document.getElementById('issue').value;
+        //     displayArea.innerHTML = '<h3>Saved Issue:</h3><p>' + issueText + '</p>';
+        //     closeModal(); // Close the modal after saving
+        // }
+
+
+        // Visitor Modal
+
+        // Get the visitor modal
+        var visitorModal = document.getElementById('visitorModal');
+        var visitorDisplayArea = document.getElementById('displayVisitor');
+
+        // Function to open the visitor modal
+        function openVisitorModal() {
+            visitorModal.style.display = 'block';
+        }
+
+        // Function to close the visitor modal
+        function closeVisitorModal() {
+            visitorModal.style.display = 'none';
+        }
+
+        // Function to save the visitor info
+        function saveVisitor() {
+            var visitorText = document.getElementById('visitor').value;
+            visitorDisplayArea.innerHTML = '<h3>Saved Visitor:</h3><p>' + visitorText + '</p>';
+            closeVisitorModal(); // Close the modal after saving
+        }
+        
+    </script>
     
     </body>
+    <br/>
     <footer>
         <p>Sectional Titles Company &copy 2024</p>
     </footer>

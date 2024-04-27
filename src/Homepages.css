@@ -8,10 +8,10 @@
 
 .leftPane{
     flex: 1;
-    background-color: #FF8A1D;
+    background-color: #172F6A;
     color: white;
-    
-    
+    border-radius: 20px;
+    height: 100%;
 }
 
 .mainPage{
@@ -45,11 +45,12 @@ html, body{
 }
 
 footer{
-    background-color: rgb(176, 156, 143);
+    background-color: #172F6A;
     text-align: center;
     padding: 2%;
     height: 10%;
     color: white;
+    border-radius: 10px;
 }
 a{
     color: white;
@@ -61,4 +62,91 @@ a:hover{
     transition: margin-right 2s ease-in-out;
     transition-delay: 1s;
     
+}
+
+.hidden{
+    display: none;
+    background-color: #172F6A;
+}
+
+.leftPaneSelections{
+    color: white;
+    text-decoration: none; 
+    border: none;
+    background-color: #172F6A;
+    font-size: medium;
+}
+
+.leftPaneSelections:hover{
+    color: rgb(34, 157, 108);
+    transition: margin-right 2s ease-in-out;
+    transition-delay: 2s;
+}
+
+.card{
+    
+    background-color: #8999c2;
+    margin: 40px;
+    border-radius: 20px;
+    height: 70vh;
+}
+
+/* CSS for modal dialog */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.enlarged-text-field {
+    width: 300px; /* Set the width */
+    height: 100px; /* Set the height */
+    resize: horizontal; /* Prevent resizing by the user */
+    padding: 10px;
+    font-size: 16px;
+}
+
+.buttons{
+    background-color: #172F6A;
+    border-radius: 20px;
+    font-size: medium;
+    border: none;
+    color: white;
+    width: 160px;
+    height: 5vh;
+}
+
+.buttons:hover{
+    transform: scale(1.1); 
+    transition: transform 1s ease-in-out; 
 }
