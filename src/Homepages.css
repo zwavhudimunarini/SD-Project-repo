@@ -141,7 +141,7 @@ a:hover{
     border-radius: 20px;
     font-size: medium;
     border: none;
-    color: white;
+    color: rgb(255, 255, 255);
     width: 160px;
     height: 5vh;
 }

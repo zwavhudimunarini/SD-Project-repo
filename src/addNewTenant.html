@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up page</title>
-    <script src="signup.js"></script>
+    <script src="addNewTenant.js"></script>
 
     <script src="https://apis.google.com/js/platform.js" defer></script>
     <meta
@@ -21,12 +21,13 @@
     #signUp{
         display: flex;
         justify-content: center;
-        /*margin-left: 35vw;*/
+        align-items: center;
         position: absolute;
         left: 35%;
+        top: 25%;
         border: 1px solid black;
         width: 500px;
-        height: 704px;
+        height: 470px;
         background: url('images/building.webp');
         color: white;
         border-radius: 20px;
@@ -197,13 +198,13 @@
 
         <form is="submitForm" action="/submit" method="post" >
         
-            <a href="index.html" style="position: absolute; top: 10px; left: 10px;">
-                <img src="images/home-vector-icon.jpg" alt="Home" width="20" height="20">
+            <a href="staff.html" style="position: absolute; top: 10px; left: 10px;">
+                <img src="images/back arrow.png" alt="Home" width="25" height="25">
             </a>
 
-            <h1 class="sign">Sign Up</h1>
+            <h1 class="sign">Add New Tenant</h1>
             <br>
-            <input type="text" name="name" placeholder="enter name" id="names" autocomplete="off" required>
+            <input type="name" name="name" placeholder="enter name" id="name" autocomplete="off" required>
             <br>
             <input type="email" name="email" placeholder="enter email" id="email" autocomplete="off" required>
             <br>
@@ -211,24 +212,9 @@
             <br>
             <input type="password" name="confirmPassword" placeholder="confirm password" id="confirmPassword" autocomplete="off" required>
             <br>
+           
             
-            <p class="select">select role:</p>
-            <section id="Section">
-                <label for="Admin">
-                    <input type="radio" id="Admin" name="role" value="Admin">Admin
-                </label>
-
-                <label for="Administrator">
-                    <input type="radio" id="Administrator" name="role" value="Administrator" >Administrator
-                </label>
-
-                <label for="Maintenance">
-                    <input type="radio" id="Maintenance" name="role" value="Maintenance" >Maintenance
-                </label>
-    
-    
-                
-            </section>
+            
 
             <section id="final">
                 <p>Take a picture:</p>
@@ -270,12 +256,10 @@
                 }
       </script> 
             </section>
-            <button  class="submitButton" id="submitBtn">SIGN UP</button>
+            <button  class="submitButton" id="addNewTenant">Add</button>
             
            <!-- <button onclick="submitForm()" class="submitButton" id="submitBtn">SIGN UP</button> -->
-            <p id="paragraph">already have an account? <a id="signuptag" href="login.html">Login</a></p>
-            <section class="g-signin2" onclick="onSignIn" data-onsuccess="onSignIn" style="display: flex; justify-content: center;"></section>
-                
+             
     
         </form>
 
