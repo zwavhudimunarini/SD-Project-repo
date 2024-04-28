@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up page</title>
-    <script src="signup.js"></script>
+    <script src="adminSignup.js"></script>
 
     <script src="https://apis.google.com/js/platform.js" defer></script>
     <meta
@@ -195,13 +195,13 @@
     
     <div id="signUp">
 
-        <form is="submitForm" action="/submit" method="post" >
+        <form id="submitForm" action="/submit" method="post" >
         
             <a href="index.html" style="position: absolute; top: 10px; left: 10px;">
                 <img src="images/home-vector-icon.jpg" alt="Home" width="20" height="20">
             </a>
 
-            <h1 class="sign">Sign Up</h1>
+            <h1 class="sign">Admin Sign Up</h1>
             <br>
             <input type="text" name="name" placeholder="enter name" id="names" autocomplete="off" required>
             <br>
@@ -211,24 +211,6 @@
             <br>
             <input type="password" name="confirmPassword" placeholder="confirm password" id="confirmPassword" autocomplete="off" required>
             <br>
-            <input type="tel" name="phoneNumber" placeholder="enter number" id="number" autocomplete="off" required>
-            <br>
-            <p class="select">select role:</p>
-            <section id="Section">
-                <label for="Admin">
-                    <input type="radio" id="Admin" name="role" value="Admin">Admin
-                </label>
-
-                <label for="Staff">
-                    <input type="radio" id="Staff" name="role" value="Staff" >Staff
-                </label>
-    
-    
-                <label for="Tenant">
-                    <input type="radio" id="Tenant" name="role" value="Tenant">Tenant
-                </label>
-                 
-            </section>
 
             <section id="final">
                 <p>Take a picture:</p>

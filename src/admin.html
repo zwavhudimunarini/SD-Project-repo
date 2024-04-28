@@ -4,76 +4,402 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin home page</title>
+    <script src="adminActions.js"></script>
+    <script src="https://apis.google.com/js/platform.js" defer></script>
 </head>
 
 <style>
-    body{
-    margin: 0;
-    padding: 0;
-    background-image: url('images/admins.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+    .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    }
 
-h1{
-    text-align: right;
-    color:aliceblue;
-    margin-bottom: 50px;
-    margin-right: 50px;
-}
-
-.widget{
-    flex: 1 0 100px;
-    background-color: rgba(255,255,255,0.3);
-    margin: 10px;
+    .sidenav a {
+    padding: 8px 8px 8px 15px;
     text-decoration: none;
-    color: black;
-    border-radius: 8px;
-}
-.widget-container{
-    display: flex;
-    flex-direction: column;
-    margin-left: 100px;
-    margin-right: 80px;
-}
-.widget h3{
-    margin-top: 0%;
-    margin-left: 10px;
-}
-.widget p{
-    font-size: 20px;
-    margin-bottom: 0%;
-    margin-left: 10px;
-}
-.widget:hover{
-    background-color: rgba(200, 200, 0, 0.6);
-}
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    }
 
-.icon{
-    background-color: rgba(255,255,255,0.0);
-    width: 50px;
-    height: 50px;
-    margin-left: 30px;
-}
+    .sidenav a:hover {
+    color: #f1f1f1;
+    }
 
-.logout{
-    width: 70px;
-    height: 50px;
-    background: rgba(255,255,255,0.0);
-    margin-left: 20px;
-}
+    .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    }
 
-h4{
-    color: aliceblue;
-    background-color: rgba(255,255,255,0.0);
-    margin-left: 20px;
-}
+    #main {
+    transition: margin-left .5s;
+    padding: 0px;
+    }
 
+    @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+    }
+
+    .search{
+        height: 30px;
+        margin-top: 30px;
+        padding-bottom: 0px;
+    }
+    .align-nav{
+        padding-bottom: 100px;
+    }
+    .edit{
+        padding: 8px 8px 8px 15px;;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    .edits{
+        padding: 8px 8px 8px 2px;;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+        
+    }
+
+    #edit{
+        padding-left: 30px;
+        text-decoration: none;
+        font-size:20px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+
+    }
+
+    #signUp{
+            display: flex;
+            justify-content: left;
+            align-items: flex-start;
+            
+            
+            position: absolute;
+            left: 4%;
+            top: 5%;
+            border: 1px solid black;
+            width: 300px;
+            height: 420px;
+            background: url('images/building.webp');
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        form{
+            display: block;
+            box-sizing: border-box;
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: brightness(40%);
+            flex-direction: column;
+            display: flex;
+            
+        }
+
+        h1{
+            font-weight: normal;
+            font-size: 24px;
+            text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+            margin-top: 3px;
+
+        }
+
+        input{
+            background: rgba(255,255,255,0.3);
+            
+            line-height: 30px;
+            border-radius: 20px;
+            padding: 0px 10px;
+            border: none;
+            margin-bottom:3px;
+            color: white;
+        }
+        .submitButton {
+        padding: 0.6em 2em;
+        border: none;
+        outline: none;
+        color: white;
+        background: rgba(45,126,231);
+        cursor: pointer;
+        position: relative;
+        z-index: 0;
+        border-radius: 40px;
+        }
+
+        .submitButton:before {
+        content: "";
+        background: linear-gradient(
+            45deg,
+            #ff0000,
+            #ff7300,
+            #fffb00,
+            #48ff00,
+            #00ffd5,
+            #002bff,
+            #7a00ff,
+            #ff00c8,
+            #ff0000
+        );
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        background-size: 400%;
+        z-index: -1;
+        filter: blur(5px);
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        animation: glowingbn5 20s linear infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        border-radius: 40px;
+        }
+
+        @keyframes glowingbn5 {
+        0% {
+            background-position: 0 0;
+        }
+        50% {
+            background-position: 400% 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+        }
+
+        .submitButton:active {
+        color: white;
+        }
+
+        .submitButton:active:after {
+        background: transparent;
+        }
+
+        .submitButton:hover:before {
+        opacity: 1;
+        }
+
+        .submitButton:after {
+        z-index: -1;
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(45,126,231);
+        left: 0;
+        top: 0;
+        border-radius: 40px;
+        }
+
+        .camera{
+            background: white;
+            width: 25px;
+            height: 25px;
+            margin-top: 15px;
+            margin-bottom: 0%;
+            margin-left: 10px;
+        }
+
+        #Section{
+            margin-left: 80px;
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+        #paragraph{
+            margin-left: 80px;
+        
+        }
+        #final{
+            display: flex;
+            align-content: space-between;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        #signuptag{
+            color: rgb(0, 0, 0);
+        }
+
+        .sign{
+            margin-bottom: 0px;
+            text-align: center;
+        }
+
+        .select{
+            margin-bottom: 0px;
+        }
+
+        #cameraStream {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+        
+
+    
+        body{
+        margin: 0;
+        padding: 0;
+        background-image: url('images/admins.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    h1{
+        text-align: right;
+        color:aliceblue;
+        margin-bottom: 50px;
+        margin-right: 50px;
+    }
+
+    .widget{
+        flex: 1 0 100px;
+        background-color: rgba(255,255,255,0.3);
+        margin: 10px;
+        text-decoration: none;
+        color: black;
+        border-radius: 8px;
+    }
+    .widget-container{
+        display: flex;
+        flex-direction: column;
+        margin-left: 8%;
+        margin-right: 8%;
+    }
+    .widget h3{
+        margin-top: 0%;
+        margin-left: 10px;
+    }
+    .widget p{
+        font-size: 20px;
+        margin-bottom: 0%;
+        margin-left: 10px;
+    }
+    .widget:hover{
+        background-color: rgba(200, 200, 0, 0.6);
+    }
+
+    .icon{
+        background-color: rgba(255,255,255,0.0);
+        width: 50px;
+        height: 50px;
+        margin-left: 30px;
+    }
+
+    .logout{
+        width: 70px;
+        height: 50px;
+        background: rgba(255,255,255,0.0);
+        margin-left: 20px;
+    }
+
+    h4{
+        color: aliceblue;
+        background-color: rgba(255,255,255,0.0);
+        margin-left: 20px;
+    }
+
+    #radios{
+        font-size: small;
+        margin-bottom: 1000px; margin-left: 50px;
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
+    .select{
+        font-size: medium;
+        position: relative;
+    }
+    #addNewStaff{
+        border: none;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.319)
+    }
 </style>
 
 <body>
+    <div id="mySidenav" class="sidenav">
+
+        <!--the word &times; below represent the x to close the navigation menu when it is opened
+        onclick attribute is used to execute the JS function closenNav() when we click on x button-->
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+        <!--the code within the details element[icluding the details ekement]
+        act as a drop down menu-->
+        <details class="edits">
+            <summary class="edit">
+              <div id="signUp">
+
+        <form id="addStaffForm" action="/add-staff" method="post" >
+       
+
+            <h1 class="sign">Add New Staff</h1>
+            <br>
+            <input type="text" name="name" placeholder="enter name" id="name" autocomplete="off" required>
+            <br>
+            <input type="text" name="email" placeholder="enter email" id="email" autocomplete="off" required>
+            <br>
+            <input type="password" name="password" placeholder="enter password" id="password" autocomplete="off" required>
+            <br>
+            <input type="password" name="confirmPassword" placeholder="confirm password" id="confirmPassword" autocomplete="off" required>
+            <br>
+            <p class="select">select role:</p>
+            <section id="radios">
+               
+                <label for="Administrator">
+                    <input type="radio" id="Administrator" name="role" value="Administrator" >Administrator
+                </label>
+
+                <label for="Maintenance">
+                    <input type="radio" id="Maintenance" name="role" value="Maintenance" >Maintenance
+                </label>
+       
+            </section>
+          
+            </section>
+            <button  class="submitButton" id="addStaff">Add</button>
+            
+           <!-- <button onclick="submitForm()" class="submitButton" id="submitBtn">SIGN UP</button> -->
+             
     
-    <h1 id="welcome-message">Welcome, </h1>
+        </form>
+
+    </div>
+              
+            </summary>
+            
+
+        </details> 
+        
+      </div>
+      
+      <div id="main">
+        
+        <h1 id="welcome-message">Welcome, </h1>
     <!-- Your other HTML content -->
 
     <script>
@@ -92,22 +418,16 @@ h4{
         const welcomeMessage = document.getElementById('welcome-message');
         welcomeMessage.innerText =welcomeMessage.innerText+" "+ name;
     </script>
+
     <section class="widget-container">
-        <a href="#" class="widget" onclick="handleWidgetClick('residents')">
-            <h3>Residents</h3>
-            <img class="icon" src="images/residents.png">
-            <p>500</p>
-        </a>
-        <a href="#" class="widget" onclick="handleWidgetClick('staff')">
+        <a ><button id="addNewStaff" onclick="openNav()" style="margin-left: 10px;" >Add new Staff</button></a>
+       
+        <a href="staffWidget.html" class="widget" onclick="handleWidgetClick('staff')">
             <h3>Staff</h3>
             <img class="icon" src="images/staff.png">
             <p>57</p>
         </a>
-        <a href="#" class="widget" onclick="handleWidgetClick('visitors')">
-            <h3>Visitors</h3>
-            <img class="icon" src="images/visitors.png">
-            <p>123</p>
-        </a>
+        
         <a href="#" class="widget" onclick="handleWidgetClick('ongoing-issues')">
             <h3>Ongoing Issues</h3>
             <img class="icon" src="images/issues.png">
@@ -123,6 +443,8 @@ h4{
             <img class="icon" src="images/notification.jpeg">
             <p>3</p>
         </a>
+
+        
     </section>
 
     <section>
@@ -131,6 +453,23 @@ h4{
             <img src="images/logout.png" class="logout">
         </a>
     </section>
+        
+      </div>
 
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "330px";
+          document.getElementById("main").style.marginLeft = "220px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+          document.getElementById("main").style.marginLeft= "0";
+        }
+
+        function submit(){
+          document.querySelector(".search").style.width="50px"
+        }
+    </script>
 </body>
 </html>

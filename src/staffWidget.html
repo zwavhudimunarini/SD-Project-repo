@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff</title>
+    <script src="adminActions.js"></script>
+    <style>
+        .search-container {
+        margin-top: 20px;
+        }
+
+        .search-input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 200px;
+        }
+
+        .search-results {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .search-result {
+            margin-bottom: 5px;
+        }
+
+        .delete-button {
+            background-color: #ff3333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .delete-button:hover {
+            background-color: #cc0000;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+    <section class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search Staff member...">
+        <button onclick="searchStaff()">Search</button>
+        <ul id="searchResults" class="search-results"></ul>
+    </section>
+
+</body>
+</html>
