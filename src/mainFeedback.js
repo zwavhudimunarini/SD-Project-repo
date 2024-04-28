@@ -1,5 +1,3 @@
-
-
 function fetchTotalIssues() {
     fetch('/total-issues')
     .then(response => {
@@ -21,34 +19,10 @@ function fetchTotalIssues() {
     });
 }
 
-function updateTotalIssues(issues, ids) {
-    const maintainList = document.getElementById('maintain-list');
-
-    // Clear existing items in the list
-    maintainList.innerHTML = '';
-
-    // Add each issue to the notifications widget
-    issues.forEach((issue, index) => {
-        const newItem = document.createElement('li');
-        newItem.className = 'notification-item'; // Add a class for styling
-        newItem.id = `issue-${ids[index]}`; // Set ID for identifying the issue
-
-        // Set the text content of the list item to the issue description
-        newItem.textContent = issue;
-
-     // Append the list item to the notifications list
-        maintainList.appendChild(newItem);
-    });
-}
 
 
 
-
-
-
-// for feedbackpage
-
-function updateNotificationsWidget(issues, ids) {
+function  updateTotalIssues(issues, ids) {
     const feedbackList = document.getElementById('feedback-list');
 
     // Clear existing items in the list
@@ -110,4 +84,25 @@ function openFeedbackModal(issueId) {
     };
 }
 
+async function saveFeedback(issueId, feedback) {
+    try {
+        const response = await fetch(`/update-feedback/${issueId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ feedback: feedback })
+        });
 
+        if (!response.ok) {
+            throw new Error('Failed to save feedback');
+        }
+
+        const data = await response.json();
+        console.log('Feedback saved successfully:', data.message);
+        // You can perform additional actions after successfully saving feedback if needed
+    } catch (error) {
+        console.error('Error saving feedback:', error);
+        // Handle error cases if necessary
+    }
+}

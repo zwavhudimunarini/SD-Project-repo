@@ -4,6 +4,7 @@ const socketIo = require('socket.io');
 const cors = require("cors");
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
+const { emit } = require('process');
 
 const app = express();
 const server = http.createServer(app); // Create HTTP server using Express app
@@ -37,8 +38,8 @@ const createConnectionPool = async () => {
     try {
         const pool = await mysql.createPool({
             host: 'localhost',
-            user: 'zwavhudi',
-            password: 'Vhanarini064',
+            user: 'root',
+            password: '//you sql password',
             database: 'sdproject'
         });
         console.log('MySQL connection pool created successfully');
@@ -252,6 +253,31 @@ app.post('/report-issue', async (request, response) => {
   }
 });
 
+
+  // get total issues for maintanace guy Denzel
+  app.get('/total-issues', async (req, res) => {
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+  
+        // Retrieve all reported issues from the database
+        const [rows] = await connection.execute('SELECT id,issueAssigned FROM mainatanaceIssues');
+        
+        // Extract ids and issues from the rows
+        const ids = rows.map(row => row.id);
+        const issues = rows.map(row => row.issueAssigned); // Use 'issueAssigned' instead of 'issue'
+        
+        connection.release();
+        
+        console.log("Rows", rows);
+        
+        // Send the list of reported issues to the client
+        res.status(200).json({issues,ids });
+    } catch (error) {
+        console.error('Error fetching reported issues:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 // Handle GET request to fetch reported issues
 app.get('/reported-issues', async (req, res) => {
   try {
@@ -305,6 +331,7 @@ app.get('/get-users', async (req, res) => {
     }
   });
 
+
 //getting total number of issues
 const getTotalIssuesCount = async () => {
   try {
@@ -322,6 +349,38 @@ const getTotalIssuesCount = async () => {
       throw error;
   }
 };
+
+
+
+
+
+// add feedback to the issues that might be complete Denzel
+
+app.post('/update-feedback/:id', async (req, res) => {
+    const { feedback } = req.body;
+    const issueId = req.params.id;
+
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+
+        const sql = 'UPDATE mainatanaceIssues SET feedback = ? WHERE id = ?';
+        await connection.execute(sql, [feedback, issueId]);
+
+        connection.release();
+        console.log('Feedback given successfully');
+        res.status(201).json({ message: 'Feedback given successfully' });
+    } catch (error) {
+        console.error('Error giving feedback:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+
+
+
+
 
 
 //delete issues after completing them
