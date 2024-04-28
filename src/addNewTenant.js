@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
-    const submitButton = document.getElementById('submitBtn');
+    const submitButton = document.getElementById('addNewTenant');
 
     form.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
@@ -15,22 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Disable the submit button to prevent multiple submissions
         submitButton.disabled = true;
 
-        var name = document.getElementById("names").value;
+        var name = document.getElementById("name").value;
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
-        
-        var role;
-
-        var roles = document.getElementsByName("role");
-        
-        for (let i = 0; i < roles.length; i++) {
-            if (roles[i].checked) {
-                role = roles[i].value;
-                break;
-            }
-        }
-
+       
         if (password !== confirmPassword) {
             alert("Passwords do not match");
             // Re-enable the submit button
@@ -44,12 +33,12 @@ document.addEventListener('DOMContentLoaded', function () {
             email: email,
             password: password,
             confirmPassword: confirmPassword,
-            confirmPassword: confirmPassword,
-            role: role
+            
+            
         };
 
         // Make a POST request using the Fetch API
-        fetch('/submit', {
+        fetch('/submitTenant', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -65,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.message === 'User created successfully') {
                 // If user is created successfully, redirect to login page
-                window.location.href = 'login.html';
+                window.location.href = 'administrator.html';
             } else {
                 // If there's any other response, show alert
                 alert('Invalid details');
@@ -87,15 +76,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-function onSignIn(googleUser) {
 
-    var profile = googleUser.getBasicProfile();
-    console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log("Name: " + profile.getName());
-    console.log("Image URL: " + profile.getImageUrl());
-    console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
-  
-    // Redirect to login page
-    window.location.href = "login.html";
-}
 

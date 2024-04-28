@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up page</title>
+    <script src="addNewTenant.js"></script>
+
+    <script src="https://apis.google.com/js/platform.js" defer></script>
+    <meta
+      name="google-signin-client_id"
+      content="822343641891-3k9m4iobolv0vs2774dn8uh03rd3p3f5.apps.googleusercontent.com/"
+    />
+
+
+</head>
+
+<style>
+    
+
+    #signUp{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 35%;
+        top: 25%;
+        border: 1px solid black;
+        width: 500px;
+        height: 470px;
+        background: url('images/building.webp');
+        color: white;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+
+    form{
+        display: block;
+        box-sizing: border-box;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: brightness(40%);
+        flex-direction: column;
+        display: flex;
+        
+    }
+
+    h1{
+        font-weight: normal;
+        font-size: 24px;
+        text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+        margin-top: 3px;
+
+    }
+
+    input{
+        background: rgba(255,255,255,0.3);
+        
+        line-height: 40px;
+        border-radius: 20px;
+        padding: 0px 20px;
+        border: none;
+        margin-bottom: 20px;
+        color: white;
+    }
+    .submitButton {
+    padding: 0.6em 2em;
+    border: none;
+    outline: none;
+    color: white;
+    background: rgba(45,126,231);
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 40px;
+    }
+
+    .submitButton:before {
+    content: "";
+    background: linear-gradient(
+        45deg,
+        #ff0000,
+        #ff7300,
+        #fffb00,
+        #48ff00,
+        #00ffd5,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #ff0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowingbn5 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 40px;
+    }
+
+    @keyframes glowingbn5 {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+    }
+
+    .submitButton:active {
+    color: white;
+    }
+
+    .submitButton:active:after {
+    background: transparent;
+    }
+
+    .submitButton:hover:before {
+    opacity: 1;
+    }
+
+    .submitButton:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(45,126,231);
+    left: 0;
+    top: 0;
+    border-radius: 40px;
+    }
+
+    .camera{
+        background: white;
+        width: 25px;
+        height: 25px;
+        margin-top: 15px;
+        margin-bottom: 0%;
+        margin-left: 10px;
+    }
+
+    #Section{
+        margin-left: 80px;
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+    #paragraph{
+        margin-left: 80px;
+    
+    }
+    #final{
+        display: flex;
+        align-content: space-between;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    #signuptag{
+        color: rgb(0, 0, 0);
+    }
+
+    .sign{
+        margin-bottom: 0px;
+        text-align: center;
+    }
+
+    .select{
+        margin-bottom: 0px;
+    }
+
+    #cameraStream {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+</style>
+<body>
+
+    
+
+
+    
+    <div id="signUp">
+
+        <form is="submitForm" action="/submit" method="post" >
+        
+            <a href="staff.html" style="position: absolute; top: 10px; left: 10px;">
+                <img src="images/back arrow.png" alt="Home" width="25" height="25">
+            </a>
+
+            <h1 class="sign">Add New Tenant</h1>
+            <br>
+            <input type="name" name="name" placeholder="enter name" id="name" autocomplete="off" required>
+            <br>
+            <input type="email" name="email" placeholder="enter email" id="email" autocomplete="off" required>
+            <br>
+            <input type="password" name="password" placeholder="enter password" id="password" autocomplete="off" required>
+            <br>
+            <input type="password" name="confirmPassword" placeholder="confirm password" id="confirmPassword" autocomplete="off" required>
+            <br>
+           
+            
+            
+
+            <section id="final">
+                <p>Take a picture:</p>
+                <!--
+                    <a href="camera.html">
+                    <img src="images/camera.png" class="camera"/>
+                </a>
+            -->
+            <button id="openCameraBtn" style="margin: 10px;">Open Camera</button>
+            <video id="cameraStream" autoplay style="display: none;"></video>
+    <script>
+        const openCameraBtn = document.getElementById('openCameraBtn');
+        const cameraStream = document.getElementById('cameraStream');
+    
+        openCameraBtn.addEventListener('click', async () => {
+            event.preventDefault();
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            cameraStream.srcObject = stream;
+            cameraStream.style.display = 'block';
+          } catch (error) {
+            console.error('Error accessing the camera:', error);
+          }
+        });
+
+          // Close camera when clicking anywhere on the screen
+          document.addEventListener('click', (event) => {
+                    if (!cameraStream.contains(event.target)) {
+                        // Clicked outside the camera element or its child elements
+                        closeCamera();
+                    }
+                });
+
+                function closeCamera() {
+                    const tracks = cameraStream.srcObject.getTracks();
+                    tracks.forEach(track => track.stop());
+                    cameraStream.srcObject = null;
+                    cameraStream.style.display = 'none';
+                }
+      </script> 
+            </section>
+            <button  class="submitButton" id="addNewTenant">Add</button>
+            
+           <!-- <button onclick="submitForm()" class="submitButton" id="submitBtn">SIGN UP</button> -->
+             
+    
+        </form>
+
+    </div>
+
+
+    
+</body>
+
+
+</html>
