@@ -133,14 +133,33 @@ app.post('/add-staff', async (request, response) => {
         request.input('email', sql.NVarChar, email);
         request.input('password', sql.NVarChar, hashedPassword);
 
-        await request.query(
-            `INSERT INTO ${tableName} (name, email, password) VALUES (@name, @email, @hashedPassword)`,
-            
-        );
-        pool.close();
+        if(role=="administrator"){
+            await request.query(
+                `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+                
+            );
+            pool.close();
+    
+            response.status(201).json({ message: `Staff member added successfully` });
+    
 
-        response.status(201).json({ message: `Staff member added successfully` });
+        }
+        else if(role=="maintanance"){
+            await request.query(
+                `INSERT INTO staff_maintanance (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+                
+            );
+            pool.close();
+    
+            response.status(201).json({ message: `Staff member added successfully` });
+    
+        }
+        else{
+            response.status(400).json({ error: 'no such role' });
 
+        }
+
+        
     } catch (error) {
         console.error(`Error adding staff: `, error);
         response.status(500).json({ error: 'Internal server error' });
@@ -148,7 +167,7 @@ app.post('/add-staff', async (request, response) => {
 });
 
 
-// Submit endpoint for Tenant
+// add for Tenant as an administrator
 app.post('/submitTenant', async (request, response) => {
     const { name, email, password, confirmPassword } = request.body;
 
@@ -192,52 +211,7 @@ app.post('/submitTenant', async (request, response) => {
 
 
 
-//chek if user is in the database when trying to login
-//LOGIN (MSSQL)
-// app.post('/login', async (request, response) => {
-//   const { email, password } = request.body;
-
-//   try {
-
-//     const pool = new sql.ConnectionPool(config);
-//     await pool.connect();
-
-//     const request = await pool.request();
-//     request.input('email', sql.NVarChar, email);  
-
-//     const result = await request.query(
-//       //'SELECT * FROM users WHERE BINARY email = @email'  
-//       'SELECT * FROM users WHERE email = @email'
-
-//     );
-
-//     await pool.close();
-
-//     const user = result.recordset[0]; 
-
-//     if (user) {
-//       const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-//       if (isPasswordMatch) {
-
-//         response.status(200).json({ success: true, role: user.role, message: 'Login successful' });
-//       }
-//       else {
-//         response.status(404).json({ success: false, message: 'Invalid email or password' });
-//       }
-//     }
-//     else {
-
-//       response.status(400).json({ success: false, message: 'Invalid user' });
-//     }
-
-//   }
-//   catch (error) {
-
-//     console.error('Error querying database (MSSQL): ', error);
-//     response.status(500).json({ error: 'Internal server error' });
-//   }
-// });
+//checking if user is in the database
 
 app.post('/login', async (request, response) => {
     console.log('request body: ', request.body);
