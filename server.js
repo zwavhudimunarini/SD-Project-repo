@@ -141,68 +141,65 @@ app.post('/submitTenant', async (request, response) => {
 
 //chek if user is in the database when trying to login
 //LOGIN (MSSQL)
-app.post('/login', async (request, response) => {
-  const { email, password } = request.body;
+// app.post('/login', async (request, response) => {
+//   const { email, password } = request.body;
 
-  try {
+//   try {
 
-    const pool = new sql.ConnectionPool(config);
-    await pool.connect();
+//     const pool = new sql.ConnectionPool(config);
+//     await pool.connect();
 
-    const request = await pool.request();
-    request.input('email', sql.NVarChar, email);  
+//     const request = await pool.request();
+//     request.input('email', sql.NVarChar, email);  
 
-    const result = await request.query(
-      //'SELECT * FROM users WHERE BINARY email = @email'  
-      'SELECT * FROM users WHERE email = @email'
+//     const result = await request.query(
+//       //'SELECT * FROM users WHERE BINARY email = @email'  
+//       'SELECT * FROM users WHERE email = @email'
 
-    );
+//     );
 
-    await pool.close();
+//     await pool.close();
 
-    const user = result.recordset[0]; 
+//     const user = result.recordset[0]; 
 
-    if (user) {
-      const isPasswordMatch = await bcrypt.compare(password, user.password);
+//     if (user) {
+//       const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-      if (isPasswordMatch) {
+//       if (isPasswordMatch) {
 
-        response.status(200).json({ success: true, role: user.role, message: 'Login successful' });
-      }
-      else {
-        response.status(404).json({ success: false, message: 'Invalid email or password' });
-      }
-    }
-    else {
+//         response.status(200).json({ success: true, role: user.role, message: 'Login successful' });
+//       }
+//       else {
+//         response.status(404).json({ success: false, message: 'Invalid email or password' });
+//       }
+//     }
+//     else {
 
-      response.status(400).json({ success: false, message: 'Invalid user' });
-    }
+//       response.status(400).json({ success: false, message: 'Invalid user' });
+//     }
 
-  }
-  catch (error) {
+//   }
+//   catch (error) {
 
-    console.error('Error querying database (MSSQL): ', error);
-    response.status(500).json({ error: 'Internal server error' });
-  }
-});
+//     console.error('Error querying database (MSSQL): ', error);
+//     response.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 app.post('/login', async (request, response) => {
     console.log('request body: ', request.body);
     const { email, password } = request.body;
 
     try {
-        const pool = await createConnectionPool();
-        const request = pool.request();
+        const pool = new sql.ConnectionPool(config);
+        await pool.connect();
 
-        let role ;
-        let user ;
+        const request = await pool.request();
+        request.input('email', sql.NVarChar, email);
+        let role=null ;
+        let user=null ;
 
-        
-        request.input('email', sql.NVarChar, email);  
-    
-       
-    
-
+     
         // Check if the user exists in the Admin table
         const result = await request.query(
             'SELECT * FROM Admin WHERE email = @email'
