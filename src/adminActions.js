@@ -28,35 +28,10 @@ function searchStaff() {
         console.error('Error searching for staff members:', error);
         // Optionally, show an error message to the user
     });
-
-    // Send an AJAX request to the server to search for staff members
-    /*const xhr = new XMLHttpRequest();
-    xhr.open('GET', `/search/staff?query=${searchInput}`, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                const staffMembers = JSON.parse(xhr.responseText);
-                staffMembers.forEach(staff => {
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('search-result');
-                    listItem.innerHTML = `
-                        ${staff.name}
-                        <button class="delete-button" onclick="deleteStaff(${staff.id})">Delete</button>
-                    `;
-                    searchResults.appendChild(listItem);
-                });
-            } else {
-                console.error('Error searching for staff members:', xhr.status);
-                // Optionally, show an error message to the user
-            }
-        }
-    };
-    xhr.send();*/
 }
 
 // Function to delete a staff member
-async function deleteStaff(staffId) {
-    console.log('Deleting staff member with ID:', staffId);
+async function deleteStaff(staffId, listItemID) {
     if (confirm('Are you sure you want to delete this staff member?')) {
         try {
             // Send an AJAX request to the server to delete the staff member
@@ -69,10 +44,11 @@ async function deleteStaff(staffId) {
                 console.log('Staff member deleted successfully');
                 searchStaff();
                 // Remove the deleted staff member from the search results
-                const searchResult = document.getElementById(`staff-${staffId}`);
+                const searchResult = document.getElementById(listItemID);
                 if (searchResult) {
                     searchResult.remove();
                 }
+                displayStaffList();
                 // Check if there are no more search results, clear input and hide results
                 const searchResults = document.getElementById('searchResults');
                 if (searchResults.children.length === 0) {
@@ -164,5 +140,39 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    displayStaffList(); // Call the function to display the staff list when the page loads
+});
+
+async function displayStaffList() {
+    try {
+        const response = await fetch('/all-staff');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const staffMembers = await response.json();
+        const searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = ''; // Clear previous search results
+
+        staffMembers.forEach(staff => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('search-result');
+            // Display staff information except for the password
+            listItem.innerHTML = `
+            <article class="staff-info">
+                <h2>${staff.name}</h2>
+                <h3>Email: ${staff.email}</h3>
+                <h3>Id: ${staff.id}</h3>
+                <button class="delete-button" onclick="deleteStaff(${staff.id}, 'staff-${staff.id}')">Delete</button>
+            </article>
+            `;
+            searchResults.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error displaying staff list:', error);
+        // Optionally, show an error message to the user
+    }
+}
 
 

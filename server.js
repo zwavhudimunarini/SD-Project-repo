@@ -5,7 +5,7 @@ const cors = require("cors");
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
-const { emit } = require('process');
+//const { emit } = require('process');
 
 const app = express();
 const server = http.createServer(app); // Create HTTP server using Express app
@@ -54,12 +54,12 @@ const createConnectionPool = async () => {
 //submit form data in the database
 
 app.post('/submit', async (request, response) => {
-    const { name, email, password, confirmPassword } = request.body;
+  const { name, email, password, confirmPassword, role } = request.body;
 
-    // Check if required fields are empty
-    if (!name || !password || !confirmPassword|| !email) {
-        return response.status(400).json({ error: 'All fields are required' });
-    }
+  // Check if required fields are empty
+  if (!name || !password || !confirmPassword || !email || !role) {
+      return response.status(400).json({ error: 'All fields are required' });
+  }
 
     //check if passwords match
     if (password !== confirmPassword) {
@@ -69,26 +69,24 @@ app.post('/submit', async (request, response) => {
         return response.status(400).json({ error: 'Password too short' });
     }
 
-    try {
-        const pool = await createConnectionPool();
-        const connection = await pool.getConnection();
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        await connection.execute(
-            'INSERT INTO Admin (name, email, password) VALUES (?, ?, ?)',
-            [name, email, hashedPassword]
-        );
-
-        connection.release();
-        
-        response.status(201).json({ message: 'User created successfully' });
-        
-    } catch (error) {
-        console.error('Error inserting data: ', error);
-        response.status(500).json({ error: 'Internal server error' });
-    }
+  try {
+    const pool = await createConnectionPool();
+    const connection = await pool.getConnection();
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await connection.execute(
+        `INSERT INTO Admin (name, email, password) VALUES (?, ?, ?)`,
+        [name, email, hashedPassword]
+    );
+    connection.release();
+    response.status(201).json({ message: 'User created successfully' });
+  
+ }catch (error) {
+      console.error('Error inserting data: ', error);
+      response.status(500).json({ error: 'Internal server error' });
+  }
 });
+
+
 
 //staff member is responsible for adding tenants
 app.post('/submitTenant', async (request, response) => {
@@ -552,14 +550,32 @@ app.get('/search/staff', async(req, res) => {
     }
 });
 
-/*app.delete('/staff/:id', async(req, res) => {
+app.delete('/staff/:id', async(req, res) => {
     try {
         const staffId = req.params.id;
         
         const pool = await createConnectionPool();
         const connection = await pool.getConnection();
 
-        const tableName = staff.role === 'Administrator' ? 'Staff_Administrator' : 'Staff_Maintenance';
+        // Determine the role based on the table being deleted from
+        let tableName = '';
+
+        // Check if the staff member is in the Administrators table
+        const [adminRows] = await connection.execute(`SELECT id FROM Staff_Administrator WHERE id = ?`, [staffId]);
+        if (adminRows.length > 0) {
+            tableName = 'Staff_Administrator';
+        } else {
+            // Check if the staff member is in the Maintenance table
+            const [maintenanceRows] = await connection.execute(`SELECT id FROM Staff_Maintenance WHERE id = ?`, [staffId]);
+            if (maintenanceRows.length > 0) {
+                tableName = 'Staff_Maintenance';
+            } else {
+                // If the staff member is not found in any table, return an error
+                return res.status(404).json({ error: 'Staff member not found' });
+            }
+        }
+
+        // Delete the staff member from the determined table
         await connection.execute(`DELETE FROM ${tableName} WHERE id = ?`, [staffId]);
         connection.release();
         res.json({ message: 'Staff member deleted successfully' });
@@ -567,9 +583,28 @@ app.get('/search/staff', async(req, res) => {
         console.error('Error deleting staff member:', error);
         res.status(500).json({ error: 'An error occurred while deleting the staff member' });
     }
-});*/
+});
 
+app.get('/all-staff', async (req, res) => {
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
 
+        // Query both Administrator and Maintenance tables to get all staff members
+        const [adminResults] = await connection.execute('SELECT id, name, email FROM Staff_Administrator');
+        const [maintenanceResults] = await connection.execute('SELECT id, name, email FROM Staff_Maintenance');
+
+        connection.release();
+
+        // Combine results from both tables
+        const allStaffMembers = [...adminResults, ...maintenanceResults];
+
+        res.json(allStaffMembers);
+    } catch (error) {
+        console.error('Error fetching all staff members:', error);
+        res.status(500).json({ error: 'An error occurred while fetching all staff members' });
+    }
+});
 
 server.listen(port, () => {
     console.log(`Server started at http://localhost:${port}`);
