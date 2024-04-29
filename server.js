@@ -95,6 +95,59 @@ app.post('/submit', async (request, response) => {
     }
 });
 
+
+// Add staff endpoint
+app.post('/add-staff', async (request, response) => {
+    const { name, email, password, confirmPassword, role } = request.body;
+
+    // Check if required fields are empty
+    if (!name || !email || !password || !confirmPassword || !role ) {
+        return response.status(400).json({ error: 'All fields are required' });
+    }
+
+    if (password !== confirmPassword) {
+        return response.status(400).json({ error: 'Passwords do not match' });
+    }
+
+    if (password.length < 8) {
+        return response.status(400).json({ error: 'Password too short' });
+    }
+
+    // Hash the password
+   
+
+    if (role !== 'administrator' && role !== 'maintanance') {
+        return response.status(400).json({ error: 'Invalid role' });
+    }
+
+    try {
+        
+        
+        const pool = await createConnectionPool();
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const request = pool.request();
+
+        const tableName = `staff_${role}`;
+
+        request.input('name', sql.NVarChar, name);
+        request.input('email', sql.NVarChar, email);
+        request.input('password', sql.NVarChar, hashedPassword);
+
+        await request.query(
+            `INSERT INTO ${tableName} (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+            
+        );
+        pool.close();
+
+        response.status(201).json({ message: `Staff member added successfully` });
+
+    } catch (error) {
+        console.error(`Error adding staff: `, error);
+        response.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 // Submit endpoint for Tenant
 app.post('/submitTenant', async (request, response) => {
     const { name, email, password, confirmPassword } = request.body;
@@ -486,48 +539,6 @@ io.on('connection', async (socket) => {
     socket.emit('total-issues-count', totalCount);
 });
 
-// Add staff endpoint
-app.post('/add-staff', async (request, response) => {
-    const { name, email, password, confirmPassword, role } = request.body;
-
-    // Check if required fields are empty
-    if (!name || !email || !password || !confirmPassword || !role ) {
-        return response.status(400).json({ error: 'All fields are required' });
-    }
-
-    if (password !== confirmPassword) {
-        return response.status(400).json({ error: 'Passwords do not match' });
-    }
-
-    if (password.length < 8) {
-        return response.status(400).json({ error: 'Password too short' });
-    }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    if (role !== 'administrator' && role !== 'maintanance') {
-        return response.status(400).json({ error: 'Invalid role' });
-    }
-
-    try {
-        const pool = await createConnectionPool();
-        const request = pool.request();
-
-        const tableName = `staff_${role}`;
-
-        await request.query(
-            `INSERT INTO ${tableName} (name, email, password) VALUES (@name, @email, @hashedPassword)`,
-            { name, email, hashedPassword }
-        );
-
-        response.status(201).json({ message: `Staff member added successfully` });
-
-    } catch (error) {
-        console.error(`Error adding staff: `, error);
-        response.status(500).json({ error: 'Internal server error' });
-    }
-});
 
 
 // Search staff endpoint
