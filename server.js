@@ -147,28 +147,28 @@ app.post('/login', async (request, response) => {
 
     try {
         const pool = await createConnectionPool();
-        const request = pool.request();
-
+        const requestPool = pool.request();
+        
         let role = null;
         let user = null;
 
         // Check if the user exists in the Admin table
-        let result = await request.query(
+        let result = await requestPool.query(
             'SELECT * FROM Admin WHERE email = @email',
-            { email }
         );
+        requestPool.input('email', sql.NVarChar, email);
 
         if (result.recordset.length > 0) {
             user = result.recordset[0];
             role = 'Admin';
         }
 
-        // If the user is not found in the Admin table, check the Staff table
+        // If the user is not found in the Admin table, check the staff_administrator table
         if (!user) {
-            result = await request.query(
+            result = await requestPool.query(
                 'SELECT * FROM staff_administrator WHERE email = @email',
-                { email }
             );
+            requestPool.input('email', sql.NVarChar, email);
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
@@ -176,12 +176,12 @@ app.post('/login', async (request, response) => {
             }
         }
 
-        // If the user is still not found, check the Staff_Maintanance table
+        // If the user is still not found, check the staff_maintanance table
         if (!user) {
-            result = await request.query(
+            result = await requestPool.query(
                 'SELECT * FROM staff_maintanance WHERE email = @email',
-                { email }
             );
+            requestPool.input('email', sql.NVarChar, email);
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
@@ -191,10 +191,10 @@ app.post('/login', async (request, response) => {
 
         // If the user is still not found, check the Tenant table
         if (!user) {
-            result = await request.query(
+            result = await requestPool.query(
                 'SELECT * FROM Tenant WHERE email = @email',
-                { email }
             );
+            requestPool.input('email', sql.NVarChar, email);
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
