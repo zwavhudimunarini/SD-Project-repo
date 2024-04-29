@@ -98,14 +98,14 @@ app.post('/submit', async (request, response) => {
 
 // Add staff endpoint
 app.post('/add-staff', async (request, response) => {
-    const { name, email, password, confirmPassword,role} = request.body;
-    console.log(request.body);
+    const { name, email, password, confirmPassword,role } = request.body;
 
     // Check if required fields are empty
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !password || !confirmPassword || !email || !role) {
         return response.status(400).json({ error: 'All fields are required' });
     }
 
+    // Check if passwords match
     if (password !== confirmPassword) {
         return response.status(400).json({ error: 'Passwords do not match' });
     }
@@ -114,59 +114,100 @@ app.post('/add-staff', async (request, response) => {
         return response.status(400).json({ error: 'Password too short' });
     }
 
-    // Hash the password
-
     try {
-        
-        
         const pool = await createConnectionPool();
         const hashedPassword = await bcrypt.hash(password, 10);
-        const request = pool.request();
 
+        const request = pool.request();
         request.input('name', sql.NVarChar, name);
         request.input('email', sql.NVarChar, email);
         request.input('password', sql.NVarChar, hashedPassword);
+
         await request.query(
-            `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
-            
+            `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @password)`
         );
+
         pool.close();
+        response.status(201).json({ message: 'User created successfully' });
 
-        response.status(201).json({ message: `Staff member added successfully` });
-
-
-        // if(role=="administrator"){
-        //     await request.query(
-        //         `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
-                
-        //     );
-        //     pool.close();
-    
-        //     response.status(201).json({ message: `Staff member added successfully` });
-    
-
-        // }
-        // else if(role=="maintanance"){
-        //     await request.query(
-        //         `INSERT INTO staff_maintanance (name, email, password) VALUES (@name, @email, @hashedPassword)`,
-                
-        //     );
-        //     pool.close();
-    
-        //     response.status(201).json({ message: `Staff member added successfully` });
-    
-        // }
-        // else{
-        //     response.status(400).json({ error: 'no such role' });
-
-        // }
-
-        
     } catch (error) {
-        console.error(`Error adding staff: `, error);
+        console.error('Error inserting admin data (MSSQL): ', error);
         response.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+
+// app.post('/add-staff', async (request, response) => {
+//     const { name, email, password, confirmPassword,role} = request.body;
+//     console.log(request.body);
+
+//     // Check if required fields are empty
+//     if (!name || !email || !password || !confirmPassword) {
+//         return response.status(400).json({ error: 'All fields are required' });
+//     }
+
+//     if (password !== confirmPassword) {
+//         return response.status(400).json({ error: 'Passwords do not match' });
+//     }
+
+//     if (password.length < 8) {
+//         return response.status(400).json({ error: 'Password too short' });
+//     }
+
+//     // Hash the password
+
+//     try {
+        
+        
+//         const pool = await createConnectionPool();
+//         const hashedPassword = await bcrypt.hash(password, 10);
+//         const request = pool.request();
+
+//         request.input('name', sql.NVarChar, name);
+//         request.input('email', sql.NVarChar, email);
+//         request.input('password', sql.NVarChar, hashedPassword);
+//         await request.query(
+//             `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+            
+//         );
+//         pool.close();
+
+//         response.status(201).json({ message: `Staff member added successfully` });
+
+
+//         // if(role=="administrator"){
+//         //     await request.query(
+//         //         `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+                
+//         //     );
+//         //     pool.close();
+    
+//         //     response.status(201).json({ message: `Staff member added successfully` });
+    
+
+//         // }
+//         // else if(role=="maintanance"){
+//         //     await request.query(
+//         //         `INSERT INTO staff_maintanance (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+                
+//         //     );
+//         //     pool.close();
+    
+//         //     response.status(201).json({ message: `Staff member added successfully` });
+    
+//         // }
+//         // else{
+//         //     response.status(400).json({ error: 'no such role' });
+
+//         // }
+
+        
+//     } catch (error) {
+//         console.error(`Error adding staff: `, error);
+//         response.status(500).json({ error: 'Internal server error' });
+//     }
+// });
 
 
 // add for Tenant as an administrator
