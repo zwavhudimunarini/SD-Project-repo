@@ -2,7 +2,7 @@
 
 // Fetch reported issues from the server
 function fetchUsers() {
-    fetch('/get-users')
+    fetch('/get-maintanace-feedback')
     .then(response => {
         if (response.ok) {
             return response.json();
@@ -12,10 +12,10 @@ function fetchUsers() {
     })
     .then(data => {
         console.log(data);
-        const { names,emails,ids } = data;
+        const {  ids,issueAssigneds ,feedbacks } = data;
         
         
-        updateNotificationsWidget(names,emails,ids);
+        updateNotificationsWidget(ids,issueAssigneds ,feedbacks);
     })
     .catch(error => {
         console.error('Error fetching reported issues:', error);
@@ -23,26 +23,26 @@ function fetchUsers() {
 }
 
 
-function updateNotificationsWidget(names, emails, ids) {
+function updateNotificationsWidget(ids,issueAssigneds ,feedbacks) {
     const notificationsList = document.getElementById('notifications-list');
 
     // Clear existing items in the list
     notificationsList.innerHTML = '';
 
     // Add each issue to the notifications widget
-    names.forEach((name, index) => {
+    issueAssigneds.forEach((issueAssigned, index) => {
         const newItem = document.createElement('li');
         newItem.className = 'notification-item'; // Add a class for styling
         newItem.id = `issue-${ids[index]}`; // Set ID for identifying the issue
 
         // Construct the content of the list item with icons using innerHTML
         newItem.innerHTML = `
-            <img src="images/userIcon.jpeg" alt="User Icon" class="icon" style="width: 20px; height: 20px; margin-right: 5px;">
-            ${name}
-            <br>
-            <img src="images/emailIcon.jpg" alt="Email Icon" class="icon" style="width: 20px; height: 20px; margin-left: 50px;">
-            ${emails[index]}
+            <p>Issue:  ${issueAssigned}</p>
+            <br> <!-- Add a line break -->
+            <p>.................</p>
+            <p>Feedback:  ${feedbacks[index]}</p>
         `;
+        
 
         // Create the "Delete" button
         const deleteButton = document.createElement('button');

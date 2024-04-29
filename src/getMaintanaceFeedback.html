@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="getMaintanaceFeedback.js"></script>
+</head>
+<body>
+
+    <style>
+        /* Add your CSS styling here */
+        .notification-item {
+           
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Vertically center the content */
+            margin-bottom: 10px;
+            background-color: black;
+            border-radius: 20px;
+            font-size: large;
+            border: none;
+            padding-left: 10px;
+            color: rgb(254, 254, 254);
+            width: 50%;
+            margin-top: 10px;
+            height: 7vh;
+            position: relative; /* Make the container relative for absolute positioning of buttons */
+        }
+
+       
+        .delete-button {
+            position: absolute; /* Position buttons absolutely */
+            top: 53%; /* Align buttons vertically */
+            z-index: 1;
+            height: 7vh;
+                
+            background-color: rgb(199, 66, 66); /* Blue */
+            color: #fff;
+            border: none;
+            border-radius: 100px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transform: translateY(-50%); /* Adjust for vertical alignment */
+            width: 200px; /* Allow buttons to adjust width based on content */
+        }
+        .Refresh{
+            position: absolute; /* Position buttons absolutely */
+            top: 15%; /* Align buttons vertically */
+            z-index: 1;
+            height: 7vh;
+                
+            background-color: black; /* Blue */
+            color: #fff;
+            border: none;
+            border-radius: 100px;
+            padding: 5px 10px;
+            margin-bottom:px;
+            cursor: pointer;
+            transform: translateY(-50%); /* Adjust for vertical alignment */
+            width: 200px
+        }
+
+        .assign-button {
+            right: -150px; /* Position the assign button to the left of the container */
+        }
+
+        .delete-button {
+            right: -210px; /* Position the delete button to the right of the container */
+        }
+
+        .assign-button:hover {
+            background-color: #0056b3; /* Darker Blue */
+        }
+        .delete-button:hover {
+            background-color: #e60000; /* Darker Red */
+        }
+        #notifications-list {
+            list-style-type: none; /* Remove bullets */
+            padding: 0; /* Remove default padding */
+            margin: 0; /* Remove default margin */
+            
+        }
+        
+        
+    </style>
+
+    <!-- This is for testing -->
+    <div id="notifications">
+        <h2 style="text-align: center; margin-bottom: 100px;">Maintanace Feedback </h2>
+        <button class="Refresh" onclick="fetchUsers()"> Refresh</button>
+        <br>
+        <br>
+        <ul id="notifications-list">
+            
+            <!-- Existing notifications items will be appended here dynamically -->
+        </ul>
+    </div>
+
+</body>
+</html>

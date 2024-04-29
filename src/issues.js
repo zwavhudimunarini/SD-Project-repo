@@ -39,11 +39,12 @@ function updateNotificationsWidget(issues, ids) {
 
         // Create the "Assign Maintenance" button
         const assignMaintenanceButton = document.createElement('button');
-        assignMaintenanceButton.textContent = 'Assign Maintenance';
+        assignMaintenanceButton.textContent = 'Assign';
         assignMaintenanceButton.className = 'assign-button'; // Add a class for styling
         assignMaintenanceButton.onclick = function() {
-            // Call a function to assign maintenance for the issue
-            assignMaintenance(issue);
+            
+            assignMaintenance(issue, assignMaintenanceButton);
+            assignMaintenanceButton.disabled = true;
         };
 
 
@@ -72,14 +73,39 @@ function updateNotificationsWidget(issues, ids) {
 }
 
 
-// Dummy functions for assigning maintenance and deleting issues
-function assignMaintenance(issue) {
-    console.log('Assign maintenance:', issue);
-    // Implement logic to assign maintenance for the issue
+function assignMaintenance(issue, assignButton) {
+    // Check if the button is already disabled
+    if (assignButton.disabled) {
+        return; // Exit the function if the button is disabled
+    }
+    fetch('/assign-to-maintanace', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ issue: issue })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Issue is sent to the database");
+            // Change button text to "Assigned" after 5 seconds
+            setTimeout(() => {
+                if (assignButton) {
+                    assignButton.innerHTML = 'Assigned';
+                    assignButton.style.backgroundColor = 'green';
+                    assignButton.disabled = true; // Disable the button
+                }
+            }, 5000); // 5 seconds delay
+        } else {
+            throw new Error('Failed to assign maintenance');
+        }
+    })
+    .catch(error => {
+        console.error("Error assigning maintenance:", error);
+        // Re-enable the button in case of error so that user can try again
+        assignButton.disabled = false;
+    });
 }
-
-// Function to delete an issue from the database
-
 
 
 // Initialize Socket.IO Client-Side Code

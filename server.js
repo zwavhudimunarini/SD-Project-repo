@@ -39,9 +39,9 @@ const createConnectionPool = async () => {
     try {
         const pool = await mysql.createPool({
             host: 'localhost',
-            user: 'root',
-            password: 's2429356',
-            database: 'software_design'
+            user: 'zwavhudi',
+            password: 'Vhanarini064',
+            database: 'sdproject'
         });
         console.log('MySQL connection pool created successfully');
         return pool;
@@ -54,66 +54,41 @@ const createConnectionPool = async () => {
 //submit form data in the database
 
 app.post('/submit', async (request, response) => {
-  const { name, email, password, confirmPassword} = request.body;
+    const { name, email, password, confirmPassword } = request.body;
 
-  // Check if required fields are empty
-  if (!name ||!email || !password || !confirmPassword) {
-  const { name, email, password, confirmPassword, role } = request.body;
+    // Check if required fields are empty
+    if (!name || !password || !confirmPassword|| !email) {
+        return response.status(400).json({ error: 'All fields are required' });
+    }
 
-  // Check if required fields are empty
-  if (!name || !password || !confirmPassword || !email || !role) {
-      return response.status(400).json({ error: 'All fields are required' });
-  }
+    //check if passwords match
+    if (password !== confirmPassword) {
+        return response.status(400).json({ error: 'Passwords do not match' });
+    }
+    if(password.length<8){
+        return response.status(400).json({ error: 'Password too short' });
+    }
 
-  // Check if passwords match
-  if (password !== confirmPassword) {
-      return response.status(400).json({ error: 'Passwords do not match' });
-  }
-  if (password.length < 8) {
-      return response.status(400).json({ error: 'Password too short' });
-  }
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
 
-  try {
-    const pool = await createConnectionPool();
-    const connection = await pool.getConnection();
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await connection.execute(
-        `INSERT INTO Admin (name, email, password) VALUES (?, ?, ?)`,
-        [name, email, hashedPassword]
-    );
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        await connection.execute(
+            'INSERT INTO Admin (name, email, password) VALUES (?, ?, ?)',
+            [name, email, hashedPassword]
+        );
 
-      let tableName;
-      switch (role) {
-          case 'Admin':
-              tableName = 'Admin';
-              break;
-          case 'Administrator':
-              tableName = 'Staff_Administrator';
-              break;
-          case 'Maintenance':
-              tableName = 'Staff_maintanance';
-
-
-              break;
-          default:
-              return response.status(400).json({ error: 'Invalid role' });
-      }
-
-      await connection.execute(
-          `INSERT INTO ${tableName} (name, email, password) VALUES (?, ?, ?)`,
-          [name, email, hashedPassword]
-      );
-
-    connection.release();
-    response.status(201).json({ message: 'User created successfully' });
-  
- }catch (error) {
-      console.error('Error inserting data: ', error);
-      response.status(500).json({ error: 'Internal server error' });
-  }
-}
-
-
+        connection.release();
+        
+        response.status(201).json({ message: 'User created successfully' });
+        
+    } catch (error) {
+        console.error('Error inserting data: ', error);
+        response.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 //staff member is responsible for adding tenants
 app.post('/submitTenant', async (request, response) => {
@@ -199,7 +174,7 @@ app.post('/login', async (request, response) => {
 
         if (staffRows.length > 0) {
             user = staffRows[0];
-            role = 'Staff_Maintanance'; // Assuming the role is stored in the Staff table
+            role = 'Maintanance'; // Assuming the role is stored in the Staff table
         }
     }
 
@@ -264,30 +239,7 @@ app.post('/report-issue', async (request, response) => {
 });
 
 
-  // get total issues for maintanace guy Denzel
-  app.get('/total-issues', async (req, res) => {
-    try {
-        const pool = await createConnectionPool();
-        const connection = await pool.getConnection();
   
-        // Retrieve all reported issues from the database
-        const [rows] = await connection.execute('SELECT id,issueAssigned FROM mainatanaceIssues');
-        
-        // Extract ids and issues from the rows
-        const ids = rows.map(row => row.id);
-        const issues = rows.map(row => row.issueAssigned); // Use 'issueAssigned' instead of 'issue'
-        
-        connection.release();
-        
-        console.log("Rows", rows);
-        
-        // Send the list of reported issues to the client
-        res.status(200).json({issues,ids });
-    } catch (error) {
-        console.error('Error fetching reported issues:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 // Handle GET request to fetch reported issues
 app.get('/reported-issues', async (req, res) => {
   try {
@@ -335,12 +287,41 @@ app.get('/get-users', async (req, res) => {
         // Send the list of reported issues to the client
         res.status(200).json({names,emails,ids });
         
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error fetching reported issues:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-  });
+});
 
+
+//get feedback from maintanance
+app.get('/get-maintanace-feedback', async (req, res) => {
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+  
+        // Retrieve all reported issues from the database
+        const [rows] = await connection.execute('SELECT id,issueAssigned ,feedback FROM MaintenanceIssues WHERE feedback IS NOT NULL');
+  
+        const ids = rows.map(row => row.id);
+        const issueAssigneds= rows.map(row => row.issueAssigned);
+        const feedbacks = rows.map(row => row.feedback);
+  
+        connection.release();
+  
+        
+     
+  
+        // Send the list of reported issues to the client
+        res.status(200).json({issueAssigneds,feedbacks,ids });
+        
+    } 
+    catch (error) {
+        console.error('Error fetching reported issues:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 //getting total number of issues
 const getTotalIssuesCount = async () => {
@@ -359,6 +340,26 @@ const getTotalIssuesCount = async () => {
       throw error;
   }
 };
+app.post('/assign-to-maintanace', async (req, res) => {
+    const { issue } = req.body;
+    
+
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+
+        const sql = 'INSERT INTO MaintenanceIssues (issueAssigned) VALUES (?) ';
+        await connection.execute(sql, [issue]);
+
+        connection.release();
+
+        console.log('Issue submitted successfully');
+        res.status(201).json({ message: 'Issue assigned successfully' });
+    } catch (error) {
+        console.error('Error assigning issue:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 
 
@@ -374,7 +375,7 @@ app.post('/update-feedback/:id', async (req, res) => {
         const pool = await createConnectionPool();
         const connection = await pool.getConnection();
 
-        const sql = 'UPDATE mainatanaceIssues SET feedback = ? WHERE id = ?';
+        const sql = 'UPDATE MaintenanceIssues SET feedback = ? WHERE id = ?';
         await connection.execute(sql, [feedback, issueId]);
 
         connection.release();
@@ -382,6 +383,31 @@ app.post('/update-feedback/:id', async (req, res) => {
         res.status(201).json({ message: 'Feedback given successfully' });
     } catch (error) {
         console.error('Error giving feedback:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// get total issues for maintanace guy Denzel
+app.get('/total-issues', async (req, res) => {
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+  
+        // Retrieve all reported issues from the database
+        const [rows] = await connection.execute('SELECT id,issueAssigned FROM MaintenanceIssues');
+        
+        // Extract ids and issues from the rows
+        const ids = rows.map(row => row.id);
+        const issues = rows.map(row => row.issueAssigned); // Use 'issueAssigned' instead of 'issue'
+        
+        connection.release();
+        
+        console.log("Rows", rows);
+        
+        // Send the list of reported issues to the client
+        res.status(200).json({issues,ids });
+    } catch (error) {
+        console.error('Error fetching reported issues:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -474,7 +500,7 @@ app.post('/add-staff', async (request, response) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    if (role !== 'Administrator' && role !== 'Maintenance') {
+    if (role !== 'Administrator' && role !== 'Maintanance') {
         return response.status(400).json({ error: 'Invalid role' });
     }
 
@@ -543,7 +569,8 @@ app.get('/search/staff', async(req, res) => {
     }
 });*/
 
+
+
 server.listen(port, () => {
     console.log(`Server started at http://localhost:${port}`);
 });
-})

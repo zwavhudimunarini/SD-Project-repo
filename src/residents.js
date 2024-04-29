@@ -10,7 +10,10 @@ function saveIssue() {
     })
     .then(response => {
         if (response.ok) {
+            const clearInput=document.getElementById('issue');
+            clearInput.value="";
             closeModal();
+            
             // Issue reported successfully, no need to update notifications widget here
         } else {
             console.error('Failed to report issue:', response.statusText);

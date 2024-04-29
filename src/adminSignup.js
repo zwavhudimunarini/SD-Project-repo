@@ -20,16 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
         
-        var role;
-
-        var roles = document.getElementsByName("role");
-        
-        for (let i = 0; i < roles.length; i++) {
-            if (roles[i].checked) {
-                role = roles[i].value;
-                break;
-            }
-        }
+       
 
         if (password !== confirmPassword) {
             alert("Passwords do not match");
@@ -45,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
             password: password,
             confirmPassword: confirmPassword,
             confirmPassword: confirmPassword,
-            role: role
+           
         };
 
         // Make a POST request using the Fetch API
