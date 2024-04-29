@@ -127,8 +127,6 @@ app.post('/add-staff', async (request, response) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const request = pool.request();
 
-        const tableName = `staff_${role}`;
-
         request.input('name', sql.NVarChar, name);
         request.input('email', sql.NVarChar, email);
         request.input('password', sql.NVarChar, hashedPassword);
