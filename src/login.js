@@ -47,6 +47,10 @@ function getUserInfo(){
             
             // Redirect based on role
             switch(data.role) {
+                case 'Tenant':
+                    //dont forget to change to tenant.html after it has been designed
+                    window.location.href = 'ResidentHomepage.html?name=' + data.name;
+                    break;
                 case 'Admin':
                     window.location.href = 'admin.html?name=' + data.name;
                     break;
@@ -56,10 +60,7 @@ function getUserInfo(){
                 case 'maintenance':
                     window.location.href = 'maintananceStaff.html?name='+ data.name;
                     break;
-                case 'Tenant':
-                    //dont forget to change to tenant.html after it has been designed
-                    window.location.href = 'ResidentHomepage.html?name=' + data.name;
-                    break;
+                
                 default:
                     alert('Unknown role');
             }
