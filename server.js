@@ -295,25 +295,25 @@ app.post('/login', async (request, response) => {
      
         // Check if the user exists in the Admin table
         const result = await request.query(
-            'SELECT * FROM Admin WHERE email = @email'
+            'SELECT * FROM staff_administrator WHERE email = @email'
             
         );
 
         if (result.recordset.length > 0) {
             user = result.recordset[0];
-            role = 'Admin';
+            role = 'administrator';
         }
 
         // If the user is not found in the Admin table, check the staff_administrator table
         if (!user) {
             const result = await request.query(
-                'SELECT * FROM staff_administrator WHERE email = @email'
+                'SELECT * FROM Admin WHERE email = @email'
                 
             );
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
-                role = 'administrator'; // Assuming the role is stored in the Staff table
+                role = 'Admin'; // Assuming the role is stored in the Staff table
             }
         }
 
