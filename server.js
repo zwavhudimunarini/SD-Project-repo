@@ -54,10 +54,10 @@ const createConnectionPool = async () => {
 //submit form data in the database
 
 app.post('/submit', async (request, response) => {
-  const { name, email, password, confirmPassword, role } = request.body;
+  const { name, email, password, confirmPassword } = request.body;
 
   // Check if required fields are empty
-  if (!name || !password || !confirmPassword || !email || !role) {
+  if (!name || !password || !confirmPassword || !email ) {
       return response.status(400).json({ error: 'All fields are required' });
   }
 
@@ -592,7 +592,7 @@ app.get('/all-staff', async (req, res) => {
 
         // Query both Administrator and Maintenance tables to get all staff members
         const [adminResults] = await connection.execute('SELECT id, name, email FROM Staff_Administrator');
-        const [maintenanceResults] = await connection.execute('SELECT id, name, email FROM Staff_Maintenance');
+        const [maintenanceResults] = await connection.execute('SELECT id, name, email FROM Staff_Maintanance');
 
         connection.release();
 
