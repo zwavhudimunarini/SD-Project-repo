@@ -247,7 +247,7 @@ app.post('/login', async (request, response) => {
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
-                role = 'Administrator'; // Assuming the role is stored in the Staff table
+                role = 'administrator'; // Assuming the role is stored in the Staff table
             }
         }
 
@@ -260,7 +260,7 @@ app.post('/login', async (request, response) => {
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
-                role = 'Maintenance'; // Assuming the role is stored in the Staff table
+                role = 'maintenance'; // Assuming the role is stored in the Staff table
             }
         }
 

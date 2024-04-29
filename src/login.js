@@ -50,10 +50,10 @@ function getUserInfo(){
                 case 'Admin':
                     window.location.href = 'admin.html?name=' + data.name;
                     break;
-                case 'Administrator':
+                case 'administrator':
                     window.location.href = 'administrator.html?name=' + data.name;
                     break;
-                case 'Maintanance':
+                case 'maintanance':
                     window.location.href = 'maintananceStaff.html?name='+ data.name;
                     break;
                 case 'Tenant':
