@@ -115,21 +115,44 @@ app.post('/add-staff', async (request, response) => {
     }
 
     try {
-        const pool = await createConnectionPool();
-        const hashedPassword = await bcrypt.hash(password, 10);
+       
+        if(role=="administrator"){
+            const pool = await createConnectionPool();
+            const hashedPassword = await bcrypt.hash(password, 10);
+    
+            const request = pool.request();
+            request.input('name', sql.NVarChar, name);
+            request.input('email', sql.NVarChar, email);
+            request.input('password', sql.NVarChar, hashedPassword);
+    
+            await request.query(
+                `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @password)`
+            );
+    
+            pool.close();
+            response.status(201).json({ message: 'User created successfully' });
+    
+        }
+        else if(role=="maintanance"){
+            const pool = await createConnectionPool();
+            const hashedPassword = await bcrypt.hash(password, 10);
+    
+            const request = pool.request();
+            request.input('name', sql.NVarChar, name);
+            request.input('email', sql.NVarChar, email);
+            request.input('password', sql.NVarChar, hashedPassword);
+    
+            await request.query(
+                `INSERT INTO staff_maintanance (name, email, password) VALUES (@name, @email, @password)`
+            );
+    
+            pool.close();
+            response.status(201).json({ message: 'User created successfully' });
+    
+        }
+        else{
 
-        const request = pool.request();
-        request.input('name', sql.NVarChar, name);
-        request.input('email', sql.NVarChar, email);
-        request.input('password', sql.NVarChar, hashedPassword);
-
-        await request.query(
-            `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @password)`
-        );
-
-        pool.close();
-        response.status(201).json({ message: 'User created successfully' });
-
+        }
     } catch (error) {
         console.error('Error inserting admin data (MSSQL): ', error);
         response.status(500).json({ error: 'Internal server error' });
