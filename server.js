@@ -153,10 +153,12 @@ app.post('/login', async (request, response) => {
         let user = null;
 
         // Check if the user exists in the Admin table
+
+        requestPool.input('email', sql.NVarChar, email);
         let result = await requestPool.query(
             'SELECT * FROM Admin WHERE email = @email',
         );
-        requestPool.input('email', sql.NVarChar, email);
+        
 
         if (result.recordset.length > 0) {
             user = result.recordset[0];
@@ -165,10 +167,11 @@ app.post('/login', async (request, response) => {
 
         // If the user is not found in the Admin table, check the staff_administrator table
         if (!user) {
+            requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM staff_administrator WHERE email = @email',
             );
-            requestPool.input('email', sql.NVarChar, email);
+            
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
@@ -178,10 +181,11 @@ app.post('/login', async (request, response) => {
 
         // If the user is still not found, check the staff_maintanance table
         if (!user) {
+            requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM staff_maintanance WHERE email = @email',
             );
-            requestPool.input('email', sql.NVarChar, email);
+            
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
@@ -191,10 +195,11 @@ app.post('/login', async (request, response) => {
 
         // If the user is still not found, check the Tenant table
         if (!user) {
+            requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM Tenant WHERE email = @email',
             );
-            requestPool.input('email', sql.NVarChar, email);
+            
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
