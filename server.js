@@ -98,10 +98,11 @@ app.post('/submit', async (request, response) => {
 
 // Add staff endpoint
 app.post('/add-staff', async (request, response) => {
-    const { name, email, password, confirmPassword, role } = request.body;
+    const { name, email, password, confirmPassword,role} = request.body;
+    console.log(request.body);
 
     // Check if required fields are empty
-    if (!name || !email || !password || !confirmPassword || !role ) {
+    if (!name || !email || !password || !confirmPassword) {
         return response.status(400).json({ error: 'All fields are required' });
     }
 
@@ -114,11 +115,6 @@ app.post('/add-staff', async (request, response) => {
     }
 
     // Hash the password
-   
-
-    if (role !== 'administrator' && role !== 'maintanance') {
-        return response.status(400).json({ error: 'Invalid role' });
-    }
 
     try {
         
@@ -130,32 +126,40 @@ app.post('/add-staff', async (request, response) => {
         request.input('name', sql.NVarChar, name);
         request.input('email', sql.NVarChar, email);
         request.input('password', sql.NVarChar, hashedPassword);
+        await request.query(
+            `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+            
+        );
+        pool.close();
 
-        if(role=="administrator"){
-            await request.query(
-                `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+        response.status(201).json({ message: `Staff member added successfully` });
+
+
+        // if(role=="administrator"){
+        //     await request.query(
+        //         `INSERT INTO staff_administrator (name, email, password) VALUES (@name, @email, @hashedPassword)`,
                 
-            );
-            pool.close();
+        //     );
+        //     pool.close();
     
-            response.status(201).json({ message: `Staff member added successfully` });
+        //     response.status(201).json({ message: `Staff member added successfully` });
     
 
-        }
-        else if(role=="maintanance"){
-            await request.query(
-                `INSERT INTO staff_maintanance (name, email, password) VALUES (@name, @email, @hashedPassword)`,
+        // }
+        // else if(role=="maintanance"){
+        //     await request.query(
+        //         `INSERT INTO staff_maintanance (name, email, password) VALUES (@name, @email, @hashedPassword)`,
                 
-            );
-            pool.close();
+        //     );
+        //     pool.close();
     
-            response.status(201).json({ message: `Staff member added successfully` });
+        //     response.status(201).json({ message: `Staff member added successfully` });
     
-        }
-        else{
-            response.status(400).json({ error: 'no such role' });
+        // }
+        // else{
+        //     response.status(400).json({ error: 'no such role' });
 
-        }
+        // }
 
         
     } catch (error) {
