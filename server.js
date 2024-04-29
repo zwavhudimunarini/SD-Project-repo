@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.static('src'));
 app.use(express.json());
-app.use(bodyParser.json());
+
 
 const config = {
     user: 'zwavhudi',
@@ -149,8 +149,8 @@ app.post('/login', async (request, response) => {
         const pool = await createConnectionPool();
         const request = pool.request();
 
-        let role = null;
-        let user = null;
+        let role ;
+        let user ;
 
         // Check if the user exists in the Admin table
         let result = await request.query(
