@@ -14,6 +14,7 @@
             margin-bottom: 10px;
             padding: 5px;
             width: 200px;
+            border-radius: 5px;
         }
 
         .search-results {
@@ -21,12 +22,54 @@
             padding: 0;
         }
 
+        .search-result h2 {
+            margin-bottom: 5px;
+            font-size: 18px;
+            color: black;
+        }
+
+        .search-result h3 {
+            margin-bottom: 5px;
+            font-size: 18px;
+            color: rgb(28, 27, 46);
+        }
+
         .search-result {
             margin-bottom: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgba(37, 125, 197);
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-result p {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: black;
+        }
+
+        .search-button {
+            padding: 8px 15px; 
+            background-color: #007bff; 
+            color: #fff; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 16px;
+        }
+
+        .staff-info {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
         }
 
         .delete-button {
-            background-color: #ff3333;
+            background-color: red;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -46,7 +89,7 @@
 <body>
     <section class="search-container">
         <input type="text" id="searchInput" class="search-input" placeholder="Search Staff member...">
-        <button onclick="searchStaff()">Search</button>
+        <button class="search-button" onclick="searchStaff()">Search</button>
         <ul id="searchResults" class="search-results"></ul>
     </section>
 
