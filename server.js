@@ -372,10 +372,10 @@ app.post('/login', async (request, response) => {
         );
         
 
-        // if (result.recordset.length > 0) {
-        //     user = result.recordset[0];
-        //     role = 'Admin';
-        // }
+        if (result.recordset.length > 0) {
+            user = result.recordset[0];
+            role = 'Admin';
+        }
 
         // // If the user is not found in the Admin table, check the staff_administrator table
         // else if (user==null) {
