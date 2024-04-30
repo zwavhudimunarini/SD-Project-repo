@@ -238,7 +238,7 @@ app.post('/submitTenant', async (request, response) => {
         }
 
         // If the user is not found in the Admin table, check the staff_administrator table
-        if (!user) {
+        else if (user==null) {
             requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM staff_administrator WHERE email = @email',
@@ -252,7 +252,7 @@ app.post('/submitTenant', async (request, response) => {
         }
 
         // If the user is still not found, check the staff_maintanance table
-        if (!user) {
+        else if (user==null) {
             requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM staff_maintanance WHERE email = @email',
@@ -266,7 +266,7 @@ app.post('/submitTenant', async (request, response) => {
         }
 
         // If the user is still not found, check the Tenant table
-        if (!user) {
+        else if (user==null) {
             requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM Tenant WHERE email = @email',
