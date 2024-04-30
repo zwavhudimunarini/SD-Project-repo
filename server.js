@@ -247,7 +247,7 @@ app.post('/submitTenant', async (request, response) => {
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
-                role = 'Administrator'; // Assuming the role is stored in the Staff table
+                role = 'administrator'; // Assuming the role is stored in the Staff table
             }
         }
 
@@ -261,7 +261,7 @@ app.post('/submitTenant', async (request, response) => {
 
             if (result.recordset.length > 0) {
                 user = result.recordset[0];
-                role = 'Maintanance'; // Assuming the role is stored in the Staff table
+                role = 'maintanance'; // Assuming the role is stored in the Staff table
             }
         }
 
