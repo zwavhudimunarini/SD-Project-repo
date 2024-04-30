@@ -1,5 +1,5 @@
 
-
+//get all issues assigned to maintanance
 function fetchTotalIssues() {
     fetch('/total-issues')
     .then(response => {

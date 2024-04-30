@@ -1,6 +1,7 @@
 
 
-// Fetch reported issues from the server
+//get all tenants in the database, so that u can delete them
+
 function fetchUsers() {
     fetch('/get-users')
     .then(response => {
@@ -81,6 +82,9 @@ socket.on('total-issues-count', (totalCount) => {
     totalIssuesCountElement.textContent = totalCount;
 });
 
+
+
+//delete the Tenant
 function deleteIssue(Id) {
     // Send a DELETE request to the server to delete the issue
     fetch(`/delete-user/${Id}`, {

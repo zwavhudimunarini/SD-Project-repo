@@ -67,6 +67,8 @@ async function deleteStaff(staffId, listItemID) {
     }
 }
 
+
+//add staff
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('#addStaffForm');
     const addButton = document.getElementById('addStaff');
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function addStaff() {
         // Disable the submit button to prevent multiple submissions
         var addButton = document.getElementById('addStaff');
-        addButton.disabled = true;
+        //addButton.disabled = true;
 
         var name = document.getElementById("name").value;
         var email = document.getElementById("email").value;
@@ -103,6 +105,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Re-enable the submit button
             addButton.disabled = false;
             return; // Stop further execution if passwords don't match
+        }
+        if(password.length < 8) {
+            alert("Password too short");
         }
 
         var formData = {
@@ -131,22 +136,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 // If user is created successfully, redirect to admin page
                 form.reset();
                 alert(data.message);
-            } else if(data.error) {
+            } 
+            else if(data.error) {
                 // If there's any other response, show alert
                 alert(data.error);
             }
             // Re-enable the submit button after request completes
-            addButton.disabled = false;
+           // addButton.disabled = false;
         })
 
         .catch(error => {
             console.error('Error:', error);
-            if(password.length < 8) {
-                alert("Password too short");
-            }
+            
             
             // Re-enable the submit button after request completes
-            addButton.disabled = false;
+            //addButton.disabled = false;
         });
     }
 });

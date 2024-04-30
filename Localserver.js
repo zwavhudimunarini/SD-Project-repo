@@ -4,7 +4,7 @@ const socketIo = require('socket.io');
 const cors = require("cors");
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 //const { emit } = require('process');
 
 const app = express();
@@ -14,7 +14,8 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.static('src'));
-app.use(bodyParser.json());
+app.use(express.json());
+//app.use(bodyParser.json());
 
 
 
@@ -160,19 +161,19 @@ app.post('/login', async (request, response) => {
 
           if (staffRows.length > 0) {
               user = staffRows[0];
-              role = 'Administrator'; // Assuming the role is stored in the Staff table
+              role = 'administrator'; // Assuming the role is stored in the Staff table
           }
       }
 
       if (!user) {
         let [staffRows, staffFields] = await connection.execute(
-            'SELECT * FROM Staff_Maintanance WHERE BINARY email = ?',
+            'SELECT * FROM Staff_maintanance WHERE BINARY email = ?',
             [email]
         );
 
         if (staffRows.length > 0) {
             user = staffRows[0];
-            role = 'Maintanance'; // Assuming the role is stored in the Staff table
+            role = 'maintanance'; // Assuming the role is stored in the Staff table
         }
     }
 
@@ -227,7 +228,7 @@ app.post('/report-issue', async (request, response) => {
       connection.release();
 
       // Emit a new-issue event to notify staff members
-      io.emit('new-issue', issue);
+      
 
       response.status(201).json({ message: 'Issue reported successfully' });
   } catch (error) {
@@ -264,7 +265,7 @@ app.get('/reported-issues', async (req, res) => {
   }
 });
 
-//get users an an admin
+//get tenants
 app.get('/get-users', async (req, res) => {
     try {
         const pool = await createConnectionPool();
@@ -470,17 +471,17 @@ app.delete('/delete-user/:id', async (req, res) => {
 
 // Socket.IO Server-Side Code
 io.on('connection', async (socket) => {
-  console.log('Client connected');
   
   // Send total count of reported issues to the client
   const totalCount = await getTotalIssuesCount();
   socket.emit('total-issues-count', totalCount);
 });
 
-app.use(express.json());
 
+//administrator adds staff members
 app.post('/add-staff', async (request, response) => {
     const { name, email, password, confirmPassword, role } = request.body;
+    console.log(request.body);
 
     // Check if required fields are empty
     if (!name || !email || !password || !confirmPassword || !role ) {
@@ -498,24 +499,46 @@ app.post('/add-staff', async (request, response) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    if (role !== 'Administrator' && role !== 'Maintanance') {
-        return response.status(400).json({ error: 'Invalid role' });
-    }
+    
 
     try {
-        const pool = await createConnectionPool();
-        const connection = await pool.getConnection();
+        
+        if(role=="maintanance"){
 
-        const tableName = `Staff_${role}`;
+            const pool = await createConnectionPool();
+            const connection = await pool.getConnection();
 
-        await connection.execute(
-            `INSERT INTO ${tableName} (name, email, password) VALUES (?, ?, ?)`,
-            [name, email, hashedPassword]
-        );
+        
 
-        connection.release();
-        response.status(201).json({ message: `Staff member added successfully` });
+            await connection.execute(
+                `INSERT INTO staff_maintanance (name, email, password) VALUES (?, ?, ?)`,
+                [name, email, hashedPassword]
+            );
 
+            connection.release();
+            response.status(201).json({ message: `Staff member added successfully` });
+
+
+        }
+        else if(role=="administrator"){
+
+            const pool = await createConnectionPool();
+            const connection = await pool.getConnection();
+
+        
+
+            await connection.execute(
+                `INSERT INTO staff_administrator (name, email, password) VALUES (?, ?, ?)`,
+                [name, email, hashedPassword]
+            );
+
+            connection.release();
+            response.status(201).json({ message: `Staff member added successfully` });
+
+        }
+        else{
+            response.status(400).json({ error: 'unknown role' });
+        }
     } catch (error) {
         console.error(`Error adding staff: `, error);
         response.status(500).json({ error: 'Internal server error' });
