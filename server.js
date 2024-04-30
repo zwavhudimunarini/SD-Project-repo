@@ -214,68 +214,69 @@ app.post('/submitTenant', async (request, response) => {
   
 
 
-
-
-
-
-//checking if user is in the database
-
-app.post('/login', async (request, response) => {
+  app.post('/login', async (request, response) => {
     console.log('request body: ', request.body);
     const { email, password } = request.body;
 
     try {
-        const pool = await createConnectionPool(); // Connect to the database
-        const request = pool.request(); // Create a request object
-
+        const pool = await createConnectionPool();
+        const requestPool = pool.request();
+        
         let role = null;
         let user = null;
 
         // Check if the user exists in the Admin table
-        const adminResult = await request.input('email', sql.NVarChar, email)
-                                          .query('SELECT * FROM Admin WHERE email = @email');
+        let result = await requestPool.query(
+            'SELECT * FROM Admin WHERE email = @email',
+        );
+        requestPool.input('email', sql.NVarChar, email);
 
-        if (adminResult.recordset.length > 0) {
-            user = adminResult.recordset[0];
+        if (result.recordset.length > 0) {
+            user = result.recordset[0];
             role = 'Admin';
         }
 
-        // If the user is not found in the Admin table, check the Staff_Administrator table
-        // if (!user) {
-        //     const staffResult = await request.input('email', sql.NVarChar, email)
-        //                                       .query('SELECT * FROM staff_administrator WHERE email = @email');
+        // If the user is not found in the Admin table, check the staff_administrator table
+        if (!user) {
+            result = await requestPool.query(
+                'SELECT * FROM staff_administrator WHERE email = @email',
+            );
+            requestPool.input('email', sql.NVarChar, email);
 
-        //     if (staffResult.recordset.length > 0) {
-        //         user = staffResult.recordset[0];
-        //         role = 'administrator'; // Assuming the role is stored in the Staff table
-        //     }
-        // }
+            if (result.recordset.length > 0) {
+                user = result.recordset[0];
+                role = 'Administrator'; // Assuming the role is stored in the Staff table
+            }
+        }
 
-        // // If the user is still not found, check the Staff_maintanance table
-        // if (!user) {
-        //     const maintenanceResult = await request.input('email', sql.NVarChar, email)
-        //                                             .query('SELECT * FROM staff_maintanance WHERE email = @email');
+        // If the user is still not found, check the staff_maintanance table
+        if (!user) {
+            result = await requestPool.query(
+                'SELECT * FROM staff_maintanance WHERE email = @email',
+            );
+            requestPool.input('email', sql.NVarChar, email);
 
-        //     if (maintenanceResult.recordset.length > 0) {
-        //         user = maintenanceResult.recordset[0];
-        //         role = 'maintanance'; // Assuming the role is stored in the Staff table
-        //     }
-        // }
+            if (result.recordset.length > 0) {
+                user = result.recordset[0];
+                role = 'Maintanance'; // Assuming the role is stored in the Staff table
+            }
+        }
 
-        // // If the user is still not found, check the Tenant table
-        // if (!user) {
-        //     const tenantResult = await request.input('email', sql.NVarChar, email)
-        //                                       .query('SELECT * FROM Tenant WHERE email = @email');
+        // If the user is still not found, check the Tenant table
+        if (!user) {
+            result = await requestPool.query(
+                'SELECT * FROM Tenant WHERE email = @email',
+            );
+            requestPool.input('email', sql.NVarChar, email);
 
-        //     if (tenantResult.recordset.length > 0) {
-        //         user = tenantResult.recordset[0];
-        //         role = 'Tenant';
-        //     }
-        // }
+            if (result.recordset.length > 0) {
+                user = result.recordset[0];
+                role = 'Tenant';
+            }
+        }
 
         if (user) {
-            // Compare the hashed password with the provided password
-            const isPasswordMatch = password === user.password; // Assuming password is stored in plaintext
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
 
             if (isPasswordMatch) {
                 response.status(200).json({ success: true, name: user.name, role: role, message: 'Login successful' });
@@ -285,13 +286,89 @@ app.post('/login', async (request, response) => {
         } else {
             response.status(401).json({ success: false, message: 'Invalid email or password' });
         }
-        
-        await pool.close(); // Close the connection pool
+
     } catch (error) {
         console.error('Error querying database: ', error);
-        // response.status(500).json({ error: 'Internal server error' });
+        //response.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+
+//checking if user is in the database
+
+// app.post('/login', async (request, response) => {
+//     console.log('request body: ', request.body);
+//     const { email, password } = request.body;
+
+//     try {
+//         const pool = await createConnectionPool(); // Connect to the database
+//         const request = pool.request(); // Create a request object
+
+//         let role = null;
+//         let user = null;
+
+//         // Check if the user exists in the Admin table
+//         const adminResult = await request.input('email', sql.NVarChar, email)
+//                                           .query('SELECT * FROM Admin WHERE email = @email');
+
+//         if (adminResult.recordset.length > 0) {
+//             user = adminResult.recordset[0];
+//             role = 'Admin';
+//         }
+
+//         // If the user is not found in the Admin table, check the Staff_Administrator table
+//         if (!user) {
+//             const staffResult = await request.input('email', sql.NVarChar, email)
+//                                               .query('SELECT * FROM staff_administrator WHERE email = @email');
+
+//             if (staffResult.recordset.length > 0) {
+//                 user = staffResult.recordset[0];
+//                 role = 'administrator'; // Assuming the role is stored in the Staff table
+//             }
+//         }
+
+//         // If the user is still not found, check the Staff_maintanance table
+//         if (!user) {
+//             const maintenanceResult = await request.input('email', sql.NVarChar, email)
+//                                                     .query('SELECT * FROM staff_maintanance WHERE email = @email');
+
+//             if (maintenanceResult.recordset.length > 0) {
+//                 user = maintenanceResult.recordset[0];
+//                 role = 'maintanance'; // Assuming the role is stored in the Staff table
+//             }
+//         }
+
+//         // If the user is still not found, check the Tenant table
+//         if (!user) {
+//             const tenantResult = await request.input('email', sql.NVarChar, email)
+//                                               .query('SELECT * FROM Tenant WHERE email = @email');
+
+//             if (tenantResult.recordset.length > 0) {
+//                 user = tenantResult.recordset[0];
+//                 role = 'Tenant';
+//             }
+//         }
+
+//         if (user) {
+//             // Compare the hashed password with the provided password
+//             const isPasswordMatch = password === user.password; // Assuming password is stored in plaintext
+
+//             if (isPasswordMatch) {
+//                 response.status(200).json({ success: true, name: user.name, role: role, message: 'Login successful' });
+//             } else {
+//                 response.status(401).json({ success: false, message: 'Invalid email or password' });
+//             }
+//         } else {
+//             response.status(401).json({ success: false, message: 'Invalid email or password' });
+//         }
+        
+//         await pool.close(); // Close the connection pool
+//     } catch (error) {
+//         console.error('Error querying database: ', error);
+//         // response.status(500).json({ error: 'Internal server error' });
+//     }
+// });
 
 
 
