@@ -243,7 +243,7 @@ app.post('/login', async (request, response) => {
         // If the user is not found in the Admin table, check the Staff_Administrator table
         if (!user) {
             const staffResult = await request.input('email', sql.NVarChar, email)
-                                              .query('SELECT * FROM Staff_Administrator WHERE email = @email');
+                                              .query('SELECT * FROM staff_administrator WHERE email = @email');
 
             if (staffResult.recordset.length > 0) {
                 user = staffResult.recordset[0];
@@ -254,11 +254,11 @@ app.post('/login', async (request, response) => {
         // If the user is still not found, check the Staff_maintanance table
         if (!user) {
             const maintenanceResult = await request.input('email', sql.NVarChar, email)
-                                                    .query('SELECT * FROM Staff_maintanance WHERE email = @email');
+                                                    .query('SELECT * FROM staff_maintanance WHERE email = @email');
 
             if (maintenanceResult.recordset.length > 0) {
                 user = maintenanceResult.recordset[0];
-                role = 'maintenance'; // Assuming the role is stored in the Staff table
+                role = 'maintanance'; // Assuming the role is stored in the Staff table
             }
         }
 
@@ -358,7 +358,7 @@ app.get('/reported-issues', async (req, res) => {
         const pool = await sql.connect(config); // Connect to the database
         const request = pool.request(); // Create a request object
 
-        const sqlQuery = 'INSERT INTO MaintenanceIssues (issueAssigned) VALUES (@issue)'; // Using parameterized query
+        const sqlQuery = 'INSERT INTO maintenanceissues (issueAssigned) VALUES (@issue)'; // Using parameterized query
 
         // Execute the SQL query to insert the issue into MaintenanceIssues table
         await request.input('issue', sql.NVarChar, issue).query(sqlQuery);
@@ -381,7 +381,7 @@ app.get('/total-issues', async (req, res) => {
         const request = pool.request(); // Create a request object
   
         // Retrieve all issues from the MaintenanceIssues table
-        const result = await request.query('SELECT id, issueAssigned FROM MaintenanceIssues');
+        const result = await request.query('SELECT id, issueAssigned FROM maintenanceissues');
   
         // Extract ids and issues from the result
         const ids = result.recordset.map(row => row.id);
@@ -407,7 +407,7 @@ app.post('/update-feedback/:id', async (req, res) => {
         const pool = await sql.connect(config); // Connect to the database
         const request = pool.request(); // Create a request object
 
-        const sqlQuery = 'UPDATE MaintenanceIssues SET feedback = @feedback WHERE id = @issueId'; // Using parameterized query
+        const sqlQuery = 'UPDATE maintenanceissues SET feedback = @feedback WHERE id = @issueId'; // Using parameterized query
 
         // Execute the SQL query to update feedback for the specified issue
         await request.input('feedback', sql.NVarChar, feedback)
@@ -432,7 +432,7 @@ app.get('/get-maintenance-feedback', async (req, res) => {
         const request = pool.request(); // Create a request object
 
         // Retrieve all issues with feedback from the MaintenanceIssues table
-        const result = await request.query('SELECT id, issueAssigned, feedback FROM MaintenanceIssues WHERE feedback IS NOT NULL');
+        const result = await request.query('SELECT id, issueAssigned, feedback FROM maintenanceissues WHERE feedback IS NOT NULL');
 
         // Extract ids, issueAssigneds, and feedbacks from the result
         const ids = result.recordset.map(row => row.id);
@@ -558,10 +558,10 @@ app.get('/all-staff', async (req, res) => {
         const request = pool.request(); // Create a request object
 
         // Query Administrator table to get all staff members
-        const adminResults = await request.query('SELECT id, name, email FROM Staff_Administrator');
+        const adminResults = await request.query('SELECT id, name, email FROM staff_administrator');
 
         // Query Maintenance table to get all staff members
-        const maintenanceResults = await request.query('SELECT id, name, email FROM Staff_Maintenance');
+        const maintenanceResults = await request.query('SELECT id, name, email FROM staff_maintanance');
 
         // Combine results from both tables
         const allStaffMembers = adminResults.recordset.concat(maintenanceResults.recordset);
@@ -585,11 +585,11 @@ app.get('/search/staff', async (req, res) => {
 
         // Query Administrator table to search for staff members
         const adminResults = await request.input('searchQuery', sql.NVarChar, `%${searchQuery}%`)
-                                          .query('SELECT id, name, email FROM Staff_Administrator WHERE name LIKE @searchQuery OR email LIKE @searchQuery');
+                                          .query('SELECT id, name, email FROM staff_administrator WHERE name LIKE @searchQuery OR email LIKE @searchQuery');
 
         // Query Maintenance table to search for staff members
         const maintenanceResults = await request.input('searchQuery', sql.NVarChar, `%${searchQuery}%`)
-                                                .query('SELECT id, name, email FROM Staff_Maintenance WHERE name LIKE @searchQuery OR email LIKE @searchQuery');
+                                                .query('SELECT id, name, email FROM staff_maintanance WHERE name LIKE @searchQuery OR email LIKE @searchQuery');
 
         // Combine results from both tables
         const results = adminResults.recordset.concat(maintenanceResults.recordset);
@@ -617,15 +617,15 @@ app.delete('/staff/:id', async (req, res) => {
 
         // Check if the staff member is in the Administrators table
         const adminResult = await request.input('staffId', sql.Int, staffId)
-                                         .query('SELECT id FROM Staff_Administrator WHERE id = @staffId');
+                                         .query('SELECT id FROM staff_administrator WHERE id = @staffId');
         if (adminResult.recordset.length > 0) {
-            tableName = 'Staff_Administrator';
+            tableName = 'staff_administrator';
         } else {
             // Check if the staff member is in the Maintenance table
             const maintenanceResult = await request.input('staffId', sql.Int, staffId)
-                                                  .query('SELECT id FROM Staff_Maintenance WHERE id = @staffId');
+                                                  .query('SELECT id FROM staff_maintanance WHERE id = @staffId');
             if (maintenanceResult.recordset.length > 0) {
-                tableName = 'Staff_Maintenance';
+                tableName = 'staff_maintanance';
             } else {
                 // If the staff member is not found in any table, return an error
                 return res.status(404).json({ error: 'Staff member not found' });
