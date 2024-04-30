@@ -574,6 +574,8 @@ app.get('/search/staff', async(req, res) => {
     }
 });
 
+
+//delete staf members as an admin
 app.delete('/staff/:id', async(req, res) => {
     try {
         const staffId = req.params.id;
@@ -590,9 +592,9 @@ app.delete('/staff/:id', async(req, res) => {
             tableName = 'Staff_Administrator';
         } else {
             // Check if the staff member is in the Maintenance table
-            const [maintenanceRows] = await connection.execute(`SELECT id FROM Staff_Maintenance WHERE id = ?`, [staffId]);
+            const [maintenanceRows] = await connection.execute(`SELECT id FROM staff_maintanance WHERE id = ?`, [staffId]);
             if (maintenanceRows.length > 0) {
-                tableName = 'Staff_Maintenance';
+                tableName = 'Staff_Maintanance';
             } else {
                 // If the staff member is not found in any table, return an error
                 return res.status(404).json({ error: 'Staff member not found' });

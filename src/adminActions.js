@@ -190,3 +190,5 @@ async function displayStaffList() {
 }
 
 
+
+module.exports={ deleteStaff};

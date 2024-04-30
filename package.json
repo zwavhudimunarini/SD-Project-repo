@@ -4,7 +4,9 @@
 
   "scripts": {
 
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "jest --coverage"
+
 
   },
 
@@ -26,7 +28,8 @@
 
     "socket.io": "^4.7.5"
 
-  },
+  }
+  ,
 
   "devDependencies": {
 

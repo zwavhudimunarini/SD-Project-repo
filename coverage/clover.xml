@@ -1,49 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1713785688257" clover="3.2.0">
-  <project timestamp="1713785688257" name="All files">
-    <metrics statements="40" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="7" coveredmethods="0" elements="57" coveredelements="1" complexity="0" loc="40" ncloc="40" packages="1" files="1" classes="1"/>
-    <file name="signup.js" path="C:\Users\Khodani\OneDrive\Documents\SD-Project-repo\src\signup.js">
-      <metrics statements="40" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="7" coveredmethods="0"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="0" type="stmt"/>
-      <line num="3" count="0" type="stmt"/>
-      <line num="5" count="0" type="stmt"/>
-      <line num="6" count="0" type="stmt"/>
-      <line num="9" count="0" type="stmt"/>
-      <line num="14" count="0" type="stmt"/>
-      <line num="16" count="0" type="stmt"/>
-      <line num="17" count="0" type="stmt"/>
-      <line num="18" count="0" type="stmt"/>
-      <line num="19" count="0" type="stmt"/>
-      <line num="20" count="0" type="stmt"/>
-      <line num="23" count="0" type="stmt"/>
-      <line num="24" count="0" type="stmt"/>
-      <line num="25" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="26" count="0" type="stmt"/>
-      <line num="27" count="0" type="stmt"/>
-      <line num="31" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="32" count="0" type="stmt"/>
-      <line num="34" count="0" type="stmt"/>
-      <line num="35" count="0" type="stmt"/>
-      <line num="39" count="0" type="stmt"/>
-      <line num="49" count="0" type="stmt"/>
-      <line num="57" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="58" count="0" type="stmt"/>
+<coverage generated="1714491450371" clover="3.2.0">
+  <project timestamp="1714491450371" name="All files">
+    <metrics statements="138" coveredstatements="37" conditionals="38" coveredconditionals="11" methods="31" coveredmethods="8" elements="207" coveredelements="56" complexity="0" loc="138" ncloc="138" packages="1" files="3" classes="3"/>
+    <file name="addNewTenant.js" path="C:\Users\Khodani\OneDrive\Documents\SD-Project-repo-1\src\addNewTenant.js">
+      <metrics statements="28" coveredstatements="18" conditionals="10" coveredconditionals="6" methods="6" coveredmethods="3"/>
+      <line num="5" count="5" type="stmt"/>
+      <line num="6" count="5" type="stmt"/>
+      <line num="7" count="5" type="stmt"/>
+      <line num="8" count="5" type="stmt"/>
+      <line num="10" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="16" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="17" count="2" type="stmt"/>
+      <line num="18" count="2" type="stmt"/>
+      <line num="22" count="2" type="stmt"/>
+      <line num="32" count="2" type="stmt"/>
+      <line num="40" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="41" count="0" type="stmt"/>
+      <line num="43" count="2" type="stmt"/>
+      <line num="46" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="48" count="2" type="stmt"/>
+      <line num="51" count="0" type="stmt"/>
+      <line num="57" count="0" type="stmt"/>
+      <line num="58" count="0" type="cond" truecount="0" falsecount="2"/>
       <line num="60" count="0" type="stmt"/>
-      <line num="63" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="65" count="0" type="stmt"/>
-      <line num="68" count="0" type="stmt"/>
-      <line num="71" count="0" type="stmt"/>
+      <line num="68" count="1" type="stmt"/>
+      <line num="69" count="0" type="stmt"/>
+      <line num="70" count="0" type="stmt"/>
+      <line num="72" count="0" type="stmt"/>
+      <line num="73" count="0" type="stmt"/>
+      <line num="76" count="0" type="stmt"/>
+      <line num="83" count="1" type="stmt"/>
+    </file>
+    <file name="adminActions.js" path="C:\Users\Khodani\OneDrive\Documents\SD-Project-repo-1\src\adminActions.js">
+      <metrics statements="78" coveredstatements="12" conditionals="24" coveredconditionals="4" methods="15" coveredmethods="2"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="3" count="0" type="stmt"/>
+      <line num="4" count="0" type="stmt"/>
+      <line num="6" count="0" type="stmt"/>
+      <line num="8" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="9" count="0" type="stmt"/>
+      <line num="11" count="0" type="stmt"/>
+      <line num="14" count="0" type="stmt"/>
+      <line num="15" count="0" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="18" count="0" type="stmt"/>
+      <line num="24" count="0" type="stmt"/>
+      <line num="28" count="0" type="stmt"/>
+      <line num="35" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="36" count="2" type="stmt"/>
+      <line num="38" count="2" type="stmt"/>
+      <line num="42" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="44" count="1" type="stmt"/>
+      <line num="45" count="1" type="stmt"/>
+      <line num="47" count="0" type="stmt"/>
+      <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="49" count="0" type="stmt"/>
+      <line num="51" count="0" type="stmt"/>
+      <line num="53" count="0" type="stmt"/>
+      <line num="54" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="55" count="0" type="stmt"/>
+      <line num="56" count="0" type="stmt"/>
+      <line num="60" count="1" type="stmt"/>
+      <line num="64" count="1" type="stmt"/>
+      <line num="72" count="1" type="stmt"/>
+      <line num="73" count="0" type="stmt"/>
       <line num="74" count="0" type="stmt"/>
-      <line num="75" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="76" count="0" type="stmt"/>
       <line num="77" count="0" type="stmt"/>
-      <line num="81" count="0" type="stmt"/>
+      <line num="79" count="0" type="stmt"/>
+      <line num="84" count="0" type="stmt"/>
+      <line num="87" count="0" type="stmt"/>
+      <line num="88" count="0" type="stmt"/>
       <line num="89" count="0" type="stmt"/>
       <line num="90" count="0" type="stmt"/>
-      <line num="91" count="0" type="stmt"/>
-      <line num="92" count="0" type="stmt"/>
       <line num="93" count="0" type="stmt"/>
       <line num="96" count="0" type="stmt"/>
+      <line num="97" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="98" count="0" type="stmt"/>
+      <line num="99" count="0" type="stmt"/>
+      <line num="103" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="104" count="0" type="stmt"/>
+      <line num="106" count="0" type="stmt"/>
+      <line num="107" count="0" type="stmt"/>
+      <line num="109" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="110" count="0" type="stmt"/>
+      <line num="113" count="0" type="stmt"/>
+      <line num="121" count="0" type="stmt"/>
+      <line num="129" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="130" count="0" type="stmt"/>
+      <line num="132" count="0" type="stmt"/>
+      <line num="135" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="137" count="0" type="stmt"/>
+      <line num="138" count="0" type="stmt"/>
+      <line num="140" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="142" count="0" type="stmt"/>
+      <line num="149" count="0" type="stmt"/>
+      <line num="158" count="1" type="stmt"/>
+      <line num="159" count="0" type="stmt"/>
+      <line num="163" count="0" type="stmt"/>
+      <line num="164" count="0" type="stmt"/>
+      <line num="165" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="166" count="0" type="stmt"/>
+      <line num="168" count="0" type="stmt"/>
+      <line num="169" count="0" type="stmt"/>
+      <line num="170" count="0" type="stmt"/>
+      <line num="172" count="0" type="stmt"/>
+      <line num="173" count="0" type="stmt"/>
+      <line num="174" count="0" type="stmt"/>
+      <line num="176" count="0" type="stmt"/>
+      <line num="184" count="0" type="stmt"/>
+      <line num="187" count="0" type="stmt"/>
+      <line num="194" count="1" type="stmt"/>
+    </file>
+    <file name="deleteUsers.js" path="C:\Users\Khodani\OneDrive\Documents\SD-Project-repo-1\src\deleteUsers.js">
+      <metrics statements="32" coveredstatements="7" conditionals="4" coveredconditionals="1" methods="10" coveredmethods="3"/>
+      <line num="6" count="0" type="stmt"/>
+      <line num="8" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="9" count="0" type="stmt"/>
+      <line num="11" count="0" type="stmt"/>
+      <line num="15" count="0" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="19" count="0" type="stmt"/>
+      <line num="22" count="0" type="stmt"/>
+      <line num="28" count="0" type="stmt"/>
+      <line num="31" count="0" type="stmt"/>
+      <line num="34" count="0" type="stmt"/>
+      <line num="35" count="0" type="stmt"/>
+      <line num="36" count="0" type="stmt"/>
+      <line num="37" count="0" type="stmt"/>
+      <line num="40" count="0" type="stmt"/>
+      <line num="49" count="0" type="stmt"/>
+      <line num="50" count="0" type="stmt"/>
+      <line num="51" count="0" type="stmt"/>
+      <line num="54" count="0" type="stmt"/>
+      <line num="56" count="0" type="stmt"/>
+      <line num="57" count="0" type="stmt"/>
+      <line num="60" count="0" type="stmt"/>
+      <line num="64" count="0" type="stmt"/>
+      <line num="67" count="0" type="stmt"/>
+      <line num="90" count="3" type="stmt"/>
+      <line num="94" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="96" count="1" type="stmt"/>
+      <line num="97" count="1" type="stmt"/>
+      <line num="98" count="1" type="stmt"/>
+      <line num="100" count="0" type="stmt"/>
+      <line num="104" count="1" type="stmt"/>
+      <line num="109" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>

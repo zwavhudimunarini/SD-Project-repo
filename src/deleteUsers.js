@@ -74,13 +74,13 @@ function updateNotificationsWidget(names, emails, ids) {
 
 
 // Initialize Socket.IO Client-Side Code
-const socket = io();
+// const socket = io();
 
-// Update total issues count when received from the server
-socket.on('total-issues-count', (totalCount) => {
-    const totalIssuesCountElement = document.getElementById('total-issues-count');
-    totalIssuesCountElement.textContent = totalCount;
-});
+// // Update total issues count when received from the server
+// socket.on('total-issues-count', (totalCount) => {
+//     const totalIssuesCountElement = document.getElementById('total-issues-count');
+//     totalIssuesCountElement.textContent = totalCount;
+// });
 
 
 
@@ -104,3 +104,6 @@ function deleteIssue(Id) {
         console.error('Error deleting issue:', error);
     });
 }
+
+//module.exports={ fetchUsers };
+module.exports = { deleteIssue };

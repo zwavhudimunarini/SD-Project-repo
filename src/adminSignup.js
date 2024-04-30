@@ -28,6 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
             submitButton.disabled = false;
             return; // Stop further execution if passwords don't match
         }
+    
+        if(password.length<8){
+            alert("Password too short");
+            return;
+        }
 
         // Prepare the data to be sent in the request body
         var formData = {
@@ -66,10 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => {
             console.error('Error:', error);
-            if(password.length<8){
-
-                alert("Password too short");
-            }
+           
             
             // Re-enable the submit button after request completes
             submitButton.disabled = false;
@@ -90,3 +92,4 @@ function onSignIn(googleUser) {
     window.location.href = "login.html";
 }
 
+module.exports={submitForm};
