@@ -242,11 +242,13 @@ app.post('/login-tenant', async (request, response) => {
 
             if (isPasswordMatch) {
                 response.status(200).json({ success: true, name: user.name, role: role, message: 'Login successful' });
-            } else {
+            } 
+            else {
                 response.status(401).json({ success: false, message: 'Invalid email or password' });
             }
-        } else {
-            response.status(401).json({ success: false, message: 'Invalid email or password' });
+        } 
+        else {
+            response.status(401).json({ success: false, message: 'Invalid user' });
         }
 
     } catch (error) {

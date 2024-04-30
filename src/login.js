@@ -41,18 +41,21 @@ function getUserInfo(){
         else {
             throw new Error('Network response was not ok');
         }
-    }).then(data => {
+    })
+    .then(data => {
         if (data.success) {
+
+            window.location.href = 'admin.html?name=' + data.name;
             //check if password matches
-            if(data.role=="Admin"){
+            // if(data.role=="Admin"){
 
-                window.location.href = 'admin.html?name=' + data.name;
-            }
-            else {
+            //     window.location.href = 'admin.html?name=' + data.name;
+            // }
+            // else {
 
-                window.location.href="login.html"
-                alert('Unkown role');
-            }
+            //     window.location.href="login.html"
+            //     alert('Unkown role');
+            // }
             
             // // Redirect based on role
             // switch(data.role) {
@@ -74,11 +77,12 @@ function getUserInfo(){
             //         alert('Unknown role');
             // }
         }
-         else {
+        else {
 
             window.location.href="login.html"
             alert('Invalid email or password');
-         }
+        }
+        
     })
     
     .catch(error => {
@@ -126,19 +130,22 @@ function getUserInfo(){
         else {
             throw new Error('Network response was not ok');
         }
-    }).then(data => {
+    })
+    .then(data => {
         if (data.success) {
+
+            window.location.href = 'ResidentHomepage.html'
             //check if password matches
 
-            if(data.role=="Tenant"){
+            // if(data.role=="Tenant"){
 
-                window.location.href = 'ResidentHomepage.html?name=' + data.name;
-            }
-            else {
+            //     window.location.href = 'ResidentHomepage.html'
+            // }
+            // else {
 
-                window.location.href="login.html"
-                alert('Unkown role');
-            }
+            //     window.location.href="login.html"
+            //     alert('Unkown role');
+            // }
             
             // Redirect based on role
             // switch(data.role) {
@@ -160,11 +167,12 @@ function getUserInfo(){
             //         alert('Unknown role');
             // }
         }
-         else {
+         
+        else {
 
             window.location.href="login.html"
             alert('Invalid email or password');
-         }
+        }
     })
     
     .catch(error => {
@@ -212,17 +220,19 @@ function getUserInfo(){
         }
     }).then(data => {
         if (data.success) {
+
+            window.location.href = 'maintananceStaff.html';
             //check if password matches
 
-            if(data.role=="maintanance"){
+            // if(data.role=="maintanance"){
 
-                window.location.href = 'maintananceStaff.html?name='+ data.name;
-            }
-            else {
+            //     window.location.href = 'maintananceStaff.html?name='+ data.name;
+            // }
+            // else {
 
-                window.location.href="login.html"
-                alert('Unkown role');
-            }
+            //     window.location.href="login.html"
+            //     alert('Unkown role');
+            // }
             
             // // Redirect based on role
             // switch(data.role) {
@@ -244,11 +254,12 @@ function getUserInfo(){
             //         alert('Unknown role');
             // }
         }
-         else {
+         
+        else {
 
             window.location.href="login.html"
             alert('Invalid email or password');
-         }
+        }
     })
     
     .catch(error => {
@@ -296,18 +307,20 @@ function getUserInfo(){
         }
     }).then(data => {
         if (data.success) {
+
+            window.location.href = 'administrator.html' ;
             //check if password matches
             
             // Redirect based on role
-            if(data.role=="administrator"){
+            // if(data.role=="administrator"){
 
-                window.location.href = 'administrator.html?name=' + data.name;
-            }
-            else {
+            //     window.location.href = 'administrator.html?name=' + data.name;
+            // }
+            // else {
 
-                window.location.href="login.html"
-                alert('Unkown role');
-             }
+            //     window.location.href="login.html"
+            //     alert('Unkown role');
+            //  }
             // switch(data.role) {
             //     case 'Tenant':
             //         //dont forget to change to tenant.html after it has been designed
@@ -327,11 +340,12 @@ function getUserInfo(){
             //         alert('Unknown role');
             // }
         }
-         else {
+         
+        else {
 
             window.location.href="login.html"
             alert('Invalid email or password');
-         }
+        }
     })
     
     .catch(error => {
