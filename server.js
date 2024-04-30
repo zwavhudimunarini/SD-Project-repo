@@ -241,37 +241,37 @@ app.post('/login', async (request, response) => {
         }
 
         // If the user is not found in the Admin table, check the Staff_Administrator table
-        if (!user) {
-            const staffResult = await request.input('email', sql.NVarChar, email)
-                                              .query('SELECT * FROM staff_administrator WHERE email = @email');
+        // if (!user) {
+        //     const staffResult = await request.input('email', sql.NVarChar, email)
+        //                                       .query('SELECT * FROM staff_administrator WHERE email = @email');
 
-            if (staffResult.recordset.length > 0) {
-                user = staffResult.recordset[0];
-                role = 'administrator'; // Assuming the role is stored in the Staff table
-            }
-        }
+        //     if (staffResult.recordset.length > 0) {
+        //         user = staffResult.recordset[0];
+        //         role = 'administrator'; // Assuming the role is stored in the Staff table
+        //     }
+        // }
 
-        // If the user is still not found, check the Staff_maintanance table
-        if (!user) {
-            const maintenanceResult = await request.input('email', sql.NVarChar, email)
-                                                    .query('SELECT * FROM staff_maintanance WHERE email = @email');
+        // // If the user is still not found, check the Staff_maintanance table
+        // if (!user) {
+        //     const maintenanceResult = await request.input('email', sql.NVarChar, email)
+        //                                             .query('SELECT * FROM staff_maintanance WHERE email = @email');
 
-            if (maintenanceResult.recordset.length > 0) {
-                user = maintenanceResult.recordset[0];
-                role = 'maintanance'; // Assuming the role is stored in the Staff table
-            }
-        }
+        //     if (maintenanceResult.recordset.length > 0) {
+        //         user = maintenanceResult.recordset[0];
+        //         role = 'maintanance'; // Assuming the role is stored in the Staff table
+        //     }
+        // }
 
-        // If the user is still not found, check the Tenant table
-        if (!user) {
-            const tenantResult = await request.input('email', sql.NVarChar, email)
-                                              .query('SELECT * FROM Tenant WHERE email = @email');
+        // // If the user is still not found, check the Tenant table
+        // if (!user) {
+        //     const tenantResult = await request.input('email', sql.NVarChar, email)
+        //                                       .query('SELECT * FROM Tenant WHERE email = @email');
 
-            if (tenantResult.recordset.length > 0) {
-                user = tenantResult.recordset[0];
-                role = 'Tenant';
-            }
-        }
+        //     if (tenantResult.recordset.length > 0) {
+        //         user = tenantResult.recordset[0];
+        //         role = 'Tenant';
+        //     }
+        // }
 
         if (user) {
             // Compare the hashed password with the provided password

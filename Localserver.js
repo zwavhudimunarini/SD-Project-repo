@@ -131,85 +131,84 @@ app.post('/submitTenant', async (request, response) => {
 //chek if user is in the database when trying to login
 
 app.post('/login', async (request, response) => {
+  console.log('request body: ', request.body);
+  const { email, password } = request.body;
 
-    console.log('request body: ', request.body);
-    const { email, password } = request.body;
+  try {
+      const pool = await createConnectionPool();
+      const connection = await pool.getConnection();
 
-    try {
-        const pool = await createConnectionPool();
-        const connection = await pool.getConnection();
+      let role = null;
+      let user = null;
 
-        let role = null;
-        let user = null;
+      // Check if the user exists in the Admin table
+      let [adminRows, adminFields] = await connection.execute(
+          'SELECT * FROM Admin WHERE BINARY email = ?',
+          [email]
+      );
 
-        // Check if the user exists in the Admin table
-        let [adminRows, adminFields] = await connection.execute(
-            'SELECT * FROM Admin WHERE BINARY email = ?',
+      if (adminRows.length > 0) {
+          user = adminRows[0];
+          role = 'Admin';
+      }
+
+      // If the user is not found in the Admin table, check the Staff table
+      if (!user) {
+          let [staffRows, staffFields] = await connection.execute(
+              'SELECT * FROM Staff_Administrator WHERE BINARY email = ?',
+              [email]
+          );
+
+          if (staffRows.length > 0) {
+              user = staffRows[0];
+              role = 'administrator'; // Assuming the role is stored in the Staff table
+          }
+      }
+
+      if (!user) {
+        let [staffRows, staffFields] = await connection.execute(
+            'SELECT * FROM Staff_maintanance WHERE BINARY email = ?',
             [email]
         );
 
-        if (adminRows.length > 0) {
-            user = adminRows[0];
-            role = 'Admin';
+        if (staffRows.length > 0) {
+            user = staffRows[0];
+            role = 'maintanance'; // Assuming the role is stored in the Staff table
         }
-
-        // // If the user is not found in the Admin table, check the Staff table
-        // if (!user) {
-        //     let [staffRows, staffFields] = await connection.execute(
-        //         'SELECT * FROM Staff_Administrator WHERE BINARY email = ?',
-        //         [email]
-        //     );
-
-        //     if (staffRows.length > 0) {
-        //         user = staffRows[0];
-        //         role = 'administrator'; // Assuming the role is stored in the Staff table
-        //     }
-        // }
-
-        // if (!user) {
-        //     let [staffRows, staffFields] = await connection.execute(
-        //         'SELECT * FROM Staff_maintanance WHERE BINARY email = ?',
-        //         [email]
-        //     );
-
-        //     if (staffRows.length > 0) {
-        //         user = staffRows[0];
-        //         role = 'maintanance'; // Assuming the role is stored in the Staff table
-        //     }
-        // }
-
-        // // If the user is still not found, check the Tenant table
-        // if (!user) {
-        //     let [tenantRows, tenantFields] = await connection.execute(
-        //         'SELECT * FROM Tenant WHERE BINARY email = ?',
-        //         [email]
-        //     );
-
-        //     if (tenantRows.length > 0) {
-        //         user = tenantRows[0];
-        //         role = 'Tenant';
-
-        //     }
-        // }
-
-        connection.release();
-
-        if (user) {
-            const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-            if (isPasswordMatch) {
-                response.status(200).json({ success: true, name: user.name, role: role, message: 'Login successful' });
-            } else {
-                response.status(401).json({ success: false, message: 'Invalid email or password' });
-            }
-        } else {
-            response.status(401).json({ success: false, message: 'Invalid email or password' });
-        }
-
-    } catch (error) {
-        console.error('Error querying database: ', error);
-        //response.status(500).json({ error: 'Internal server error' });
     }
+
+      // If the user is still not found, check the Tenant table
+      if (!user) {
+          let [tenantRows, tenantFields] = await connection.execute(
+              'SELECT * FROM Tenant WHERE BINARY email = ?',
+              [email]
+          );
+
+          if (tenantRows.length > 0) {
+              user = tenantRows[0];
+              role = 'Tenant';
+              
+          }
+      }
+
+      connection.release();
+
+      if (user) {
+          const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+          if (isPasswordMatch) {
+              response.status(200).json({ success: true, name: user.name, role: role, message: 'Login successful' });
+          } else {
+              response.status(401).json({ success: false, message: 'Invalid email or password' });
+          }
+      } else {
+          response.status(401).json({ success: false, message: 'Invalid email or password' });
+      }
+
+  } catch (error) {
+      console.error('Error querying database: ', error);
+      //response.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Handle Issue Reporting Endpoint
