@@ -227,6 +227,7 @@ app.post('/submitTenant', async (request, response) => {
 
         // Check if the user exists in the Admin table
         requestPool.input('email', sql.NVarChar, email);
+
         let result = await requestPool.query(
             'SELECT * FROM Admin WHERE email = @email',
         );
@@ -239,7 +240,7 @@ app.post('/submitTenant', async (request, response) => {
 
         // If the user is not found in the Admin table, check the staff_administrator table
         else if (user==null) {
-            requestPool.input('email', sql.NVarChar, email);
+            //requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM staff_administrator WHERE email = @email',
             );
@@ -253,7 +254,7 @@ app.post('/submitTenant', async (request, response) => {
 
         // If the user is still not found, check the staff_maintanance table
         else if (user==null) {
-            requestPool.input('email', sql.NVarChar, email);
+            //requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM staff_maintanance WHERE email = @email',
             );
@@ -267,7 +268,7 @@ app.post('/submitTenant', async (request, response) => {
 
         // If the user is still not found, check the Tenant table
         else if (user==null) {
-            requestPool.input('email', sql.NVarChar, email);
+            //requestPool.input('email', sql.NVarChar, email);
             result = await requestPool.query(
                 'SELECT * FROM Tenant WHERE email = @email',
             );
