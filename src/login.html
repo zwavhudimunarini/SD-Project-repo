@@ -191,34 +191,34 @@
             <button id="openCameraBtn" style="width: 100px; margin: 10px;">Open Camera</button>
             <video id="cameraStream" autoplay style="display: none;"></video>
     <script>
-        const openCameraBtn = document.getElementById('openCameraBtn');
-        const cameraStream = document.getElementById('cameraStream');
+        // const openCameraBtn = document.getElementById('openCameraBtn');
+        // const cameraStream = document.getElementById('cameraStream');
     
-        openCameraBtn.addEventListener('click', async () => {
-            event.preventDefault();
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            cameraStream.srcObject = stream;
-            cameraStream.style.display = 'block';
-          } catch (error) {
-            console.error('Error accessing the camera:', error);
-          }
-        });
+        // openCameraBtn.addEventListener('click', async () => {
+        //     event.preventDefault();
+        //   try {
+        //     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        //     cameraStream.srcObject = stream;
+        //     cameraStream.style.display = 'block';
+        //   } catch (error) {
+        //     console.error('Error accessing the camera:', error);
+        //   }
+        // });
 
-          // Close camera when clicking anywhere on the screen
-          document.addEventListener('click', (event) => {
-                    if (!cameraStream.contains(event.target)) {
-                        // Clicked outside the camera element or its child elements
-                        closeCamera();
-                    }
-                });
+        //   // Close camera when clicking anywhere on the screen
+        //   document.addEventListener('click', (event) => {
+        //             if (!cameraStream.contains(event.target)) {
+        //                 // Clicked outside the camera element or its child elements
+        //                 closeCamera();
+        //             }
+        //         });
 
-                function closeCamera() {
-                    const tracks = cameraStream.srcObject.getTracks();
-                    tracks.forEach(track => track.stop());
-                    cameraStream.srcObject = null;
-                    cameraStream.style.display = 'none';
-                }
+        //         function closeCamera() {
+        //             const tracks = cameraStream.srcObject.getTracks();
+        //             tracks.forEach(track => track.stop());
+        //             cameraStream.srcObject = null;
+        //             cameraStream.style.display = 'none';
+        //         }
       </script>
           
             <button  class="submitButton" onclick="getUserInfo()">LOGIN</button>
