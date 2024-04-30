@@ -225,7 +225,7 @@ app.post('/login', async (request, response) => {
     const { email, password } = request.body;
 
     try {
-        const pool = await sql.connect(config); // Connect to the database
+        const pool = await createConnectionPool(); // Connect to the database
         const request = pool.request(); // Create a request object
 
         let role = null;
