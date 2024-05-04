@@ -4,8 +4,8 @@
 
   "scripts": {
 
-    "start": "node server.js",
-    "test": "jest"
+    "start": "node server.js"
+    
 
 
   },
