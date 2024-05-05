@@ -663,6 +663,98 @@ app.get('/all-staff', async (req, res) => {
     }
 });
 
+
+
+//sprint 3
+
+//get all tenants so that when u issue a fine u can select who the fine is being issued to 
+app.get('/recipients', async (req, res) => {
+    try {
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+  
+        // Retrieve name and id of recipients from the database
+        const [rows] = await connection.execute('SELECT id, name FROM Tenant');
+        
+        // Extract name and id from the rows
+        const recipients = rows.map(row => ({
+            id: row.id,
+            name: row.name
+        }));
+        
+        connection.release();
+        
+        // Send the list of recipients to the client
+        res.status(200).json(recipients);
+    } catch (error) {
+        console.error('Error fetching recipients from database:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+//send the form to the database
+
+app.post('/submit-form', async (request, response) => {
+    const { title, description, amount, selectedRecipientId, action } = request.body;
+    console.log(request.body);
+    try {
+        
+
+        // Assuming you have already established a MySQL connection pool named 'pool'
+
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+        
+        await connection.execute(
+            'INSERT INTO fines (title, description, amount, action, tenantID) VALUES (?, ?, ?, ?, ?)',
+            [title, description, amount, action, selectedRecipientId]
+        );
+        connection.release();
+        response.status(201).json({ message: 'User created successfully' });
+
+
+        
+    } 
+    catch (error) {
+        console.error('Error inserting form data into database:', error);
+        response.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// //get all fines from the database
+app.get('/get-fines', async (req, res) => {
+    try {
+        const pool = await createConnectionPool(); // Assuming you have a function to create a connection pool
+        const connection = await pool.getConnection();
+
+        // Retrieve fines with tenant names from the database
+        const [rows] = await connection.execute('SELECT fines.id, fines.title, fines.description, fines.amount, fines.action,fines.created_at, tenant.name FROM fines INNER JOIN tenant ON fines.tenantID = tenant.id');
+
+        connection.release();
+
+        // Extract data from rows
+        const finesData = rows.map(row => ({
+            id: row.id,
+            title: row.title,
+            description: row.description,
+            amount: row.amount,
+            action: row.action,
+            tenantName: row.name // Assuming 'name' is the column name for tenant names
+            
+        }));
+
+        // Send fines data to the client
+        res.status(200).json(finesData);
+
+    } catch (error) {
+        console.error('Error fetching fines:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+
 server.listen(port, () => {
     console.log(`Server started at http://localhost:${port}`);
 });
