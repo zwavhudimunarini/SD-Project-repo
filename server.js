@@ -5,6 +5,7 @@ const cors = require("cors");
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
 const path = require('path');
+const session = require('express-session');
 //const bodyParser = require('body-parser');
 //const { emit } = require('process');
 
@@ -17,6 +18,12 @@ app.use(cors());
 app.use(express.static('src'));
 app.use(express.json());
 //app.use(bodyParser.json());
+
+app.use(session({
+    secret: 'Vhanarini064', // Secret key for session encryption (replace with your own secret)
+    resave: false,
+    saveUninitialized: false
+}));
 
 
 
@@ -218,6 +225,12 @@ app.post('/login', async (request, response) => {
           if (tenantRows.length > 0) {
               user = tenantRows[0];
               role = 'Tenant';
+
+               // Replace 'the_tenant_id_here' with the actual tenant ID
+    
+              const tenantId = tenantRows[0].id;
+              request.session.tenantId = tenantId; // Assuming 'id' is the column name for the tenant's ID
+              console.log('Tenant ID:', tenantId);
               
           }
       }
@@ -753,6 +766,64 @@ app.get('/get-fines', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+//get all fines as a tenant
+app.get('/get-fines-tenant', async (req, res) => {
+    try {
+        // Retrieve the tenant's ID from the session
+        const tenantId = req.session.tenantId;
+
+        // Assuming you have a function to create a connection pool
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+
+        // Retrieve fines with tenant names from the database, filtered by tenant ID
+        const [rows] = await connection.execute('SELECT fines.id, fines.title, fines.description, fines.amount, fines.action, fines.paidAmount FROM fines  WHERE fines.tenantID = ?', [tenantId]);
+
+        connection.release();
+
+        // Extract data from rows
+        const finesData = rows.map(row => ({
+            id: row.id,
+            title: row.title,
+            description: row.description,
+            amount: row.amount,
+            action: row.action,
+           
+            paidAmount: row.paidAmount // Assuming 'name' is the column name for tenant names
+        }));
+
+        // Send fines data to the client
+        res.status(200).json(finesData);
+
+    } catch (error) {
+        console.error('Error fetching fines:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+//update the paid amount
+app.post('/send-payment', async (request, response) => {
+    const { paidAmount, fineId } = request.body;
+  
+    try {
+      const pool = await createConnectionPool();
+      const connection = await pool.getConnection();
+      
+      await connection.execute(
+          `UPDATE fines SET paidAmount = paidAmount + ? WHERE id = ?`,
+          [paidAmount, fineId]
+      );
+      connection.release();
+      response.status(201).json({ message: 'Payment successful' });
+    
+   } catch (error) {
+        console.error('Error updating paid amount:', error);
+        response.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 
 
