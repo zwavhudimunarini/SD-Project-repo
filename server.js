@@ -729,7 +729,7 @@ app.get('/get-fines', async (req, res) => {
         const connection = await pool.getConnection();
 
         // Retrieve fines with tenant names from the database
-        const [rows] = await connection.execute('SELECT fines.id, fines.title, fines.description, fines.amount, fines.action,fines.created_at, tenant.name FROM fines INNER JOIN tenant ON fines.tenantID = tenant.id');
+        const [rows] = await connection.execute('SELECT fines.id, fines.title, fines.description, fines.amount, fines.action,fines.paidAmount, tenant.name FROM fines INNER JOIN tenant ON fines.tenantID = tenant.id');
 
         connection.release();
 
@@ -740,7 +740,8 @@ app.get('/get-fines', async (req, res) => {
             description: row.description,
             amount: row.amount,
             action: row.action,
-            tenantName: row.name // Assuming 'name' is the column name for tenant names
+            tenantName: row.name,
+            paidAmount:row.paidAmount // Assuming 'name' is the column name for tenant names
             
         }));
 

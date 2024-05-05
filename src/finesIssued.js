@@ -1,4 +1,4 @@
-
+//get all the fines
 function fetchFines() {
     fetch('/get-fines')
     .then(response => {
@@ -11,6 +11,7 @@ function fetchFines() {
     .then(data => {
         console.log(data);
         updateNotificationsWidget(data); // Pass the combined fines data to the updateNotificationsWidget function
+       
     })
     .catch(error => {
         console.error('Error fetching fines:', error);
@@ -18,52 +19,25 @@ function fetchFines() {
 }
 
 
-// function updateNotificationsWidget(finesData) {
-//     const notificationsList = document.getElementById('notifications-list');
-
-//     // Clear existing items in the list
-//     notificationsList.innerHTML = '';
-
-//     // Add each fine to the notifications widget
-//     finesData.forEach(fine => {
-//         const newItem = document.createElement('li');
-//         newItem.className = 'notification-item'; // Add a class for styling
-//         newItem.id = `issue-${fine.id}`; // Set ID for identifying the fine
-
-//         // Construct the content of the list item
-//         newItem.innerHTML = `
-//             <p>Title: ${fine.title}</p>
-//             <p>Description: ${fine.description}</p>
-//             <p>Amount: R ${fine.amount}</p>
-//             <p>Action: ${fine.action}</p>
-//             <p>Tenant Name: ${fine.tenantName}</p>
-           
-//         `;
-
-//         // Create the "Delete" button
-//         // const deleteButton = document.createElement('button');
-//         // deleteButton.textContent = 'Delete';
-//         // deleteButton.className = 'delete-button'; // Add a class for styling
-
-//         // // Set up event listener for the delete button
-//         // deleteButton.onclick = function() {
-//         //     // Extract the fine ID from the ID of the parent list item
-//         //     const fineId = newItem.id.split('-')[1];
-//         //     console.log(fineId);
-
-//         //     // Call a function to delete the item from the database
-//         //     deleteFine(fineId);
-//         // };
-
-//         // // Append the delete button to the list item
-//         // newItem.appendChild(deleteButton);
-
-//         // Append the list item to the notifications list
-//         notificationsList.appendChild(newItem);
-//     });
-// }
 
 function updateNotificationsWidget(finesData) {
+
+    //paid cost
+    const paidAmount = finesData.reduce((total, fine) => total + fine.paidAmount, 0);
+    const paidCostParagraph = document.getElementById('paid-cost');
+
+    // Update the content of the "Remaining Cost" paragraph
+    paidCostParagraph.textContent = `Paid Cost: R ${paidAmount}`;
+
+
+    //remaining cost
+    const remainingAmount = finesData.reduce((total, fine) => total + (fine.amount-fine.paidAmount), 0);
+    const remainingCostParagraph = document.getElementById('remaining-cost');
+
+    // Update the content of the "Remaining Cost" paragraph
+    remainingCostParagraph.textContent = `Remaining cost: R ${remainingAmount}`;
+
+
     const notificationsList = document.getElementById('notifications-list');
 
     // Clear existing items in the list

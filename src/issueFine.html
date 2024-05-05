@@ -87,6 +87,7 @@
     </div>
     
     <script>
+        //get all tenants so that they can appear as options on the dropdown menu
         fetch('/recipients')
             .then(response => response.json())
             .then(recipients => {

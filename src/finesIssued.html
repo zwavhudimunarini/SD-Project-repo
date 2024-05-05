@@ -11,22 +11,30 @@
         display: flex;
         justify-content: center;
     }
-    #p{
+    #paid-cost,#remaining-cost{
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
         margin-right: 100px;
     }
+    .Refresh{
+        border:none;
+        width: 100px;
+        border-radius: 50px;
+        background-color: gray;
+    }
 </style>
 <body>
     <h1 id="h1">Fines Issued <table></table></h1>
 
-    <p id="p">Remaining Cost: R</p>
-    
-    <p id="p">Paid Cost: R</p>
-    <br>
+    <div id="notifications"></div>
 
-    <div id="notifications">
+        <p id="remaining-cost">Remaining Cost: R</p>
+        
+        <p id="paid-cost">Paid Cost: R</p>
+        <br>
+
+    
         
         <button class="Refresh" onclick="fetchFines()" style="margin-left: 40px;"> Refresh</button>
         <br>
