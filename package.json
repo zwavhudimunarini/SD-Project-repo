@@ -5,8 +5,6 @@
   "scripts": {
 
     "start": "node server.js"
-    
-
 
   },
 
@@ -22,16 +20,27 @@
 
     "express": "^4.19.2",
 
+    "fast-text-encoding": "^1.0.6",
+
+    "jsdom": "^24.0.0",
+
+    "jsdom-global": "^3.0.2",
+
     "mssql": "^10.0.2",
 
     "mysql2": "^3.9.4",
 
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
 
-  }
-  ,
+    "text-encoding": "^0.7.0"
+
+  },
 
   "devDependencies": {
+
+    "@babel/preset-env": "^7.24.5",
+
+    "babel-jest": "^29.7.0",
 
     "istanbul": "^0.4.5",
 
@@ -39,7 +48,9 @@
 
     "jest-environment-jsdom": "^29.7.0",
 
-    "jest-fetch-mock": "^3.0.3"
+    "jest-fetch-mock": "^3.0.3",
+
+    "node-fetch": "^3.3.2"
 
   }
 

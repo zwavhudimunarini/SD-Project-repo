@@ -1,16 +1,20 @@
-function searchStaff() {
-    const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
-    const searchResults = document.getElementById('searchResults');
-    searchResults.innerHTML = ''; // Clear previous search results
+async function searchStaff() {
+    try {
+        const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+        const searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = ''; // Clear previous search results
 
-    fetch(`/search/staff?query=${searchInput}`)
-    .then(response => {
+        const response = await fetch(`/search/staff?query=${searchInput}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json();
-    })
-    .then(staffMembers => {
+        const staffMembers = await response.json();
+        if (staffMembers.length === 0) {
+            console.log('No staff members found.');
+            // Optionally, show a message to the user indicating no results found
+            return;
+        }
+
         staffMembers.forEach(staff => {
             const listItem = document.createElement('li');
             listItem.classList.add('search-result');
@@ -23,12 +27,12 @@ function searchStaff() {
             `;
             searchResults.appendChild(listItem);
         });
-    })
-    .catch(error => {
+      } catch (error) {
         console.error('Error searching for staff members:', error);
         // Optionally, show an error message to the user
-    });
+    };
 }
+
 
 // Function to delete a staff member
 async function deleteStaff(staffId, listItemID) {
@@ -69,90 +73,93 @@ async function deleteStaff(staffId, listItemID) {
 
 
 //add staff
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('#addStaffForm');
-    const addButton = document.getElementById('addStaff');
+async function addStaff(form) {
+    // Disable the submit button to prevent multiple submissions
+    var addButton = document.getElementById('addStaff');
+    //addButton.disabled = true;
 
-    form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent default form submission
+    var nameElement = document.getElementById("name");
+    var name = nameElement ? nameElement.value : '';
+    var emailElement = document.getElementById("email");
+    var email = emailElement ? emailElement.value : '';
+    var passwordElement = document.getElementById("password");
+    var password = passwordElement ? passwordElement.value : '';
+    var confirmPasswordElement = document.getElementById("confirmPassword");
+    var confirmPassword = confirmPasswordElement ? confirmPasswordElement.value : '';
+    var role; // Get selected role
 
-        addStaff();
-    });
+    var radioButtons = document.getElementsByName('role');
+    
 
-    function addStaff() {
-        // Disable the submit button to prevent multiple submissions
-        var addButton = document.getElementById('addStaff');
-        //addButton.disabled = true;
-
-        var name = document.getElementById("name").value;
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirmPassword").value;
-        var role; // Get selected role
-
-        var radioButtons = document.getElementsByName('role');
-        
-
-        for (var i = 0; i < radioButtons.length; i++) {
-            if (radioButtons[i].checked) {
-                role = radioButtons[i].value;
-                break;
-            }
+    for (var i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked) {
+            role = radioButtons[i].value;
+            break;
         }
+    }
 
-        if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            // Re-enable the submit button
-            addButton.disabled = false;
-            return; // Stop further execution if passwords don't match
-        }
-        if(password.length < 8) {
-            alert("Password too short");
-        }
+    if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        // Re-enable the submit button
+        addButton.disabled = false;
+        return; // Stop further execution if passwords don't match
+    }
+    if(password.length < 8) {
+        alert("Password too short");
+        //addButton.disabled = false;
+        //return;
+    }
 
-        var formData = {
-            name: name,
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword,
-            role: role // Include role in the formData
-        };
+    var formData = {
+        name: name,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        role: role // Include role in the formData
+    };
 
-        fetch('/add-staff', {
+    try {
+        const response = await fetch('/add-staff', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.message) {
-                // If user is created successfully, redirect to admin page
-                form.reset();
-                alert(data.message);
-            } 
-            else if(data.error) {
-                // If there's any other response, show alert
-                alert(data.error);
-            }
-            // Re-enable the submit button after request completes
-           // addButton.disabled = false;
-        })
-
-        .catch(error => {
-            console.error('Error:', error);
-            
-            
-            // Re-enable the submit button after request completes
-            //addButton.disabled = false;
         });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        if (data.message) {
+            // If user is created successfully, redirect to admin page
+            form.reset();
+            alert('Staff member added successfully');
+        } 
+        else if(data.error) {
+            // If there's any other response, show alert
+            alert(data.error);
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        
+        // Re-enable the submit button after request completes
+        addButton.disabled = false;
     }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('#addStaffForm');
+    const addButton = document.getElementById('addStaff');
+
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        await addStaff(form);
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -189,6 +196,9 @@ async function displayStaffList() {
     }
 }
 
-
-
-module.exports={ deleteStaff};
+module.exports = {
+    searchStaff: searchStaff,
+    deleteStaff: deleteStaff,
+    addStaff: addStaff,
+    displayStaffList: displayStaffList
+};
