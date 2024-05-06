@@ -100,9 +100,14 @@ async function saveFeedback(issueId, feedback) {
 
         const data = await response.json();
         console.log('Feedback saved successfully:', data.message);
-        // You can perform additional actions after successfully saving feedback if needed
     } catch (error) {
         console.error('Error saving feedback:', error);
-        // Handle error cases if necessary
+        throw error;
     }
+}
+module.exports = {
+    updateTotalIssues,
+    saveFeedback,
+    openFeedbackModal,
+    fetchTotalIssues
 }
