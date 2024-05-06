@@ -1,7 +1,7 @@
 
 //get all issues assigned to maintanance
 function fetchTotalIssues() {
-    fetch('/total-issues')
+    return fetch('/total-issues')
     .then(response => {
         if (response.ok) {
             return response.json();
@@ -12,8 +12,6 @@ function fetchTotalIssues() {
     .then(data => {
         console.log(data);
         const { issues,ids } = data;
-        
-        
         updateTotalIssues(issues,ids);
     })
     .catch(error => {
@@ -109,5 +107,13 @@ function openFeedbackModal(issueId) {
         }
     };
 }
+
+module.exports = {
+    fetchTotalIssues,
+    updateTotalIssues,
+    updateNotificationsWidget,
+    openFeedbackModal
+};
+
 
 
