@@ -57,6 +57,7 @@ function clearLocalStorage() {
 
 function updateNotificationsWidget(finesData) {
     //clearLocalStorage()
+    //ndaa
 
     // Function to update button state based on data
     function updateButtonState(button, fine) {
