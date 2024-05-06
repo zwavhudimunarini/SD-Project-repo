@@ -51,7 +51,13 @@ function fetchFines() {
     });
 }
 
+function clearLocalStorage() {
+    localStorage.removeItem('fineStates');
+}
+
 function updateNotificationsWidget(finesData) {
+    //clearLocalStorage()
+
     // Function to update button state based on data
     function updateButtonState(button, fine) {
         if (fine.paid) {
