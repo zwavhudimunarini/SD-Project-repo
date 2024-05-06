@@ -22,9 +22,19 @@ describe('submitForm', () => {
     });
 
     test('should show alert when passwords do not match', () => {
-        // Simulate the case where passwords do not match
-        document.getElementById = jest.fn((id) => ({ value: 'password1' })); // Mock getElementById
+        // Mock window.alert
+        window.alert = jest.fn();
 
+        // Mock getElementById to return different values for password and confirmPassword fields
+        document.getElementById = jest.fn((id) => {
+            switch (id) {
+                case 'name': return { value: 'John Doe' };
+                case 'email': return { value: 'john@example.com' };
+                case 'password': return { value: 'password1' };
+                case 'confirmPassword': return { value: 'password2' }; // Deliberate mismatch
+                default: return null;
+            }
+        });
         // Call the function being tested
         submitForm();
 
