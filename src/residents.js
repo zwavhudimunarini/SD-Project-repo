@@ -51,173 +51,33 @@ function fetchFines() {
     });
 }
 
-
-
-// function updateNotificationsWidget(finesData) {
-
-//     //paid cost
-//     const paidAmount = finesData.reduce((total, fine) => total + fine.paidAmount, 0);
-//     const paidCostParagraph = document.getElementById('paid-cost');
-
-//     // Update the content of the "Remaining Cost" paragraph
-//     paidCostParagraph.textContent = `Paid Cost: R ${paidAmount}`;
-
-
-//     //remaining cost
-//     const remainingAmount = finesData.reduce((total, fine) => total + (fine.amount-fine.paidAmount), 0);
-//     const remainingCostParagraph = document.getElementById('remaining-cost');
-
-//     // Update the content of the "Remaining Cost" paragraph
-//     remainingCostParagraph.textContent = `Remaining cost: R ${remainingAmount}`;
-
-
-//     const notificationsList = document.getElementById('notifications-list');
-
-//     // Clear existing items in the list
-//     notificationsList.innerHTML = '';
-
-//     // CSS styles for the table
-//     const tableStyle = `
-//         /* Style for the table */
-//         .fines-table {
-//             border-collapse: collapse;
-//             width: 100%;
-//         }
-
-//         /* Style for table header */
-//         .fines-table th {
-//             border: 1px solid #dddddd;
-//             text-align: left;
-//             padding: 8px;
-//         }
-
-//         /* Style for table data */
-//         .fines-table td {
-//             border: 1px solid #dddddd;
-//             text-align: left;
-//             padding: 8px;
-//         }
-//     `;
-
-//     // Create a style element and append the CSS styles
-//     const styleElement = document.createElement('style');
-//     styleElement.textContent = tableStyle;
-
-//     // Append the style element to the document head
-//     document.head.appendChild(styleElement);
-
-//     // Create a table element
-//     const table = document.createElement('table');
-//     table.className = 'fines-table'; // Add a class for styling
-
-//     // Create table header row
-//     const headerRow = document.createElement('tr');
-
-//     // Create table header cells for each column
-//     ['Title', 'Description', 'Amount', 'Action'].forEach(columnName => {
-//         const headerCell = document.createElement('th');
-//         headerCell.textContent = columnName;
-//         headerRow.appendChild(headerCell);
-//     });
-
-//     // Append the header row to the table
-//     table.appendChild(headerRow);
-
-//     // Add each fine to the table
-//     finesData.forEach(fine => {
-//         // Create a row for the fine
-//         const row = document.createElement('tr');
-
-//         // Create cells for each property of the fine
-//         ['title', 'description', 'amount', 'action'].forEach(propertyName => {
-//             const cell = document.createElement('td');
-//             if (propertyName === 'amount') {
-//                 // Add "R" prefix before the amount
-//                 cell.textContent = 'R ' + fine[propertyName];
-//             }
-            
-//             if (propertyName === 'action') {
-//                 cell.textContent = fine[propertyName];
-//                 // Create a text area for entering the paid amount
-//                 const textArea = document.createElement('textarea');
-//                 textArea.placeholder = 'Enter amount';
-//                 textArea.style.height = '30px';
-//                 textArea.style.padding = '4px';
-//                 textArea.style.marginLeft = '10px';
-                
-//                 textArea.style.boxSizing = 'border-box';
-//                 cell.appendChild(textArea);
-                
-//                 // Create a button for paying
-//                 const payButton = document.createElement('button');
-//                 payButton.textContent = 'Pay';
-//                 payButton.style.height = '30px';
-                
-//                 payButton.style.marginLeft = '10px';
-
-//                 //update the amounts after entering an amount and then pressing pay button
-//                 payButton.addEventListener('click', function() {
-//                     // Get the value entered in the text area
-                    
-//                     const amountPaid = parseFloat(textArea.value);
-    
-//                     // Get the ID of the fine from the data attribute or any other method you're using to store it
-//                     const fineId = fine.id;
-
-//                     const userData = {
-//                         paidAmount: amountPaid,
-//                         fineId: fineId
-//                     };
-
-//                     fetch('/send-payment', {
-//                         method: 'POST',
-//                         headers: {
-//                             'Content-Type': 'application/json'
-//                         },
-//                         body: JSON.stringify(userData)
-//                     })
-//                     .then(response => {
-//                         if (response.ok) {
-//                             return response.json();
-//                         }
-//                     })
-//                     .then(data => {
-//                         if (data.message) {
-//                             alert("success");
-//                             textArea.value = '';
-                            
-//                             // Payment successful, you may want to update the UI accordingly
-//                         }
-//                     })
-//                     .catch(error => {
-//                         console.error('Error:', error);
-//                         // Handle errors here, such as displaying an error message to the user
-//                     });
-             
-
-//                     // Add your logic here to handle payment, e.g., updating the database
-//                     console.log('Amount paid:', amountPaid);
-//                     // You might want to update UI or trigger another action after payment
-//                 });
-//                 cell.appendChild(payButton);
-//             }
-
-//             else {
-//                 cell.textContent = fine[propertyName];
-//             }
-//             row.appendChild(cell);
-//         });
-
-//         // Append the row to the table
-//         table.appendChild(row);
-//     });
-
-//     // Append the table to the notifications list
-//     notificationsList.appendChild(table);
-// }
-
-
 function updateNotificationsWidget(finesData) {
+    // Function to update button state based on data
+    function updateButtonState(button, fine) {
+        if (fine.paid) {
+            button.textContent = 'Paid';
+            button.style.backgroundColor = 'red';
+            button.disabled = true;
+        } else {
+            button.textContent = 'Pay';
+            button.style.backgroundColor = 'green';
+            button.disabled = false;
+        }
+    }
+
+    // Function to update the paid state of a fine in local storage
+    function updatePaidStateInStorage(fineId, paid) {
+        const storedData = JSON.parse(localStorage.getItem('fineStates')) || {};
+        storedData[fineId] = paid;
+        localStorage.setItem('fineStates', JSON.stringify(storedData));
+    }
+
+    // Function to get the paid state of a fine from local storage
+    function getPaidStateFromStorage(fineId) {
+        const storedData = JSON.parse(localStorage.getItem('fineStates')) || {};
+        return storedData[fineId] || false;
+    }
+
     //paid cost
     const paidAmount = finesData.reduce((total, fine) => total + fine.paidAmount, 0);
     const paidCostParagraph = document.getElementById('paid-cost');
@@ -274,74 +134,64 @@ function updateNotificationsWidget(finesData) {
             const cell = document.createElement('td');
             if (propertyName === 'amount') {
                 cell.textContent = 'R ' + fine[propertyName];
-            }
-            if (propertyName === 'action') {
+            } else if (propertyName === 'action') {
                 const existingActionText = fine[propertyName];
                 const actionCellContainer = document.createElement('div');
-                actionCellContainer.style.display = 'flex';
+                actionCellContainer.style.display = 'flex'; // Set display to flex
                 actionCellContainer.style.alignItems = 'center';
                 actionCellContainer.style.marginLeft = '10px';
-            
-                const textArea = document.createElement('textarea');
-                textArea.placeholder = 'Enter amount';
-                textArea.style.height = '30px';
-                textArea.style.padding = '4px';
-                textArea.style.boxSizing = 'border-box';
-                actionCellContainer.appendChild(textArea);
-            
+
                 const payButton = document.createElement('button');
-                payButton.textContent = 'Pay';
+                const paid = getPaidStateFromStorage(fine.id); // Get paid state from local storage
+                fine.paid = paid; // Update paid state in fine data
+                updateButtonState(payButton, fine); // Update button state based on data
                 payButton.style.height = '30px';
                 payButton.style.marginLeft = '10px';
-                actionCellContainer.appendChild(payButton);
-            
+                actionCellContainer.appendChild(document.createTextNode(existingActionText)); // Append existing text
+                actionCellContainer.appendChild(payButton); // Append pay button
+
                 payButton.addEventListener('click', function () {
-                    const amountPaid = parseFloat(textArea.value);
-                    const fineId = fine.id;
-                    const userData = {
-                        paidAmount: amountPaid,
-                        fineId: fineId
-                    };
-                    fetch('/send-payment', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(userData)
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json();
-                            }
+                    if (!fine.paid) {
+                        const userData = {
+                            paidAmount: fine.amount, // Use the "amount" directly from the fine object
+                            fineId: fine.id
+                        };
+
+                        fetch('/send-payment', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(userData)
                         })
-                        .then(data => {
-                            if (data.message) {
-                                alert("success");
-                                textArea.value = '';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.json();
+                                }
+                            })
+                            .then(data => {
+                                if (data.message) {
+                                    alert("success");
+                                    fine.paid = true; // Update the paid state in the data
+                                    updatePaidStateInStorage(fine.id, true); // Update paid state in local storage
+                                    updateButtonState(payButton, fine); // Update button state
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }
                 });
-            
-                cell.textContent = ''; // Clear existing content
-                cell.appendChild(document.createTextNode(existingActionText)); // Append existing text
-                cell.appendChild(actionCellContainer); // Append textarea and pay button
-            }
-            
-            
-            else {
+
+                cell.appendChild(actionCellContainer); // Append container with existing text and pay button
+            } else {
                 cell.textContent = fine[propertyName];
             }
             row.appendChild(cell);
         });
         table.appendChild(row);
     });
+
     notificationsList.appendChild(table);
 }
-
-
-
-
 
