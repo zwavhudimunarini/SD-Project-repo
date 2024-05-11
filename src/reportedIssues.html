@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+<!--
+
+
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="issues.js"></script>
+    <script src="reportedIssues.js"></script>
     <title>Document</title>
     <style>
         /* Add your CSS styling here */
@@ -78,16 +81,97 @@
 </head>
 <body>
 
-    <!-- This is for testing -->
+   
     <div id="notifications">
         <h3>Notifications <button onclick="fetchReportedIssues()"> Refresh</button></h3>
         <ul id="notifications-list">
             
-            <!-- Existing notifications items will be appended here dynamically -->
+         
         </ul>
     </div>
 
     
+
+</body>
+</html>
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="reportedIssues.js"></script>
+    <title>Document</title>
+    <style>
+        /* Add your CSS styling here */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .assign-button:hover {
+            background-color: #022549;
+            color: white;
+        }
+
+        .delete-button:hover {
+            background-color: #450404;
+            color: white;
+        }
+
+        
+
+        .assign-button {
+            background-color:#007bff;
+            color: white;
+            border: 1px solid #007bff;
+            border-radius: 40px;
+            width: 100px;
+            height: 30px;
+        }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: 1px solid rgb(199, 66, 66);
+
+            border-radius: 40px;
+            margin-left: 5px;
+            width: 100px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is for testing -->
+    <div id="notifications">
+        <h3>Notifications <button onclick="fetchReportedIssues()"> Refresh</button></h3>
+        <table id="notifications-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Existing notifications items will be appended here dynamically -->
+            </tbody>
+        </table>
+    </div>
 
 </body>
 </html>

@@ -49,6 +49,7 @@ function fetchFines() {
     .catch(error => {
         console.error('Error fetching fines:', error);
     });
+    //
 }
 
 function clearLocalStorage() {
