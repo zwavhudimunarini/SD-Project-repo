@@ -45,7 +45,7 @@ function getUserInfo(){
         if (data.success) {
             //check if password matches
             
-            // Redirect based on user role
+            // Redirect based on role
             switch(data.role) {
                 case 'Tenant':
                     //dont forget to change to tenant.html after it has been designed
