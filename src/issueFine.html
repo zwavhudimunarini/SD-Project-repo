@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Issue Fine</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,6 +81,10 @@
                 <input type="text" id="action" name="action" required>
             </div>
             <div class="form-group">
+                <label for="month">Month:</label>
+                <input type="text" id="month" name="month" required>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Issue Fine">
             </div>
         </form>
@@ -108,48 +112,35 @@
             var title = document.getElementById("title").value;
             var description = document.getElementById("description").value;
             var amount = document.getElementById("amount").value;
+            var action = document.getElementById("action").value;
+            var month = document.getElementById("month").value;
             
             const recipientSelect = document.getElementById('recipient');
             const selectedRecipientId = recipientSelect.value;
-            var action = document.getElementById("action").value;
-
 
             var formData = {
-            title: title,
-            description: description,
-            amount: amount,
-            selectedRecipientId: selectedRecipientId,
-            action: action
-            
+                title: title,
+                description: description,
+                amount: amount,
+                selectedRecipientId: selectedRecipientId,
+                action: action,
+                month: month
             };
 
-
-
-
-            //const formData = new FormData(this);
-            //const recipientSelect = document.getElementById('recipient');
-           // const selectedRecipientId = recipientSelect.value; // Get the selected recipient id
-            //formData.set('recipient', selectedRecipientId); // Set the selected recipient id in the form data
-
             fetch('/submit-form', {
-
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
-
-               
             })
             .then(response => {
                 if (response.ok) {
                     console.log('Form submitted successfully');
-                    alert("fine issued successfully")
+                    alert("Fine issued successfully")
                     document.getElementById('submit-form').reset();
-                    // Handle success, e.g., show a success message
                 } else {
                     console.error('Error submitting form');
-                    // Handle error, e.g., show an error message
                 }
             })
             .catch(error => console.error('Error submitting form:', error));

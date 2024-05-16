@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs</title>
+</head>
+<body>
+    <h1>Fines Histogram</h1>
+    <img id="chartImage" src="" alt="Fines Histogram">
+    <br>
+    <h1>Fines Line Graph</h1>
+    <img id="lineGraph" src="" alt="Fines Line Graph">
+    
+    <script>
+        // Fetch the histogram chart image from the server and set it as the src of the img tag
+        fetch('/chart')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch chart image');
+                }
+                return response.blob();
+            })
+            .then(imageBlob => {
+                const imageUrl = URL.createObjectURL(imageBlob);
+                const chartImage = document.getElementById('chartImage');
+                chartImage.src = imageUrl;
+            })
+            .catch(error => {
+                console.error('Error fetching chart image:', error);
+            });
+
+        // Fetch the line graph image from the server and set it as the src of the img tag
+        fetch('/line-chart')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch line graph image');
+                }
+                return response.blob();
+            })
+            .then(imageBlob => {
+                const imageUrl = URL.createObjectURL(imageBlob);
+                const lineGraph = document.getElementById('lineGraph');
+                lineGraph.src = imageUrl;
+            })
+            .catch(error => {
+                console.error('Error fetching line graph image:', error);
+            });
+    </script>
+</body>
+</html>
