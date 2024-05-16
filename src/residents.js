@@ -203,3 +203,136 @@ function updateNotificationsWidget(finesData) {
     notificationsList.appendChild(table);
 }
 
+
+// // Function to handle clicking on a notification text
+// function handleNotificationClick(notification) {
+//     // Redirect to another page with notification details
+//     // Replace 'notification-details.html' with the URL of the page to display details
+//     window.location.href = 'notification-details.html?id=' + notification.id;
+// }
+
+// // Function to fetch notifications from the server
+// async function fetchNotifications() {
+//     try {
+//         const response = await fetch('/notifications');
+//         if (!response.ok) {
+//             throw new Error('Failed to fetch notifications');
+//         }
+//         const notifications = await response.json();
+
+//         // Update the HTML content with the notifications
+//         const notificationsList = document.getElementById('fetchedNotifications-list');
+//         notificationsList.innerHTML = ''; // Clear previous content
+//         if (notifications.length === 0) {
+//             notificationsList.innerHTML = '<li>No notifications available</li>';
+//         } else {
+//             notifications.forEach(notification => {
+//                 const listItem = document.createElement('li');
+//                 listItem.classList.add('notification');
+//                 listItem.textContent = notification.message;
+//                 listItem.addEventListener('click', () => handleNotificationClick(notification));
+//                 notificationsList.appendChild(listItem);
+//             });
+//         }
+//     } catch (error) {
+//         console.error('Error fetching notifications:', error);
+//     }
+// }
+
+
+
+// // Add CSS styles dynamically
+// const style = document.createElement('style');
+// style.textContent = `
+//     /* CSS styles */
+//     body {
+//         font-family: Arial, sans-serif;
+//         margin: 0;
+//         padding: 0;
+//         background-color: #f4f4f4;
+//     }
+
+//     .card {
+//         max-width: 800px;
+//         margin: 20px auto;
+//         padding: 20px;
+//         background-color: #fff;
+//         border-radius: 5px;
+//         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+//     }
+
+//     .notification {
+//         display: flex;
+//         align-items: center;
+//         justify-content: flex-start;
+//         padding: 10px;
+//         margin: 10px 0;
+//         background-color: #f8f9fa;
+//         border: 1px solid #ddd;
+//         border-radius: 5px;
+//         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+//         width: 100%;
+//         max-width: 600px;
+//         overflow: hidden;
+//         white-space: nowrap;
+//         text-overflow: ellipsis;
+//         cursor: pointer;
+//     }
+
+//     .notification:hover {
+//         background-color: #e9ecef;
+//     }
+
+//     .notification-list {
+//         list-style-type: none;
+//         padding: 0;
+//     }
+
+//     .notification p {
+//         margin: 0;
+//         flex-grow: 1;
+//         overflow: hidden;
+//         white-space: nowrap;
+//         text-overflow: ellipsis;
+//     }
+// `;
+// document.head.appendChild(style);
+
+// // Function to handle clicking on a notification text
+// function handleNotificationClick(notification) {
+//     // Redirect to another page with notification details
+//     window.location.href = 'notification-details.html?id=' + notification.id;
+// }
+
+// // Function to fetch notifications from the server
+// async function fetchNotifications() {
+//     try {
+//         const response = await fetch('/notifications');
+//         if (!response.ok) {
+//             throw new Error('Failed to fetch notifications');
+//         }
+//         const notifications = await response.json();
+
+//         // Update the HTML content with the notifications
+//         const notificationsList = document.getElementById('fetchedNotifications-list');
+//         notificationsList.innerHTML = ''; // Clear previous content
+//         if (notifications.length === 0) {
+//             notificationsList.innerHTML = '<li>No notifications available</li>';
+//         } else {
+//             notifications.forEach(notification => {
+//                 const listItem = document.createElement('li');
+//                 listItem.classList.add('notification');
+//                 const messageElement = document.createElement('p');
+//                 messageElement.textContent = notification.message;
+//                 listItem.appendChild(messageElement);
+//                 listItem.addEventListener('click', () => handleNotificationClick(notification));
+//                 notificationsList.appendChild(listItem);
+//             });
+//         }
+//     } catch (error) {
+//         console.error('Error fetching notifications:', error);
+//     }
+// }
+
+// // Fetch notifications when the page loads
+// document.addEventListener('DOMContentLoaded', fetchNotifications);

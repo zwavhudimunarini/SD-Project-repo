@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Details</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(202, 200, 200);
+            
+            
+        }
+        .notification-details {
+            margin-left: 500px;
+           
+            margin-top:150px;
+            max-width: 500px;
+         
+            padding: 20px;
+            background-color: transparent;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(146, 24, 24, 0.1);
+        }
+        .notification-details {
+            margin-bottom: 10px;
+        }
+        .notification-details p {
+            margin-bottom: 20px;
+        }
+        .notification-details img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        #notification-title{
+            margin-left: 640px;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="notification-title">Notification Details</h2>
+    <div class="notification-details">
+        
+        <p id="notification-message"></p>
+        <img id="notification-image" src="" alt="Notification Image">
+    </div>
+
+    <script>
+        async function fetchNotificationDetails() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const notificationId = urlParams.get('id');
+
+                const response = await fetch('/notification?id=' + notificationId);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch notification details');
+                }
+                const notification = await response.json();
+
+                // Update the HTML content with the notification details
+                //document.getElementById('notification-title').textContent = notification.title;
+                document.getElementById('notification-message').textContent = notification.message;
+                document.getElementById('notification-image').src = notification.image;
+            } catch (error) {
+                console.error('Error fetching notification details:', error);
+            }
+        }
+
+        // Call fetchNotificationDetails when the page loads
+        fetchNotificationDetails();
+    </script>
+</body>
+</html>

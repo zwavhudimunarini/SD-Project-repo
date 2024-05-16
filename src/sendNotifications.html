@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Notification</title>
+</head>
+
+<style>
+
+    body {
+        
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        margin-top: 20%;
+    }
+
+    .container {
+        
+        display: flex;
+        justify-content: center;
+        
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    form label {
+        margin-left: 30%;
+        display:flex;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    form textarea{
+        
+       
+        width: 50%;
+        padding: 30px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        align-items: center;
+        margin-left: 30%;
+        
+    }
+
+    form input[type="file"] {
+        
+        width: 50%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        align-items: center;
+        margin-left: 30%;
+        
+
+    }
+
+    form button {
+        margin-left: 30%;
+        display: block;
+        width: 50%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    form button:hover {
+        background-color: #0056b3;
+    }
+
+
+</style>
+
+
+<body>
+    <h1>Send Notification</h1>
+    <form id="notificationForm" enctype="multipart/form-data" action="/send-notification" method="post">
+
+        <div>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+        </div>
+        <div>
+            <label for="image">Image (optional):</label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+        <button type="submit">Send Notification</button>
+    </form>
+
+    <script>
+        document.getElementById('notificationForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            const response = await fetch('/send-notification', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert('Notification sent successfully');
+                this.reset();
+            } else {
+                alert('Failed to send notification');
+            }
+        });
+    </script>
+</body>
+</html>

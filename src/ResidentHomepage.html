@@ -16,6 +16,79 @@
             border-radius: 50px;
             background-color: gray;
         }
+
+        .notification {
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .notification-details {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .notification-details img {
+            max-width: 100%;
+        }
+
+        .notification.active .notification-details {
+            display: block;
+        }
+
+
+
+        
+        .card {
+            max-width: 800px;
+            max-height: 600px;
+            overflow-y: auto;
+            margin: 20px auto;
+            border-radius: 1000px;
+            padding: 20px;
+            background-color:#8999c2;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+            margin: 10px 0 0 50px;
+            background-color: rgb(179, 179, 179);
+            border: 1px solid #ddd;
+            color: black;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+
+        .notification:hover {
+            background-color: #e9ecef;
+        }
+
+        .notification-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .notification p {
+            margin: 0;
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
     </style>
     
     <body>
@@ -56,11 +129,59 @@
 
             <div id="Notifications" class="hidden">
                 <div class="card">
-                <h2>Notifications</h2>
-                <br/>
-                <p>Notifications will be displayed here</p>
+                    <h2>Notifications</h2>
+                    <br/>
+                    <p>Notifications will be displayed here</p>
+                    <button class="Refresh" onclick="fetchNotifications()" style="margin-left: 40px;"> Refresh</button>
+                    <ul id="fetchedNotifications-list">
+                        <!-- Existing notifications items will be appended here dynamically -->
+                    </ul>
                 </div>
             </div>
+
+            <script>
+                // Function to handle clicking on a notification text
+                function handleNotificationClick(notification) {
+                    // Redirect to another page with notification details
+                    window.location.href = 'notification-details.html?id=' + notification.id;
+                }
+        
+                // Function to fetch notifications from the server
+                async function fetchNotifications() {
+                    try {
+                        const response = await fetch('/notifications');
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch notifications');
+                        }
+                        const notifications = await response.json();
+        
+                        // Update the HTML content with the notifications
+                        const notificationsList = document.getElementById('fetchedNotifications-list');
+                        notificationsList.innerHTML = ''; // Clear previous content
+                        if (notifications.length === 0) {
+                            notificationsList.innerHTML = '<li>No notifications available</li>';
+                        } else {
+                            notifications.forEach(notification => {
+                                const listItem = document.createElement('li');
+                                listItem.classList.add('notification');
+                                const messageElement = document.createElement('p');
+                                messageElement.textContent = notification.message;
+                                listItem.appendChild(messageElement);
+                                listItem.addEventListener('click', () => handleNotificationClick(notification));
+                                notificationsList.appendChild(listItem);
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error fetching notifications:', error);
+                    }
+                }
+        
+                // Fetch notifications when the page loads
+                document.addEventListener('DOMContentLoaded', fetchNotifications);
+            </script>
+
+
+            
 
             <div id="Fines" class="hidden">
                 <div class="card">
@@ -72,9 +193,7 @@
                             
                     <p id="paid-cost">Paid Cost: R</p>
                     <br>
-
-                        
-                            
+      
                     <button class="Refresh" onclick="fetchFines()" style="margin-left: 40px;"> Refresh</button>
                     <br>
                     <br>

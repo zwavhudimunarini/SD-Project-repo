@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
 const path = require('path');
 const session = require('express-session');
+const multer=require("multer")
+const fs=require("fs")
 //const bodyParser = require('body-parser');
 //const { emit } = require('process');
 
@@ -14,8 +16,10 @@ const server = http.createServer(app); // Create HTTP server using Express app
 const io = socketIo(server); // Attach Socket.IO to the HTTP server
 const port = process.env.PORT || 3000;
 
+//app.use('/uploads', express.static(path.join(__dirname,'src','uploads')))
 app.use(cors());
 app.use(express.static('src'));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 //app.use(bodyParser.json());
 
@@ -25,7 +29,7 @@ app.use(session({
     saveUninitialized: false
 }));
 
-
+const upload = multer({ dest: 'uploads/' });
 
 // Socket.IO connection handling
 io.on('connection', socket => {
@@ -821,6 +825,109 @@ app.post('/send-payment', async (request, response) => {
    } catch (error) {
         console.error('Error updating paid amount:', error);
         response.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+//send notification
+app.post('/send-notification', upload.single('image'), async (request, response) => {
+    const message = request.body.message;
+    let image = '';
+
+    // Check if an image file was uploaded
+    if (request.file) {
+        // Get the uploaded image filename
+        const filename = request.file.filename;
+        
+        // Define the relative path to the uploaded image
+        image = '/uploads/' + filename;
+
+        try {
+            // Move the uploaded image to the 'uploads' directory
+            fs.renameSync(request.file.path, path.join(__dirname,'src', 'uploads', filename));
+        } catch (error) {
+            console.error('Error moving uploaded image:', error);
+            return response.status(500).json({ error: 'Failed to store image' });
+        }
+    }
+
+    try {
+        const pool = await createConnectionPool(); // Assuming you have a function to create a connection pool
+        const connection = await pool.getConnection();
+
+        // Insert the new notification into the database
+        await connection.execute(
+            `INSERT INTO notifications (message, image_url) VALUES (?, ?)`,
+            [message, image]
+        );
+
+        connection.release();
+
+        response.status(201).json({ message: 'Notification sent successfully' });
+    } catch (error) {
+        console.error('Error sending notification:', error);
+        response.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+//fetch notification
+app.get('/notifications', async (req, res) => {
+    try {
+        // Establish a connection to the database
+        const pool = await createConnectionPool();
+        const connection = await pool.getConnection();
+
+        // Query to fetch notifications from the database
+        const [rows, fields] = await connection.execute('SELECT * FROM notifications');
+
+        // Release the connection
+        connection.release();
+
+        // Send the notifications data as JSON response
+        res.json(rows);
+    } 
+    catch (error) {
+        console.error('Error fetching notifications:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+//fetch notification details
+app.get('/notification', async (req, res) => {
+    try {
+        // Establish a connection to the database
+        const pool = await createConnectionPool(); // Assuming createConnectionPool() is a function that creates a connection pool
+        const connection = await pool.getConnection();
+
+        // Extract notification ID from the query parameters
+        const notificationId = req.query.id;
+
+        // Query to fetch notification details from the database based on the ID
+        const [rows, fields] = await connection.execute('SELECT * FROM notifications WHERE id = ?', [notificationId]);
+
+        // Release the connection
+        connection.release();
+
+        // Check if notification with the given ID exists
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Notification not found' });
+        }
+
+        // Extracting relevant fields for the notification
+        const notification = {
+            id: rows[0].id,
+            message: rows[0].message,
+            image: rows[0].image_url
+            // Add other fields as needed
+        };
+
+        // Send the notification data as JSON response
+        res.json(notification);
+    } 
+    catch (error) {
+        console.error('Error fetching notification details:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
