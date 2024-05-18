@@ -116,3 +116,4 @@ function updateNotificationsWidget(finesData) {
 }
 
 
+module.exports = {fetchFines,updateNotificationsWidget}
